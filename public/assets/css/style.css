@@ -2044,7 +2044,8 @@ button.bg-danger:hover {
     border-radius: 4px;
     padding: 10px 15px !important;
     text-align: center;
-    font-size: 15px;
+    margin: 2px;
+    font-size: 12px;
     color: #09e5ab;
     text-transform: uppercase;
     font-weight: 500;

@@ -41,7 +41,83 @@ router.get("/",(req,res)=>{
 router.get("/patient-register",(req,res)=>{
     res.render("patient-register")  
  });
+// patient account create
+ router.post("/patient-register",async(req,res)=>{
+      
+    var {phone,username,usertype,password} = req.body;
+    const response =  await (fetch('http://192.168.0.121:9010/api/signup', 
+    { 
+        method: 'POST', 
+        body: JSON.stringify(req.body),
+        headers: { 'Content-Type': 'application/json' }
+    }));
 
+    console.log(response.status)
+    if(response.status === 200){
+        req.session.message={
+            type:'alert-success',
+            intro:'Created!',
+            message:'A Verification Code has been sent to your Phone.'
+        }
+        res.redirect("/otp-verify")
+    }
+    if(response.status === 409){
+        req.session.message={
+            type:'alert-danger',
+            intro:'Created!',
+            message:'Invalid Registration.'
+        }
+        res.redirect("/doctor-register")
+    }
+    const data = await  response.json()
+    console.log(data)
+
+});
+
+
+
+// otp verify route
+router.get("/otp-verify",(req,res)=>{
+    res.render("otp-verify");  
+ });
+ 
+
+ router.post("/otp-verify", async(req,res)=>{
+    var {phone,code} = req.body;
+    const response =  await (fetch('http://192.168.0.121:9010/api/otp-verify', 
+    { 
+        method: 'POST', 
+        body: JSON.stringify(req.body),
+        headers: { 'Content-Type': 'application/json' }
+    }));
+    console.log("status code:",response.status)
+    if(response.status === 200){
+        req.session.message={
+            type:'alert-success',
+            intro:'Created!',
+            message:'Your account has been created successfully.'
+        }
+        res.redirect("/login")
+    }
+    if(response.status === 401){
+        req.session.message={
+            type:'alert-danger',
+            intro:'Created!',
+            message:'Invalid Code.'
+        }
+        res.redirect("/otp-verify")
+    }
+    if(response.status === 409){
+        req.session.message={
+            type:'alert-danger',
+            intro:'Created!',
+            message:'Invalid Code.'
+        }
+        res.redirect("/otp-verify")
+    }
+    const data = await  response.json()
+
+});
 
 // single doctor profile
 
@@ -119,15 +195,15 @@ router.post("/doctor-register",async(req,res)=>{
             req.session.message={
                 type:'alert-success',
                 intro:'Created!',
-                message:'Your account has been created successfully.'
+                message:'A Verification Code has been sent to your Phone.'
             }
-            res.redirect("/login")
+            res.redirect("/otp-verify")
         }
         if(response.status === 409){
             req.session.message={
                 type:'alert-danger',
                 intro:'Created!',
-                message:'Invalid Login.'
+                message:'Invalid Registration.'
             }
             res.redirect("/doctor-register")
         }
