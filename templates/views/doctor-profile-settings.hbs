@@ -3,22 +3,22 @@
 
 <head>
 	<meta charset="utf-8">
-	<title>Doccure</title>
+	<title>Ecall</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
 
 	<link href="assets/img/favicon.png" rel="icon">
 
-	<link rel="stylesheet" href="assets/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/assets/css/bootstrap.min.css">
 
-	<link rel="stylesheet" href="assets/plugins/fontawesome/css/fontawesome.min.css">
+	<link rel="stylesheet" href="/assets/plugins/fontawesome/css/fontawesome.min.css">
 	<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
 
-	<link rel="stylesheet" href="assets/plugins/select2/css/select2.min.css">
+	<link rel="stylesheet" href="/assets/plugins/select2/css/select2.min.css">
 
-	<link rel="stylesheet" href="assets/plugins/bootstrap-tagsinput/css/bootstrap-tagsinput.css">
-	<link rel="stylesheet" href="assets/plugins/dropzone/dropzone.min.css">
+	<link rel="stylesheet" href="/assets/plugins/bootstrap-tagsinput/css/bootstrap-tagsinput.css">
+	<link rel="stylesheet" href="/assets/plugins/dropzone/dropzone.min.css">
 
-	<link rel="stylesheet" href="assets/css/style.css">
+	<link rel="stylesheet" href="/assets/css/style.css">
 
 	<!--[if lt IE 9]>
 			<script src="assets/js/html5shiv.min.js"></script>
@@ -56,17 +56,7 @@
 					<ul class="main-nav">
 						<li class="has-submenu">
 							<a href="">Home <i class="fas fa-chevron-down"></i></a>
-							<ul class="submenu">
-								<li><a href="index.html">Home</a></li>
-								<li><a href="index-1.html">Home 1</a></li>
-								<li><a href="index-2.html">Home 2</a></li>
-								<li><a href="index-3.html">Home 3</a></li>
-								<li><a href="index-4.html">Home 4</a></li>
-								<li><a href="index-5.html">Home 5</a></li>
-								<li><a href="index-6.html">Home 6</a></li>
-								<li><a href="index-7.html">Home 7</a></li>
-								<li><a href="index-8.html">Home 8</a></li>
-							</ul>
+							
 						</li>
 						<li class="has-submenu active">
 							<a href="">Doctors <i class="fas fa-chevron-down"></i></a>
@@ -337,78 +327,142 @@
 					</div>
 					<div class="col-md-7 col-lg-8 col-xl-9">
 
-						<div class="card">
-							<div class="card-body">
-								<h4 class="card-title">Basic Information</h4>
-								<div class="row form-row">
-									<div class="col-md-12">
-										<div class="form-group">
-											<div class="change-avatar">
-												<div class="profile-img">
-													<img src="assets/img/doctors/doctor-thumb-02.jpg" alt="User Image">
-												</div>
-												<div class="upload-img">
-													<div class="change-photo-btn">
-														<span><i class="fa fa-upload"></i> Upload Photo</span>
-														<input type="file" class="upload">
+						{{#if message}}
+							<div class="alert {{message.type}}" role="alert">
+								{{message.message}}
+							</div>
+						{{/if}}
+						<div class="alert alert-success" id="errorMsg" role="alert">
+
+						</div>
+                         <form id="myForm">
+							<div class="card">
+								<div class="card-body">
+									<h4 class="card-title">Basic Information</h4>
+									<div class="row form-row">
+										<div class="col-md-12">
+											<div class="form-group">
+												<div class="change-avatar">
+													<div class="profile-img">
+														<img src="{{singleDocData.[0].Photo}}" id="output" alt="User Image">
 													</div>
-													<small class="form-text text-muted">Allowed JPG, GIF or PNG. Max
-														size of 2MB</small>
+													{{!-- <div class="upload-img d-none">
+														<div class="change-photo-btn">
+															<span><i class="fa fa-upload"></i> Upload Photo</span>
+															<input name="Photo" type="file" class="upload" accept="image/*">
+														</div>
+														<small class="form-text text-muted">Allowed JPG, GIF or PNG. Max
+															size of 2MB</small>
+													</div> --}}
+													<input type="file" id="userPhoto" onchange="loadFile(event)" name="Photo" class="form-control" accept="image/*"/>
+                                                   {{!-- image preview --}}
+													<script>
+														var loadFile = function(event) {
+															var reader = new FileReader();
+															reader.onload = function(){
+															var output = document.getElementById('output');
+															output.src = reader.result;
+															};
+															reader.readAsDataURL(event.target.files[0]);
+														};
+													</script>
 												</div>
 											</div>
 										</div>
-									</div>
-									<div class="col-md-6">
-										<div class="form-group">
-											<label>Username <span class="text-danger">*</span></label>
-											<input type="text" class="form-control" readonly>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Username <span class="text-danger">*</span></label>
+												<input name="userName" id="userName" type="text" value="{{singleDocData.[0].userName}}" class="form-control" >
+											</div>
 										</div>
-									</div>
-									<div class="col-md-6">
-										<div class="form-group">
-											<label>Email <span class="text-danger">*</span></label>
-											<input type="email" class="form-control" readonly>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Email <span class="text-danger">*</span></label>
+												<input type="email" class="form-control" value="{{singleDocData.[0].email}}" >
+											</div>
 										</div>
-									</div>
-									<div class="col-md-6">
-										<div class="form-group">
-											<label>First Name <span class="text-danger">*</span></label>
-											<input type="text" class="form-control">
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Registration Number <span class="text-danger">*</span></label>
+												<input type="number"  id="RegistrationNo" name="RegistrationNo" value="{{singleDocData.[0].RegistrationNo}}" class="form-control" >
+											</div>
 										</div>
-									</div>
-									<div class="col-md-6">
-										<div class="form-group">
-											<label>Last Name <span class="text-danger">*</span></label>
-											<input type="text" class="form-control">
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>First Name <span class="text-danger">*</span></label>
+												<input type="text" id="FirstName" value="{{singleDocData.[0].FirstName}}" name="FirstName" class="form-control">
+											</div>
 										</div>
-									</div>
-									<div class="col-md-6">
-										<div class="form-group">
-											<label>Phone Number</label>
-											<input type="text" class="form-control">
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Last Name <span class="text-danger">*</span></label>
+												<input type="text" id="LastName" value="{{singleDocData.[0].LastName}}" name="LastName" class="form-control">
+											</div>
 										</div>
-									</div>
-									<div class="col-md-6">
-										<div class="form-group">
-											<label>Gender</label>
-											<select class="form-select form-control">
-												<option>Select</option>
-												<option>Male</option>
-												<option>Female</option>
-											</select>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Phone Number</label>
+												<input name="PhoneNumber" id="PhoneNumber" value="{{singleDocData.[0].PhoneNumber}}" type="text" class="form-control">
+											</div>
 										</div>
-									</div>
-									<div class="col-md-6">
-										<div class="form-group mb-0">
-											<label>Date of Birth</label>
-											<input type="text" class="form-control">
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Gender</label>
+												<select name="Gender" id="Gender" class="form-select form-control">
+													
+													<option value="{{singleDocData.[0].Gender}}">{{singleDocData.[0].Gender}}</option>
+													<option>Male</option>
+													<option>Female</option>
+												</select>
+											</div>
 										</div>
+										<div class="col-md-6">
+											<div  class="form-group mb-0">
+												<label>Date of Birth</label>
+												<input value="{{singleDocData.[0].Gender}}" id="DateOfBirth" name="DateOfBirth" type="date" class="form-control">
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Blood Group</label>
+												<select name="BloodGroup" id="BloodGroup" class="form-select form-control">
+													<option value="{{singleDocData.[0].Gender}}">{{singleDocData.[0].BloodGroup}}</option>
+													<option value="o+">o+</option>
+													<option value="o-">o-</option>
+													<option value="A+">A+</option>
+													<option value="A-">A-</option>
+													<option value="AB+">AB+</option>
+													<option value="AB-">AB-</option>
+												</select>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>NID</label>
+												<input name="NID" id="NID" value="{{singleDocData.[0].NID}}" type="text" class="form-control">
+											</div>
+										</div>
+											<div class="col-md-6">
+											<div class="form-group">
+												<label>Address</label>
+												<textarea name="Address" id="Address" value="{{singleDocData.[0].Address}}"  class="form-control"></textarea>
+												
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Password</label>
+												<input name="Password" id="Password" value="{{singleDocData.[0].Password}}" type="password" class="form-control">
+											</div>
+										</div>
+										<div class="submit-section submit-btn-bottom w-100 d-flex align-items-right">
+									       <input type="submit" value="Save Changes" class=" btn-primary submit-btn mt-3">
+								        </div>
 									</div>
 								</div>
+								
 							</div>
-						</div>
-
-
+                       	</form>	
 						<div class="card">
 							<div class="card-body">
 								<h4 class="card-title">About Me</h4>
@@ -419,7 +473,7 @@
 							</div>
 						</div>
 
-
+                         {{!-- clinic_info --}}
 						<div class="card">
 							<div class="card-body">
 								<h4 class="card-title">Clinic Info</h4>
@@ -439,7 +493,7 @@
 									<div class="col-md-12">
 										<div class="form-group">
 											<label>Clinic Images</label>
-											<form action="#" class="dropzone"></form>
+											
 										</div>
 										<div class="upload-wrap">
 											<div class="upload-images">
@@ -458,7 +512,7 @@
 							</div>
 						</div>
 
-
+                         {{!-- contact-details --}}
 						<div class="card contact-card">
 							<div class="card-body">
 								<h4 class="card-title">Contact Details</h4>
@@ -503,19 +557,19 @@
 							</div>
 						</div>
 
-
+                          {{!-- pricing --}}
 						<div class="card">
 							<div class="card-body">
 								<h4 class="card-title">Pricing</h4>
 								<div class="form-group mb-0">
 									<div id="pricing_select">
 										<div class="custom-control form-check custom-control-inline">
-											<input type="radio" id="price_free" name="rating_option"
+											<input type="radio" id="price_free" name=""
 												class="form-check-input" value="price_free" checked>
 											<label class="form-check-label" for="price_free">Free</label>
 										</div>
 										<div class="custom-control form-check custom-control-inline">
-											<input type="radio" id="price_custom" name="rating_option"
+											<input type="radio" id="price_custom" name=""
 												value="custom_price" class="form-check-input">
 											<label class="form-check-label" for="price_custom">Custom Price (per
 												hour)</label>
@@ -525,7 +579,7 @@
 								<div class="row custom_price_cont" id="custom_price_cont" style="display: none;">
 									<div class="col-md-4">
 										<input type="text" class="form-control" id="custom_rating_input"
-											name="custom_rating_count" value="" placeholder="20">
+											 value="" placeholder="20">
 										<small class="form-text text-muted">Custom price you can add</small>
 									</div>
 								</div>
@@ -539,7 +593,7 @@
 								<div class="form-group">
 									<label>Services</label>
 									<input type="text" data-role="tagsinput" class="input-tags form-control"
-										placeholder="Enter Services" name="services" value="Tooth cleaning "
+										placeholder="Enter Services" value="Tooth cleaning "
 										id="services">
 									<small class="form-text text-muted">Note : Type & Press enter to add new
 										services</small>
@@ -547,7 +601,7 @@
 								<div class="form-group mb-0">
 									<label>Specialization </label>
 									<input class="input-tags form-control" type="text" data-role="tagsinput"
-										placeholder="Enter Specialization" name="specialist"
+										placeholder="Enter Specialization" 
 										value="Children Care,Dental Care" id="specialist">
 									<small class="form-text text-muted">Note : Type & Press enter to add new
 										specialization</small>
@@ -559,26 +613,33 @@
 						<div class="card">
 							<div class="card-body">
 								<h4 class="card-title">Education</h4>
+								<form action="/educationupdate/{{singleDocData.[0].DocNurID}}" method="post">
 								<div class="education-info">
 									<div class="row form-row education-cont">
 										<div class="col-12 col-md-10 col-lg-11">
 											<div class="row form-row">
-												<div class="col-12 col-md-6 col-lg-4">
+												<div class="col-12 col-md-6 col-lg-3">
 													<div class="form-group">
 														<label>Degree</label>
-														<input type="text" class="form-control">
+														<input name="degree" type="text" class="form-control">
 													</div>
 												</div>
-												<div class="col-12 col-md-6 col-lg-4">
+												<div class="col-12 col-md-6 col-lg-3">
 													<div class="form-group">
 														<label>College/Institute</label>
-														<input type="text" class="form-control">
+														<input name="institutionName" type="text" class="form-control">
 													</div>
 												</div>
-												<div class="col-12 col-md-6 col-lg-4">
+												<div class="col-12 col-md-6 col-lg-3">
+													<div class="form-group">
+														<label>Year of Joining</label>
+														<input type="date" name="start_date" class="form-control">
+													</div>
+												</div>
+												<div class="col-12 col-md-6 col-lg-3">
 													<div class="form-group">
 														<label>Year of Completion</label>
-														<input type="text" class="form-control">
+														<input type="date" name="end_date" class="form-control">
 													</div>
 												</div>
 											</div>
@@ -587,8 +648,12 @@
 								</div>
 								<div class="add-more">
 									<a href="javascript:void(0);" class="add-education"><i
-											class="fa fa-plus-circle"></i> Add More</a>
+											class="fa fa-plus-circle"></i> Add More</a>			
 								</div>
+								<div class="submit-section submit-btn-bottom w-100 d-flex align-items-right">
+									<input type="submit" value="Save Changes" class=" btn-primary submit-btn mt-3">
+								</div>
+							  </form>
 							</div>
 						</div>
 
@@ -634,8 +699,6 @@
 								</div>
 							</div>
 						</div>
-
-
 						<div class="card">
 							<div class="card-body">
 								<h4 class="card-title">Awards</h4>
@@ -709,10 +772,12 @@
 								</div>
 							</div>
 						</div>
-
+                      {{!-- 
 						<div class="submit-section submit-btn-bottom">
-							<button type="submit" class="btn btn-primary submit-btn">Save Changes</button>
-						</div>
+							<input type="submit" value="Save Changes" class=" btn-primary submit-btn">
+						</div> --}}
+
+				
 					</div>
 				</div>
 			</div>
@@ -844,22 +909,64 @@
 
 
 	<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
-	<script src="assets/js/jquery-3.6.0.min.js"></script>
+	<script src="/assets/js/jquery-3.6.0.min.js"></script>
 
-	<script src="assets/js/bootstrap.bundle.min.js"></script>
+	<script src="/assets/js/bootstrap.bundle.min.js"></script>
 
-	<script src="assets/plugins/theia-sticky-sidebar/ResizeSensor.js"></script>
-	<script src="assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js"></script>
+	<script src="/assets/plugins/theia-sticky-sidebar/ResizeSensor.js"></script>
+	<script src="/assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js"></script>
 
-	<script src="assets/plugins/select2/js/select2.min.js"></script>
+	<script src="/assets/plugins/select2/js/select2.min.js"></script>
 
-	<script src="assets/plugins/dropzone/dropzone.min.js"></script>
+	<script src="/assets/plugins/dropzone/dropzone.min.js"></script>
 
-	<script src="assets/plugins/bootstrap-tagsinput/js/bootstrap-tagsinput.js"></script>
+	<script src="/assets/plugins/bootstrap-tagsinput/js/bootstrap-tagsinput.js"></script>
 
-	<script src="assets/js/profile-settings.js"></script>
+	<script src="/assets/js/profile-settings.js"></script>
 
-	<script src="assets/js/script.js"></script>
+	<script src="/assets/js/script.js"></script>
+	<script>
+		const myForm  =  document.getElementById("myForm")
+		const userPhoto  =  document.getElementById("userPhoto")
+		const userName  =  document.getElementById("userName")
+		const FirstName  =  document.getElementById("FirstName")
+		const LastName  =  document.getElementById("LastName")
+		const PhoneNumber  =  document.getElementById("PhoneNumber")
+		const Gender  =  document.getElementById("Gender")
+		const NID  =  document.getElementById("NID")
+		const DateOfBirth  =  document.getElementById("DateOfBirth")
+		const RegistrationNo  =  document.getElementById("RegistrationNo")
+		const BloodGroup  =  document.getElementById("BloodGroup")
+		const Address  =  document.getElementById("Address")
+		const Password  =  document.getElementById("Password")
+		const errorMsg  =  document.getElementById("errorMsg")
+
+		myForm.addEventListener("submit", e =>{
+
+			e.preventDefault();
+			const formData =  new FormData();
+			formData.append("Photo",userPhoto.files[0]);
+			formData.append("userName", userName.value);
+			formData.append("FirstName", FirstName.value);
+			formData.append("LastName", LastName.value);
+			formData.append("PhoneNumber", PhoneNumber.value);
+			formData.append("Gender", Gender.value);
+			formData.append("NID", NID.value);
+			formData.append("DateOfBirth", DateOfBirth.value);
+			formData.append("RegistrationNo", RegistrationNo.value);
+			formData.append("BloodGroup", BloodGroup.value);
+			formData.append("Address", Address.value);
+			formData.append("Password", Password.value);
+  
+			fetch('http://192.168.0.121:9010/api/docinfoupdate/DC9469086',{
+				method:'PUT',
+				body:formData
+			}).catch(console.error)
+             errorMsg.innerText = 'Updated Successfully'
+			 window.location.origin;
+			
+		})
+	</script>
 </body>
 
 </html>

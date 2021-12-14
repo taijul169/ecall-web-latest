@@ -9,6 +9,11 @@ const dotenv =  require('dotenv');
 dotenv.config({path:'../config.env'});
 const fetch  = require("node-fetch");
 
+var FormData = require('form-data');
+var fs = require('fs');
+var multipart = require('connect-multiparty');
+var multipartMiddleware = multipart();
+
 // middleware
 const auth = require('../middleware/authenticate')
 
@@ -24,6 +29,7 @@ const router = express.Router();
 const { query } = require('express');
 const { json } = require('body-parser');
 const { METHODS } = require('http');
+const { Console } = require('console');
 
 
 // Home route
@@ -125,10 +131,10 @@ router.get("/doctor-profile",(req,res)=>{
    res.render("doctor-profile")  
 });
 
-// doctor profile settings
-router.get("/doctor-profile-settings",(req,res)=>{
-    res.render("doctor-profile-settings")  
- });
+// // doctor profile settings
+// router.get("/doctor-profile-settings",(req,res)=>{
+//     res.render("doctor-profile-settings")  
+//  });
 
 // doctor register
 router.get("/doctor-register",(req,res)=>{
@@ -220,6 +226,149 @@ router.get("/doctor-dashboard",(req,res)=>{
     res.render("doctor-dashboard")
 })
 
+
+router.get("/doctor-profile-settings/:id", (req,res)=>{
+    const id =  req.params.id;
+    fetch(`http://192.168.0.121:9010/api/singledoctor/${id}`)
+    .then(res => res.json())
+    .then(singleDocData =>{
+        res.render("doctor-profile-settings",{singleDocData})
+    });
+
+});
+
+
+router.get("/fileupload/:id",(req,res)=>{
+
+    res.render("fileupload")
+})
+router.post("/fileupload/:id",(req,res)=>{
+    var form = new FormData();
+    form.append('my_field', 'my value');
+    form.append('my_buffer', new Buffer(10));
+    form.append('my_file', fs.createReadStream('/foo/bar.jpg'));
+
+    const id =  req.params.id;
+    console.log(req.files);
+    
+})
+
+
+// education info update----------------
+router.post("/educationupdate/:id", async(req, res)=>{
+    const id =  req.params.id;
+    var {
+        institutionName,
+         degree,
+         start_date,
+         end_date
+         } = req.body;
+      console.log(req.body);
+
+
+     if(Object(req.body).length > 0 ){
+         for(var i = 0;i< Object(req.body).length ;i++){
+        var institutionName = req.body.institutionName[i],
+                degree = req.body.degree[i],
+                start_date = req.body.start_date[i],
+                end_date = req.body.end_date[i],
+           
+             response =  await (fetch(`http://192.168.0.121:9010/api/educationupdate/${id}`, 
+            { 
+                method: 'POST', 
+                body: JSON.stringify({
+                    institutionName,
+                    degree,
+                    start_date,
+                    end_date}),
+                    headers: { 'Content-Type': 'application/json' }
+                
+            }));
+
+         }
+         
+     }
+   
+})
+// doctor profile update----------------
+router.post("/doctor-profile-settings/:id",  async(req, res)=>{
+
+    try {
+
+        const id =  req.params.id;
+        var Photo ='';
+        if(req.files){
+             Photo =  req.files.photo.name;
+        }
+        
+        // Photo =  fs.createReadStream(Photo.data)
+        console.log("Body photo:",Photo)
+        console.log("Body data:",req.body)
+       var {
+           RegistrationNo,
+           FirstName,	
+           LastName,	
+           userName,	
+           PhoneNumber	,
+           Gender,
+           DateOfBirth	,
+           BloodGroup,	
+           NID,
+           Address,	
+           Password } = req.body;
+   
+       
+       const response =  await (fetch(`http://192.168.0.121:9010/api/docinfoupdate/${id}`, 
+       { 
+           method: 'PUT', 
+           body:JSON.stringify({
+               RegistrationNo,
+               FirstName,	
+               LastName,	
+               userName,	
+               PhoneNumber	,
+               Gender,
+               DateOfBirth,
+               BloodGroup,	
+               NID,
+               Photo,
+               Address,	
+               Password}),
+               headers: { 'Content-Type': 'application/json' } 
+       }));
+   
+       console.log(response.body)
+       if(response.status === 200){
+           req.session.message={
+               type:'alert-success',
+               intro:'Created!',
+               message:'Profile Updated!.'
+           }
+           res.redirect(`/doctor-profile-settings/${id}`)
+       }
+       if(response.status === 401){
+           req.session.message={
+               type:'alert-danger',
+               intro:'Created!',
+               message:'Invalid Data.'
+           }
+           res.redirect(`/doctor-profile-settings/${id}`)
+       }
+       else if( response.status === 409){
+           req.session.message={
+               type:'alert-danger',
+               intro:'Created!',
+               message:'Invalid Data.'
+           }
+           res.redirect("/doctor-profile-settings")
+       }
+       const data = await  response.json()
+       console.log(data)
+    } catch (error) {
+        console.log(error)
+    }
+   
+})
 
 
 module.exports =  router;

@@ -7,14 +7,14 @@ const bodyParser =  require("body-parser");
 const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 const session = require('express-session');
+const fileUpload = require("express-fileupload");
 const flash = require('connect-flash');
 const fs  = require("fs");
 dotenv.config({path:'./config.env'});
 const controlRoute = require("./routes/control");
 
 const app = express();
-const PORT = process.env.MYSQL_PORT ;
-
+const PORT = process.env.MYSQL_PORT;
 
 // const Docregistration = require("./models/register");
 // const Doctorappointment = require("./models/appointment");
@@ -23,11 +23,14 @@ const { handlebars } = require("hbs");
 const staticPath = path.join(__dirname, "../public");
 const templatePath = path.join(__dirname, "../templates/views");
 const partialPath = path.join(__dirname, "../templates/partials");
+
 // midleware
-app.use(bodyParser.urlencoded({ extended: true }));           
+app.use(bodyParser.urlencoded({extended: true}));           
 app.use(bodyParser.json())
-// supporting json data
-app.use(express.json());
+app.use(fileUpload());
+
+// // supporting json data
+// app.use(express.json());
 // getting cookie from browser
 app.use(cookieParser())
 app.use(session({

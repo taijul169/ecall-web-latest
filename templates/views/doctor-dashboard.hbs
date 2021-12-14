@@ -908,8 +908,6 @@
 					</div>
 				</div>
 			</div>
-
-
 			<div class="footer-bottom">
 				<div class="container-fluid">
 
@@ -952,6 +950,15 @@
 	<script src="assets/js/circle-progress.min.js"></script>
 
 	<script src="assets/js/script.js"></script>
-</body>
 
+	   <script>
+              
+			 $(document).ready(function() {
+				   // alert auto hide-------------------------------------
+					$(".alert").delay(4000).slideUp(200, function() {
+						$(this).alert('close');
+					});
+             });
+	</script>
+</body>
 </html>

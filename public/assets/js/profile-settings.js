@@ -10,6 +10,7 @@ Version      : 1.0
 	// Pricing Options Show
 	
 	$('#pricing_select input[name="rating_option"]').on('click', function() {
+		
 		if ($(this).val() == 'price_free') {
 			$('#custom_price_cont').hide();
 		}
@@ -28,26 +29,31 @@ Version      : 1.0
     });
 
     $(".add-education").on('click', function () {
-		
 		var educationcontent = '<div class="row form-row education-cont">' +
 			'<div class="col-12 col-md-10 col-lg-11">' +
 				'<div class="row form-row">' +
-					'<div class="col-12 col-md-6 col-lg-4">' +
+					'<div class="col-12 col-md-6 col-lg-3">' +
 						'<div class="form-group">' +
 							'<label>Degree</label>' +
-							'<input type="text" class="form-control">' +
+							'<input type="text" name="degree" required class="form-control">' +
 						'</div>' +
 					'</div>' +
-					'<div class="col-12 col-md-6 col-lg-4">' +
+					'<div class="col-12 col-md-6 col-lg-3">' +
 						'<div class="form-group">' +
 							'<label>College/Institute</label>' +
-							'<input type="text" class="form-control">' +
+							'<input type="text" name="institutionName" required class="form-control">' +
 						'</div>' +
 					'</div>' +
-					'<div class="col-12 col-md-6 col-lg-4">' +
+					'<div class="col-12 col-md-6 col-lg-3">' +
+						'<div class="form-group">' +
+							'<label>Year of Joining</label>' +
+							'<input type="date" required name="start_date" class="form-control">' +
+						'</div>' +
+					'</div>' +
+					'<div class="col-12 col-md-6 col-lg-3">' +
 						'<div class="form-group">' +
 							'<label>Year of Completion</label>' +
-							'<input type="text" class="form-control">' +
+							'<input type="date" required name="end_date" class="form-control">' +
 						'</div>' +
 					'</div>' +
 				'</div>' +

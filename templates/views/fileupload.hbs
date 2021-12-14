@@ -1,0 +1,93 @@
+{{> header}}
+
+      {{!-- header end --}}
+		<div class="content">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-md-8 offset-md-2">
+
+						<div class="account-content">
+							<div class="row align-items-center justify-content-center">
+								<div class="col-md-7 col-lg-6 login-left">
+									<img src="assets/img/login-banner.png" class="img-fluid" alt="Doccure Login">
+								</div>
+								<div class="col-md-12 col-lg-6 login-right">
+									
+									{{#if message}}
+                                    <div class="alert {{message.type}}" role="alert">
+                                        {{message.message}}
+                                    </div>
+                                    {{/if}}
+									<div class="login-header">
+										<h3>Verify Your Account</h3>
+									</div>
+									<form id="myForm" >
+										<img style="width: 100px; height:100px" src="" id="output" alt="">
+										 <input type="file" id="inpFile" onchange="loadFile(event)" name="Photo" value="http://192.168.0.121:9010/uploads/2021-12-14T08-47-08.598ZPolice_photo.jpg" class="form-control" accept="image/*"/>
+										 <input type="text" id="registrationNo" name="RegistrationNo"  class="form-control" />
+										<button class="btn btn-primary w-100 btn-lg login-btn"
+											type="submit">Verify</button>	
+									</form>
+									<script>
+										const myForm  =  document.getElementById("myForm")
+										const inpFile  =  document.getElementById("inpFile")
+										const registrationNo  =  document.getElementById("registrationNo")
+
+										myForm.addEventListener("submit", e =>{
+											e.preventDefault();
+											const formData =  new FormData();
+											formData.append("Photo",inpFile.files[0]);
+											formData.append("RegistrationNo", registrationNo.value);
+
+											console.log(formData);
+
+											fetch('http://192.168.0.121:9010/api/docinfoupdate/DC9469086',{
+												method:'PUT',
+												body:formData
+											}).catch(console.error)
+											
+										})
+									
+										var loadFile = function(event) {
+											var reader = new FileReader();
+											reader.onload = function(){
+											var output = document.getElementById('output');
+											output.src = reader.result;
+											};
+											reader.readAsDataURL(event.target.files[0]);
+										};
+									
+
+
+									
+									</script>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+	
+
+
+{{>footer}}
+
+<script>
+	
+    $("#inpFile").change(function () {
+		window.alert("working!!")
+        if (this.files && this.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#outImage').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(this.files[0]);
+        }
+    });
+
+</script>
+
+	  
