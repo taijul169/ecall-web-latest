@@ -30,6 +30,7 @@ const { query } = require('express');
 const { json } = require('body-parser');
 const { METHODS } = require('http');
 const { Console } = require('console');
+const async = require('hbs/lib/async');
 
 
 // Home route
@@ -138,7 +139,12 @@ router.get("/doctor-profile",(req,res)=>{
 
 // doctor register
 router.get("/doctor-register",(req,res)=>{
-   res.render("doctor-register")
+
+    fetch(`http://192.168.0.121:9010/api/getdepartment`)
+    .then(res => res.json())
+    .then(departmentData =>{
+        res.render("doctor-register",{departmentData})
+    });
     
 });
 
@@ -146,6 +152,58 @@ router.get("/doctor-register",(req,res)=>{
 router.get("/login",(req,res)=>{
     res.render("login")
 })
+
+
+router.post('/experienceinsert/:id',async(req,res)=>{
+    var {institutionName,designation,start_date,end_date} = req.body;
+    console.log(req.body)
+    const response =  await (fetch(`http://192.168.0.121:9010/api/experienceinsert/${req.params.id}`, 
+    { 
+        method: 'POST', 
+        body: JSON.stringify({institutionName,designation,start_date,end_date}),
+        headers: { 'Content-Type': 'application/json' }
+    }));
+    console.log(response)
+})
+
+// Experience info update----------------
+router.post("/experienceupdate/:id", async(req, res)=>{
+    const id =  req.params.id;
+
+    var {
+         data_id,
+         institutionName,
+         designation,
+         start_date,
+         end_date,
+         } = req.body;  
+      console.log(req.body);
+     if(req.body.institutionName.length>0){
+         for(var i=0;i<req.body.institutionName.length; i++){
+            var institutionName = req.body.institutionName[i],
+                designation = req.body.designation[i],
+                start_date = req.body.start_date[i],
+                end_date = req.body.end_date[i],
+                data_id =  req.body.data_id[i]
+             response =  await (fetch(`http://192.168.0.121:9010/api/experienceupdate/${id}`, 
+            { 
+                method: 'PUT', 
+                body: JSON.stringify({
+                    data_id,
+                    institutionName,
+                    designation,
+                    start_date,
+                    end_date}),
+                    headers: { 'Content-Type': 'application/json' }
+                
+            }));
+
+         }
+         
+     }
+   
+})
+
 // login-page
 router.post("/login",async(req,res)=>{
 
@@ -252,31 +310,30 @@ router.post("/fileupload/:id",(req,res)=>{
     console.log(req.files);
     
 })
-
-
 // education info update----------------
 router.post("/educationupdate/:id", async(req, res)=>{
     const id =  req.params.id;
+
     var {
-        institutionName,
+         data_id,
+         institutionName,
          degree,
          start_date,
-         end_date
-         } = req.body;
+         end_date,
+         } = req.body;  
       console.log(req.body);
-
-
-     if(Object(req.body).length > 0 ){
-         for(var i = 0;i< Object(req.body).length ;i++){
-        var institutionName = req.body.institutionName[i],
+     if(req.body.institutionName.length>0){
+         for(var i=0;i<req.body.institutionName.length; i++){
+            var institutionName = req.body.institutionName[i],
                 degree = req.body.degree[i],
                 start_date = req.body.start_date[i],
                 end_date = req.body.end_date[i],
-           
+                data_id =  req.body.data_id[i]
              response =  await (fetch(`http://192.168.0.121:9010/api/educationupdate/${id}`, 
             { 
-                method: 'POST', 
+                method: 'PUT', 
                 body: JSON.stringify({
+                    data_id,
                     institutionName,
                     degree,
                     start_date,
@@ -290,11 +347,26 @@ router.post("/educationupdate/:id", async(req, res)=>{
      }
    
 })
+
+// single education delete
+
+router.get('/deleteEducation/:id/:docid',(req,res)=>{
+    const id =  req.params.id;
+    const docid =  req.params.docid;
+    fetch(`http://192.168.0.121:9010/api/deleteeducation/${id}`,{
+        method:'delete',
+    })
+    req.session.message={
+        type:'alert-danger',
+        intro:'Created!',
+        message:'Education Deleted.'
+    }
+    res.redirect(`/doctor-profile-settings/${docid}`)
+})
 // doctor profile update----------------
 router.post("/doctor-profile-settings/:id",  async(req, res)=>{
 
     try {
-
         const id =  req.params.id;
         var Photo ='';
         if(req.files){

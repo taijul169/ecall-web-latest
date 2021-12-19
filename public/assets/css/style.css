@@ -2324,6 +2324,13 @@ button.bg-danger:hover {
 	margin: 0;
 	margin-right: 3px;
 }
+
+#successmessage {
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 11;
+}
 /*-----------------
 	12. Mobile Menu
 -----------------------*/

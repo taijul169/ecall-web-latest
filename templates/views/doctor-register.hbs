@@ -205,11 +205,9 @@
 										<div class="form-group form-focus">
 											<select name="department" required id="department" class="form-control floating">
 												<option value=""></option>
-												<option value="Dentist">Dentist</option>
-												<option value="Urology">Urology</option>
-												<option value="Neorology">Neorology</option>
-												<option value="Orthopedic">Orthopedic</option>
-												<option value="Cardiologist">Cardiologist</option>
+												{{#each  departmentData}}
+												<option value="{{this.Dept_ID}}">{{this.name}}</option>
+											    {{/each}}	
 												
 											</select>
 											<label class="focus-label">Department</label>

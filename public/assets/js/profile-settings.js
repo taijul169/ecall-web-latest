@@ -24,7 +24,7 @@ Version      : 1.0
 	// Education Add More
 	
     $(".education-info").on('click','.trash', function () {
-		$(this).closest('.education-cont').remove();
+		$(this).closest('.myForm').remove();
 		return false;
     });
 
@@ -35,33 +35,77 @@ Version      : 1.0
 					'<div class="col-12 col-md-6 col-lg-3">' +
 						'<div class="form-group">' +
 							'<label>Degree</label>' +
-							'<input type="text" name="degree" required class="form-control">' +
+							'<input type="text" name="degree[]" required class="form-control">' +
 						'</div>' +
 					'</div>' +
 					'<div class="col-12 col-md-6 col-lg-3">' +
 						'<div class="form-group">' +
 							'<label>College/Institute</label>' +
-							'<input type="text" name="institutionName" required class="form-control">' +
+							'<input type="text" name="institutionName[]" required class="form-control">' +
 						'</div>' +
 					'</div>' +
 					'<div class="col-12 col-md-6 col-lg-3">' +
 						'<div class="form-group">' +
 							'<label>Year of Joining</label>' +
-							'<input type="date" required name="start_date" class="form-control">' +
+							'<input type="date" required name="start_date[]" class="form-control">' +
 						'</div>' +
 					'</div>' +
 					'<div class="col-12 col-md-6 col-lg-3">' +
 						'<div class="form-group">' +
 							'<label>Year of Completion</label>' +
-							'<input type="date" required name="end_date" class="form-control">' +
+							'<input type="date" required name="end_date[]" class="form-control">' +
 						'</div>' +
 					'</div>' +
 				'</div>' +
 			'</div>' +
 			'<div class="col-12 col-md-2 col-lg-1"><label class="d-md-block d-sm-none d-none">&nbsp;</label><a href="#" class="btn btn-danger trash"><i class="far fa-trash-alt"></i></a></div>' +
 		'</div>';
+
+	// 	var educationcontent = `
+	// 	<div class="education-info">
+	// 		<div class="row form-row education-cont">
+	// 			<div class="col-12 col-md-10 col-lg-11">
+	// 				<div class="row form-row education-cont">
+	// 					<div class="col-12 col-md-10 col-lg-11">
+	// 						<div class="row form-row">
+	// 							<div class="col-12 col-md-6 col-lg-3">
+	// 								<input type="hidden" name="data_id[]" >
+	// 								<div class="form-group">
+	// 									<label>Degree</label>
+	// 									<input type="text"  name="degree[]" required class="form-control">
+	// 								</div>
+	// 							</div>
+	// 							<div class="col-12 col-md-6 col-lg-3">
+	// 								<div class="form-group">
+	// 									<label>College/Institute</label>
+	// 									<input type="text"  name="institutionName[]" required class="form-control">
+	// 								</div>
+	// 							</div>
+	// 							<div class="col-12 col-md-6 col-lg-3">
+	// 								<div class="form-group">
+	// 									<label>Year of Joining</label>
+	// 									<input type="date"  required name="start_date[]" class="form-control">
+	// 								</div>
+	// 							</div>
+	// 							<div class="col-12 col-md-6 col-lg-3">
+	// 								<div class="form-group">
+	// 									<label>Year of Completion</label>
+	// 									<input type="date" required name="end_date[]"  class="form-control">
+	// 								</div>
+	// 							</div>
+	// 						</div>
+	// 					</div>
+	// 					<div class="col-12 col-md-2 col-lg-1 "><label class="d-md-block d-sm-none d-none">&nbsp;</label><a href="#" class="btn btn-danger trash"><i class="far fa-trash-alt"></i></a></div> 
+	// 				</div>
+	// 			</div>
+	// 		</div>
+	// 		<div class="submit-section submit-btn-bottom w-100 d-flex align-items-right">
+	// 		<input type="submit" value="Save Changes" class=" btn-primary submit-btn mt-3">
+	// 	</div>
+	// 	</div>	
+	// `
 		
-        $(".education-info").append(educationcontent);
+        $(".eduInfo-mother").append(educationcontent);
         return false;
     });
 	

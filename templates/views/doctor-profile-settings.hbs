@@ -327,14 +327,15 @@
 					</div>
 					<div class="col-md-7 col-lg-8 col-xl-9">
 
-						{{#if message}}
-							<div class="alert {{message.type}}" role="alert">
-								{{message.message}}
-							</div>
-						{{/if}}
-						<div class="alert alert-success" id="errorMsg" role="alert">
 
-						</div>
+						 	<div class="alert {{message.type}}" id="successmessage" role="alert">
+                                {{message.message}}
+						    </div>
+							{{!-- <div class="alert {{message.type}}" role="alert">
+								
+							</div> --}}
+						
+					
                          <form id="myForm">
 							<div class="card">
 								<div class="card-body">
@@ -344,7 +345,7 @@
 											<div class="form-group">
 												<div class="change-avatar">
 													<div class="profile-img">
-														<img src="{{singleDocData.[0].Photo}}" id="output" alt="User Image">
+														<img src="{{singleDocData.personalInfo.[0].Photo}}" id="output" alt="User Image">
 													</div>
 													{{!-- <div class="upload-img d-none">
 														<div class="change-photo-btn">
@@ -372,37 +373,37 @@
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Username <span class="text-danger">*</span></label>
-												<input name="userName" id="userName" type="text" value="{{singleDocData.[0].userName}}" class="form-control" >
+												<input name="userName" id="userName" type="text" value="{{singleDocData.personalInfo.[0].userName}}" class="form-control" >
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Email <span class="text-danger">*</span></label>
-												<input type="email" class="form-control" value="{{singleDocData.[0].email}}" >
+												<input type="email" class="form-control" value="{{singleDocData.personalInfo.[0].email}}" >
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Registration Number <span class="text-danger">*</span></label>
-												<input type="number"  id="RegistrationNo" name="RegistrationNo" value="{{singleDocData.[0].RegistrationNo}}" class="form-control" >
+												<input type="number"  id="RegistrationNo" name="RegistrationNo" value="{{singleDocData.personalInfo.[0].RegistrationNo}}" class="form-control" >
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>First Name <span class="text-danger">*</span></label>
-												<input type="text" id="FirstName" value="{{singleDocData.[0].FirstName}}" name="FirstName" class="form-control">
+												<input type="text" id="FirstName" value="{{singleDocData.personalInfo.[0].FirstName}}" name="FirstName" class="form-control">
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Last Name <span class="text-danger">*</span></label>
-												<input type="text" id="LastName" value="{{singleDocData.[0].LastName}}" name="LastName" class="form-control">
+												<input type="text" id="LastName" value="{{singleDocData.personalInfo.[0].LastName}}" name="LastName" class="form-control">
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Phone Number</label>
-												<input name="PhoneNumber" id="PhoneNumber" value="{{singleDocData.[0].PhoneNumber}}" type="text" class="form-control">
+												<input name="PhoneNumber" id="PhoneNumber" value="{{singleDocData.personalInfo.[0].PhoneNumber}}" type="text" class="form-control">
 											</div>
 										</div>
 										<div class="col-md-6">
@@ -410,7 +411,7 @@
 												<label>Gender</label>
 												<select name="Gender" id="Gender" class="form-select form-control">
 													
-													<option value="{{singleDocData.[0].Gender}}">{{singleDocData.[0].Gender}}</option>
+													<option value="{{singleDocData.personalInfo.[0].Gender}}">{{singleDocData.personalInfo.[0].Gender}}</option>
 													<option>Male</option>
 													<option>Female</option>
 												</select>
@@ -419,14 +420,14 @@
 										<div class="col-md-6">
 											<div  class="form-group mb-0">
 												<label>Date of Birth</label>
-												<input value="{{singleDocData.[0].Gender}}" id="DateOfBirth" name="DateOfBirth" type="date" class="form-control">
+												<input value="{{singleDocData.personalInfo.[0].DateOfBirth}}" id="DateOfBirth" name="DateOfBirth" type="date" class="form-control">
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Blood Group</label>
 												<select name="BloodGroup" id="BloodGroup" class="form-select form-control">
-													<option value="{{singleDocData.[0].Gender}}">{{singleDocData.[0].BloodGroup}}</option>
+													<option value="{{singleDocData.personalInfo.[0].BloodGroup}}">{{singleDocData.personalInfo.[0].BloodGroup}}</option>
 													<option value="o+">o+</option>
 													<option value="o-">o-</option>
 													<option value="A+">A+</option>
@@ -439,20 +440,20 @@
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>NID</label>
-												<input name="NID" id="NID" value="{{singleDocData.[0].NID}}" type="text" class="form-control">
+												<input name="NID" id="NID" value="{{singleDocData.personalInfo.[0].NID}}" type="text" class="form-control">
 											</div>
 										</div>
 											<div class="col-md-6">
 											<div class="form-group">
 												<label>Address</label>
-												<textarea name="Address" id="Address" value="{{singleDocData.[0].Address}}"  class="form-control"></textarea>
+												<textarea name="Address" id="Address" value="{{singleDocData.personalInfo.[0].Address}}"  class="form-control"></textarea>
 												
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label>Password</label>
-												<input name="Password" id="Password" value="{{singleDocData.[0].Password}}" type="password" class="form-control">
+												<input name="Password" id="Password" value="{{singleDocData.personalInfo.[0].Password}}" type="password" class="form-control">
 											</div>
 										</div>
 										<div class="submit-section submit-btn-bottom w-100 d-flex align-items-right">
@@ -608,52 +609,108 @@
 								</div>
 							</div>
 						</div>
-
-
+						{{!-- Education --}}
 						<div class="card">
 							<div class="card-body">
 								<h4 class="card-title">Education</h4>
-								<form action="/educationupdate/{{singleDocData.[0].DocNurID}}" method="post">
-								<div class="education-info">
-									<div class="row form-row education-cont">
-										<div class="col-12 col-md-10 col-lg-11">
-											<div class="row form-row">
-												<div class="col-12 col-md-6 col-lg-3">
-													<div class="form-group">
-														<label>Degree</label>
-														<input name="degree" type="text" class="form-control">
-													</div>
-												</div>
-												<div class="col-12 col-md-6 col-lg-3">
-													<div class="form-group">
-														<label>College/Institute</label>
-														<input name="institutionName" type="text" class="form-control">
-													</div>
-												</div>
-												<div class="col-12 col-md-6 col-lg-3">
-													<div class="form-group">
-														<label>Year of Joining</label>
-														<input type="date" name="start_date" class="form-control">
-													</div>
-												</div>
-												<div class="col-12 col-md-6 col-lg-3">
-													<div class="form-group">
-														<label>Year of Completion</label>
-														<input type="date" name="end_date" class="form-control">
+							         <div class="eduInfo-mother">
+										<div class="education-info">
+											<div class="row form-row education-cont">
+												<div class="col-12 col-md-10 col-lg-11">
+													{{!-- single-eduinfo --}}
+													<div class="row form-row education-cont">
+														<div class="col-12 col-md-10 col-lg-11">
+															<div class="row form-row">
+																<div class="col-12 col-md-6 col-lg-3">
+																	<input type="hidden" name="data_id[]" value="{{this.ID}}">
+																	<div class="form-group">
+																		<label>Degree</label>
+																		<input  type="text" id="degree" value="{{this.Degree}}" name="degree[]" required class="form-control">
+																	</div>
+																</div>
+																<div class="col-12 col-md-6 col-lg-3">
+																	<div class="form-group">
+																		<label>College/Institute</label>
+																		<input  type="text" id="institute_name" value="{{this.InstitutionName}}" name="institutionName[]" required class="form-control">
+																	</div>
+																</div>
+																<div class="col-12 col-md-6 col-lg-2">
+																	<div class="form-group">
+																		<label>Year of Joining</label>
+																		<input  type="date" id="start_date" value="{{this.Start_date}}" required name="start_date[]" class="form-control">
+																	</div>
+																</div>
+																<div class="col-12 col-md-6 col-lg-2">
+																	<div class="form-group">
+																		<label>Year of Completion</label>
+																		<input type="date" id="end_date" value="{{this.End_date}}" required name="end_date[]"  class="form-control">
+																	</div>
+																</div>
+																<div class="col-md-6 col-12 col-lg-2">
+																	<div class="submit-section submit-btn-bottom w-100 d-flex align-items-right">
+																			<button class="btn-primary submit-btn w-100 mt-4 eduform" >Add</button>
+																		{{!-- <input type="submit" value="Save Changes" class=" btn-primary submit-btn mt-3"> --}}
+																	</div>
+																</div>
+															</div>
+														</div>	
 													</div>
 												</div>
 											</div>
 										</div>
-									</div>
-								</div>
+								   <hr>
+									<form method="POST" action="/educationupdate/{{singleDocData.personalInfo.[0].DocNurID}}">
+										<div class="education-info">
+											<div class="row form-row education-cont border py-3">
+												<div class="col-12 col-md-10 col-lg-11">
+												 {{#each singleDocData.educationInfo}}
+													{{!-- single-eduinfo --}}
+													<div class="row form-row education-cont">
+														<div class="col-12 col-md-10 col-lg-11">
+															<div class="row form-row">
+																<div class="col-12 col-md-6 col-lg-3">
+																	<input type="hidden" name="data_id[]" value="{{this.ID}}">
+																	<div class="form-group">
+																		<label>Degree</label>
+																		<input type="text" id="degree" value="{{this.Degree}}" name="degree[]" required class="form-control">
+																	</div>
+																</div>
+																<div class="col-12 col-md-6 col-lg-3">
+																	<div class="form-group">
+																		<label>College/Institute</label>
+																		<input type="text" id="institute_name" value="{{this.InstitutionName}}" name="institutionName[]" required class="form-control">
+																	</div>
+																</div>
+																<div class="col-12 col-md-6 col-lg-3">
+																	<div class="form-group">
+																		<label>Year of Joining</label>
+																		<input type="date" id="start_date" value="{{this.Start_date}}" required name="start_date[]" class="form-control">
+																	</div>
+																</div>
+																<div class="col-12 col-md-6 col-lg-3">
+																	<div class="form-group">
+																		<label>Year of Completion</label>
+																		<input type="date" id="end_date" value="{{this.End_date}}" required name="end_date[]"  class="form-control">
+																	</div>
+																</div>
+															</div>
+														</div>
+														<div class="col-12 col-md-2 col-lg-1 "><label class="d-md-block d-sm-none d-none">&nbsp;</label><a href="/deleteEducation/{{this.ID}}/{{this.DocNurID}}" class="btn btn-danger "><i class="far fa-trash-alt"></i></a></div> 
+													</div>
+                                                   	{{/each}}
+												</div>
+											</div>
+											<div class="submit-section submit-btn-bottom w-100 d-flex align-items-right">
+											 <input type="submit" value="Save Changes" class=" btn-primary submit-btn mt-3">
+										   </div>
+										</div>
+									</form>  
+							  </div>	
+                               {{!-- 
 								<div class="add-more">
-									<a href="javascript:void(0);" class="add-education"><i
-											class="fa fa-plus-circle"></i> Add More</a>			
-								</div>
-								<div class="submit-section submit-btn-bottom w-100 d-flex align-items-right">
-									<input type="submit" value="Save Changes" class=" btn-primary submit-btn mt-3">
-								</div>
-							  </form>
+										<a href="javascript:void(0);" class="add-education"><i
+										class="fa fa-plus-circle"></i> Add More</a>			
+								</div> --}}
 							</div>
 						</div>
 
@@ -664,39 +721,85 @@
 								<div class="experience-info">
 									<div class="row form-row experience-cont">
 										<div class="col-12 col-md-10 col-lg-11">
+										<form method="POST" action="/experienceinsert/{{singleDocData.personalInfo.[0].DocNurID}}">
 											<div class="row form-row">
-												<div class="col-12 col-md-6 col-lg-4">
+												<div class="col-12 col-md-6 col-lg-3">
 													<div class="form-group">
 														<label>Hospital Name</label>
-														<input type="text" class="form-control">
+														<input type="text"  id="hospitalName" name="institutionName" class="form-control">
 													</div>
 												</div>
-												<div class="col-12 col-md-6 col-lg-4">
-													<div class="form-group">
-														<label>From</label>
-														<input type="text" class="form-control">
-													</div>
-												</div>
-												<div class="col-12 col-md-6 col-lg-4">
-													<div class="form-group">
-														<label>To</label>
-														<input type="text" class="form-control">
-													</div>
-												</div>
-												<div class="col-12 col-md-6 col-lg-4">
+												<div class="col-12 col-md-6 col-lg-3">
 													<div class="form-group">
 														<label>Designation</label>
-														<input type="text" class="form-control">
+														<input type="text"  id="designation" name="designation" class="form-control">
+													</div>
+												</div>
+												<div class="col-12 col-md-6 col-lg-3">
+													<div class="form-group">
+														<label>From</label>
+														<input type="date"  id="start_date_exp" name="start_date" class="form-control">
+													</div>
+												</div>
+												<div class="col-12 col-md-6 col-lg-3">
+													<div class="form-group">
+														<label>To</label>
+														<input type="date"  id="end_date_exp" name="end_date" class="form-control">
 													</div>
 												</div>
 											</div>
+										    <div class="submit-section submit-btn-bottom w-100 d-flex align-items-right">
+												<button class="btn-primary submit-btn mt-3 expForm" >Add Experience</button>
+											{{!-- <input type="submit" value="Save Changes" class=" btn-primary submit-btn mt-3"> --}}
+										    </div>
+										   </form>
+
+                                        {{!-- update data --}}
+										<hr>
+										 <form method="POST" action="/experienceupdate/{{singleDocData.personalInfo.[0].DocNurID}}" class=" p-3 mt-3 border">
+										  {{#each singleDocData.experienceInfo}}
+											<div class="row form-row">
+												<div class="col-12 col-md-6 col-lg-3">
+													<div class="form-group">
+														<label>Hospital Name</label>
+														<input type="hidden" name="data_id[]" value="{{this.ID}}">
+														<input type="text" value="{{this.InstitutionName}}" id="hospitalName" name="institutionName[]" class="form-control">
+													</div>
+												</div>
+												<div class="col-12 col-md-6 col-lg-3">
+													<div class="form-group">
+														<label>Designation</label>
+														<input type="text" value="{{this.Designation}}"  id="designation" name="designation[]" class="form-control">
+													</div>
+												</div>
+												<div class="col-12 col-md-6 col-lg-3">
+													<div class="form-group">
+														<label>From</label>
+														<input type="date" value="{{this.Start_date}}" id="start_date_exp" name="start_date[]" class="form-control">
+													</div>
+												</div>
+												<div class="col-12 col-md-6 col-lg-3">
+													<div class="form-group">
+														<label>To</label>
+														<input type="date" value="{{this.End_date}}" id="end_date_exp" name="end_date[]" class="form-control">
+													</div>
+												</div>
+											</div>
+											
+										  {{/each}}	
+										  <div class="submit-section submit-btn-bottom w-100 d-flex align-items-right">
+												<button class="btn-primary submit-btn mt-3 expForm" type="submit" >Uddate Experience</button>
+											{{!-- <input type="submit" value="Save Changes" class=" btn-primary submit-btn mt-3"> --}}
+										   </div>
+										   </form>		
+											
 										</div>
 									</div>
 								</div>
-								<div class="add-more">
+								{{!-- <div class="add-more">
 									<a href="javascript:void(0);" class="add-experience"><i
 											class="fa fa-plus-circle"></i> Add More</a>
-								</div>
+								</div> --}}
 							</div>
 						</div>
 						<div class="card">
@@ -939,7 +1042,7 @@
 		const BloodGroup  =  document.getElementById("BloodGroup")
 		const Address  =  document.getElementById("Address")
 		const Password  =  document.getElementById("Password")
-		const errorMsg  =  document.getElementById("errorMsg")
+		const successmessage  =  document.getElementById("successmessage")
 
 		myForm.addEventListener("submit", e =>{
 
@@ -957,15 +1060,50 @@
 			formData.append("BloodGroup", BloodGroup.value);
 			formData.append("Address", Address.value);
 			formData.append("Password", Password.value);
-  
-			fetch('http://192.168.0.121:9010/api/docinfoupdate/DC9469086',{
+			// Display the values
+				for (var value of formData.values()) {
+				console.log(value);
+				}
+				let href = window.location.href; 
+				// let href = "https://www.facebook.com/david"; // Current window url; 
+				// Creating URL object
+				let url = new URL(href);
+				let str = url.pathname.substring(1)
+				var n = str.lastIndexOf('/');
+                var result = str.substring(n + 1);
+				console.log(result); 
+			fetch(`http://192.168.0.121:9010/api/docinfoupdate/${result}`,{
 				method:'PUT',
 				body:formData
 			}).catch(console.error)
-             errorMsg.innerText = 'Updated Successfully'
+             successmessage.innerText = 'Updated Successfully';
+			 successmessage.classList.add("alert-success")
 			 window.location.origin;
 			
-		})
+		});
+	
+	</script>
+	<script>
+								 
+		 $(".eduform").click(()=>{
+			console.log("working");
+			window.alert("working")
+			var degree =  $("#degree").val();
+			var institutionName =  $("#institute_name").val();
+			var start_date =  $("#start_date").val();
+			var end_date =  $("#end_date").val();
+
+			$.post("http://192.168.0.121:9010/api/educationinsert/DC6044028",{
+				institutionName:institutionName,
+				degree:degree,
+				start_date:start_date,
+				end_date:end_date
+			},function(response){
+				console.log(response)
+			}
+			)
+		});
+		
 	</script>
 </body>
 
