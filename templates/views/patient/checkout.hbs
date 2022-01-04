@@ -1,0 +1,423 @@
+{{patientHeader userData.[0].PatientID userData.[0].Photo userData.[0].FirstName }}
+
+
+		<div class="breadcrumb-bar">
+			<div class="container-fluid">
+				<div class="row align-items-center">
+					<div class="col-md-12 col-12">
+						<nav aria-label="breadcrumb" class="page-breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="index.html">Home</a></li>
+								<li class="breadcrumb-item active" aria-current="page">Checkout</li>
+							</ol>
+						</nav>
+						<h2 class="breadcrumb-title">Checkout</h2>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="content">
+			<div class="container-fluid">
+                {{#if message}}
+					<div class="alert {{message.type}}" role="alert">
+						{{message.message}}
+					</div>
+				{{/if}}
+				<div class="row">
+					<div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
+                        <div class="profile-sidebar">
+                            <div class="widget-profile pro-widget-content">
+                                <div class="profile-info-widget">
+                                    <a href="#" class="booking-doc-img">
+                                        <img src="{{userData.[0].Photo}}" alt="User Image">
+                                    </a>
+                                    <div class="profile-det-info">
+                                        <h3>{{userData.[0].FirstName}}</h3>
+                                        <div class="patient-details">
+                                            <h5><i class="fas fa-birthday-cake"></i> 24 Jul 1983, 38 years</h5>
+                                            <h5 class="mb-0"><i class="fas fa-map-marker-alt"></i> {{userData.[0].PrimaryAddress}}</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dashboard-widget">
+                               {{patientSideNav userData.[0].PatientID}}
+                            </div>
+                        </div>
+                    </div>
+					<div class="col-md-7 col-lg-8 col-xl-9">
+                        <form action="/makeappointment" method="post">
+							<div class="row">
+								<div class="col-md-7 col-lg-8">
+									<div class="card">
+										<div class="card-body">
+												{{!-- patient ID --}}
+												<input type="hidden" name="patientID" value="">
+												<div class="info-widget">
+													<h4 class="card-title">Personal Information</h4>
+													<div class="row">
+														<div class="col-md-6 col-sm-12">
+															<div class="form-group card-label">
+																<label>First Name</label>
+																<input name="firstName" value="{{userData.[0].FirstName}}" class="form-control" type="text">
+															</div>
+														</div>
+														<div class="col-md-6 col-sm-12">
+															<div class="form-group card-label">
+																<label>Last Name</label>
+																<input name="lastName" value="{{userData.[0].LastName}}" class="form-control" type="text">
+															</div>
+														</div>
+														<div class="col-md-6 col-sm-12">
+															<div class="form-group card-label">
+																<label>Email</label>
+																<input name="email" placeholder="optional" class="form-control" type="email">
+															</div>
+														</div>
+														<div class="col-md-6 col-sm-12">
+															<div class="form-group card-label">
+																<label>Phone</label>
+																<input name="phone" value="{{userData.[0].PhoneNumber}}" class="form-control" type="text">
+															</div>
+														</div>
+													</div>
+													
+												</div>
+
+												<div class="payment-widget">
+													<h4 class="card-title">Payment Method</h4>
+
+													<div class="payment-list">
+														<label class="payment-radio credit-card-option">
+															<input type="radio" value="Online" name="paymentMethod" checked>
+															<span class="checkmark"></span>
+															Credit card
+														</label>
+														<div class="row">
+															<div class="col-md-6">
+																<div class="form-group card-label">
+																	<label for="card_name">Name on Card</label>
+																	<input class="form-control" id="card_name" type="text">
+																</div>
+															</div>
+															<div class="col-md-6">
+																<div class="form-group card-label">
+																	<label for="card_number">Card Number</label>
+																	<input class="form-control" id="card_number"
+																		placeholder="1234  5678  9876  5432" type="text">
+																</div>
+															</div>
+															<div class="col-md-4">
+																<div class="form-group card-label">
+																	<label for="expiry_month">Expiry Month</label>
+																	<input class="form-control" id="expiry_month" placeholder="MM"
+																		type="text">
+																</div>
+															</div>
+															<div class="col-md-4">
+																<div class="form-group card-label">
+																	<label for="expiry_year">Expiry Year</label>
+																	<input class="form-control" id="expiry_year" placeholder="YY"
+																		type="text">
+																</div>
+															</div>
+															<div class="col-md-4">
+																<div class="form-group card-label">
+																	<label for="cvv">CVV</label>
+																	<input class="form-control" id="cvv" type="text">
+																</div>
+															</div>
+														</div>
+													</div>
+
+
+													<div class="payment-list">
+														<label class="payment-radio paypal-option">
+															<input type="radio" value="Cash" name="paymentMethod">
+															<span class="checkmark"></span>
+															Cash
+														</label>
+													</div>
+
+
+													<div class="terms-accept">
+														<div class="custom-checkbox">
+															<input type="checkbox" id="terms_accept">
+															<label for="terms_accept">I have read and accept <a href="#">Terms &amp;
+																	Conditions</a></label>
+														</div>
+													</div>
+												</div>
+										
+										</div>
+									</div>
+							</div>
+								<div class="col-md-5 col-lg-4 theiaStickySidebar">
+
+									<div class="card booking-card">
+										<div class="card-header">
+											<h4 class="card-title">Booking Summary</h4>
+										</div>
+										<div class="card-body">
+
+											<div class="booking-doc-info">
+												<a href="doctor-profile.html" class="booking-doc-img">
+													<img src="{{singleDocData.personalInfo.[0].Photo}}" alt="User Image">
+												</a>
+												<div class="booking-info">
+													<input type="hidden" name="doctorName" value=" Dr.{{singleDocData.personalInfo.[0].FirstName}} {{singleDocData.personalInfo.[0].LastName}}">
+													<input type="hidden" name="docNurID" value="{{singleDocData.personalInfo.[0].DocNurID}}">
+													<h4><a href="doctor-profile.html">Dr.{{singleDocData.personalInfo.[0].FirstName}} {{singleDocData.personalInfo.[0].LastName}}</a></h4>
+													<div class="review-count rating">
+													{{ reviewShow singleDocData.averageRating}}
+													<span class="d-inline-block average-rating">({{singleDocData.averageRating}})</span>
+													
+													</div>
+													<div class="clinic-details">
+														<p class="doc-location"><i class="fas fa-map-marker-alt"></i> {{singleDocData.personalInfo.[0].PrimaryAddress}}
+														</p>
+													</div>
+												</div>
+											</div>
+
+											<div class="booking-summary">
+												<div class="booking-item-wrap">
+													<ul class="booking-date">
+														<div class="form-group">
+															<label for="">Date</label>
+															<input id="date_picker" required type="date" name="bookingDate" class="form-control">
+														</div>
+														<div class="form-group">
+															<label for="">Time</label>
+															<select required name="bookingTime" id="" class="form-control">
+																<option value="">Select Time</option>
+																{{#each singleDocData.chamberData}}
+																<option value="{{this.Start_time}}">{{this.Start_time}}</option>
+																{{/each}}
+															</select>
+														</div>
+													</ul>
+													<div class="payment-list my-4">
+														
+														
+													</div>
+													<ul class="booking-fee">
+														<li>
+															<label class="payment-radio ">
+															<input type="radio" data-feesHome="{{singleDocData.feesData.[0].Home}}" onclick="totalCountHome('feesHome')" id="feesHome" value="Home" name="serviceType" required>
+															<span class="checkmark"></span>
+															Home Consultation - <strong class="ml-2">টাকা. {{singleDocData.feesData.[0].Home}} </strong> 
+														</label>
+														
+														</li>
+														<li><label class="payment-radio ">
+															<input type="radio" data-feesOnline="{{singleDocData.feesData.[0].Online}}" onclick="totalCountOnline('feesOnline')" id="feesOnline" value="Online" checked name="serviceType" required>
+															<span class="checkmark"></span>
+															Online Consultation - <strong class="ml-2">টাকা. {{singleDocData.feesData.[0].Online}} </strong> 
+														</label>
+														
+														</li>
+														<li>Discount <span>টাকা. 0.00</span></li>
+														
+													</ul>
+													<div class="booking-total">
+														<ul class="booking-total-list">
+															<li>
+																<span>Total</span>
+																<span class="total-cost" >টাকা <b id="totalDisplay">0.00</b></span>
+																<input type="hidden" name="totalAmount" id="totalAmount">
+															</li>
+														</ul>
+													</div>
+													<div class="submit-section mt-4">
+														<button type="submit" class="btn btn-primary submit-btn">Confirm</button>
+													</div>
+												
+													<script>
+														
+														var x = document.getElementById("feesOnline").dataset.feesonline;
+														var b = document.getElementById("totalDisplay");
+														var c = document.getElementById("totalAmount");
+														b.innerText = x;
+														c.value=x;
+
+														const totalCountHome = (a)=>{
+														var x = document.getElementById(`${a}`).dataset.feeshome;
+														var b = document.getElementById("totalDisplay");
+														var c = document.getElementById("totalAmount");
+														b.innerText = x;
+														c.value=x;
+
+														}
+															const totalCountOnline = (a)=>{
+														var x = document.getElementById(`${a}`).dataset.feesonline;
+														var b = document.getElementById("totalDisplay");
+														var c = document.getElementById("totalAmount");
+														b.innerText = x;
+														c.value=x;
+
+														}
+													</script>
+												</div>
+											</div>
+										</div>
+									</div>
+
+								</div>
+							</div>
+						</form>	
+					</div>
+				</div>
+             
+			</div>
+		</div>
+
+
+		<footer class="footer">
+
+			<div class="footer-top">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-lg-3 col-md-6">
+
+							<div class="footer-widget footer-about">
+								<div class="footer-logo">
+									<img src="/assets/img/footer-logo.png" alt="logo">
+								</div>
+								<div class="footer-about-content">
+									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+										incididunt ut labore et dolore magna aliqua. </p>
+									<div class="social-icon">
+										<ul>
+											<li>
+												<a href="#" target="_blank"><i class="fab fa-facebook-f"></i> </a>
+											</li>
+											<li>
+												<a href="#" target="_blank"><i class="fab fa-twitter"></i> </a>
+											</li>
+											<li>
+												<a href="#" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+											</li>
+											<li>
+												<a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+											</li>
+											<li>
+												<a href="#" target="_blank"><i class="fab fa-dribbble"></i> </a>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+
+						</div>
+						<div class="col-lg-3 col-md-6">
+
+							<div class="footer-widget footer-menu">
+								<h2 class="footer-title">For Patients</h2>
+								<ul>
+									<li><a href="search.html">Search for Doctors</a></li>
+									<li><a href="login.html">Login</a></li>
+									<li><a href="register.html">Register</a></li>
+									<li><a href="booking.html">Booking</a></li>
+									<li><a href="patient-dashboard.html">Patient Dashboard</a></li>
+								</ul>
+							</div>
+
+						</div>
+						<div class="col-lg-3 col-md-6">
+
+							<div class="footer-widget footer-menu">
+								<h2 class="footer-title">For Doctors</h2>
+								<ul>
+									<li><a href="appointments.html">Appointments</a></li>
+									<li><a href="chat.html">Chat</a></li>
+									<li><a href="login.html">Login</a></li>
+									<li><a href="doctor-register.html">Register</a></li>
+									<li><a href="doctor-dashboard.html">Doctor Dashboard</a></li>
+								</ul>
+							</div>
+
+						</div>
+						<div class="col-lg-3 col-md-6">
+
+							<div class="footer-widget footer-contact">
+								<h2 class="footer-title">Contact Us</h2>
+								<div class="footer-contact-info">
+									<div class="footer-address">
+										<span><i class="fas fa-map-marker-alt"></i></span>
+										<p> 3556 Beech Street, San Francisco,<br> California, CA 94108 </p>
+									</div>
+									<p>
+										<i class="fas fa-phone-alt"></i>
+										+1 315 369 5943
+									</p>
+									<p class="mb-0">
+										<i class="fas fa-envelope"></i>
+										<a href="/cdn-cgi/l/email-protection" class="__cf_email__"
+											data-cfemail="cfaba0acacbabdaa8faab7aea2bfa3aae1aca0a2">[email&#160;protected]</a>
+									</p>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="footer-bottom">
+				<div class="container-fluid">
+
+					<div class="copyright">
+						<div class="row">
+							<div class="col-md-6 col-lg-6">
+								<div class="copyright-text">
+									<p class="mb-0">&copy; 2020 Doccure. All rights reserved.</p>
+								</div>
+							</div>
+							<div class="col-md-6 col-lg-6">
+
+								<div class="copyright-menu">
+									<ul class="policy-menu">
+										<li><a href="term-condition.html">Terms and Conditions</a></li>
+										<li><a href="privacy-policy.html">Policy</a></li>
+									</ul>
+								</div>
+
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+		</footer>
+
+	</div>
+
+
+	<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+	<script src="/assets/js/jquery-3.6.0.min.js"></script>
+
+	<script src="/assets/js/bootstrap.bundle.min.js"></script>
+
+	<script src="/assets/plugins/theia-sticky-sidebar/ResizeSensor.js"></script>
+	<script src="/assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js"></script>
+
+	<script src="/assets/js/script.js"></script>
+
+
+	<script language="javascript">
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0');
+        var yyyy = today.getFullYear();
+
+        today = yyyy + '-' + mm + '-' + dd;
+        $('#date_picker').attr('min',today);
+    </script>
+</body>
+
+</html>

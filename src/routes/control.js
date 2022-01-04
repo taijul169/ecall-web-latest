@@ -8,14 +8,13 @@ const cookieParser = require("cookie-parser");
 const dotenv =  require('dotenv');
 dotenv.config({path:'../config.env'});
 const fetch  = require("node-fetch");
-
 var FormData = require('form-data');
 var fs = require('fs');
 var multipart = require('connect-multiparty');
 var multipartMiddleware = multipart();
 
 // middleware
-const auth = require('../middleware/authenticate')
+//const auth = require('../middleware/authenticate')
 
 
 
@@ -31,22 +30,69 @@ const { json } = require('body-parser');
 const { METHODS } = require('http');
 const { Console } = require('console');
 const async = require('hbs/lib/async');
+const auth = require("../middleware/authenticate");
+const { isObject } = require('util');
 
 
 // Home route
-router.get("/",(req,res)=>{
-    fetch('http://192.168.0.121:9010/api/getdocnurserlist')
+router.get("/",async(req,res)=>{
+
+    fetch('http://192.168.0.121:9010/api/getdocnurserlistfeatured')
     .then(res => res.json())
     .then(dataDoc =>{
-        console.log(dataDoc)
-        res.render("index",{dataDoc})
+        fetch('http://192.168.0.121:9010/api/getdepartment')
+        .then(res => res.json())
+        .then(dataDepartment=>{
+            res.render("index",{dataDoc,dataDepartment})
+        })
+       
     });
      
 });
 
+
+// get doctorlist by department
+router.get("/find-doctor/:department", async(req,res)=>{
+
+    const departmentID =  req.params.department;
+     fetch(`http://192.168.0.121:9010/api/getdocnurserlist/${departmentID}`)
+    .then(res => res.json())
+    .then(dataDoclist =>{
+        fetch('http://192.168.0.121:9010/api/getdepartment')
+        .then(res => res.json())
+        .then(departmentData =>{
+           ///===================
+        console.log(dataDoclist)
+        res.render("doctorlistByDepartment",{dataDoclist,departmentData})
+        });
+    
+    });
+
+    
+
+});
+
+
+// doctor search result
+router.get("/searchresult",(req,res)=>{
+    fetch('http://192.168.0.121:9010/api/getdepartment')
+    .then(res => res.json())
+    .then(departmentData =>{
+        fetch(`http://192.168.0.121:9010/api/getdocnurserlist`)
+        .then(res => res.json())
+        .then(dataDoclist =>{
+        ///===================
+            console.log(dataDoclist)
+            res.render("search",{dataDoclist,departmentData})
+        });
+    });
+    
+ });
+
+
 // patient register
 router.get("/patient-register",(req,res)=>{
-    res.render("patient-register")  
+    res.render("patient/patient-register")  
  });
 // patient account create
  router.post("/patient-register",async(req,res)=>{
@@ -66,7 +112,7 @@ router.get("/patient-register",(req,res)=>{
             intro:'Created!',
             message:'A Verification Code has been sent to your Phone.'
         }
-        res.redirect("/otp-verify")
+        res.redirect(`/otp-verify/${phone}`)
     }
     if(response.status === 409){
         req.session.message={
@@ -74,7 +120,7 @@ router.get("/patient-register",(req,res)=>{
             intro:'Created!',
             message:'Invalid Registration.'
         }
-        res.redirect("/doctor-register")
+        res.redirect("/patient-register")
     }
     const data = await  response.json()
     console.log(data)
@@ -84,12 +130,14 @@ router.get("/patient-register",(req,res)=>{
 
 
 // otp verify route
-router.get("/otp-verify",(req,res)=>{
-    res.render("otp-verify");  
+router.get("/otp-verify/:mob",(req,res)=>{
+    const mob =req.params.mob;
+    res.render("otp-verify",{mob});  
  });
  
 
- router.post("/otp-verify", async(req,res)=>{
+ router.post("/otp-verify/:mob", async(req,res)=>{
+    const mob =  req.params.mob
     var {phone,code} = req.body;
     const response =  await (fetch('http://192.168.0.121:9010/api/otp-verify', 
     { 
@@ -112,7 +160,7 @@ router.get("/otp-verify",(req,res)=>{
             intro:'Created!',
             message:'Invalid Code.'
         }
-        res.redirect("/otp-verify")
+        res.redirect(`/otp-verify/${mob}`)
     }
     if(response.status === 409){
         req.session.message={
@@ -120,14 +168,14 @@ router.get("/otp-verify",(req,res)=>{
             intro:'Created!',
             message:'Invalid Code.'
         }
-        res.redirect("/otp-verify")
+        res.redirect(`/otp-verify/${mob}`)
     }
     const data = await  response.json()
 
 });
 
-// single doctor profile
 
+// single doctor profile
 router.get("/doctor-profile",(req,res)=>{
    res.render("doctor-profile")  
 });
@@ -148,11 +196,9 @@ router.get("/doctor-register",(req,res)=>{
     
 });
 
-// login-page
-router.get("/login",(req,res)=>{
-    res.render("login")
-})
 
+
+// expericen insert
 
 router.post('/experienceinsert/:id',async(req,res)=>{
     var {institutionName,designation,start_date,end_date} = req.body;
@@ -163,7 +209,12 @@ router.post('/experienceinsert/:id',async(req,res)=>{
         body: JSON.stringify({institutionName,designation,start_date,end_date}),
         headers: { 'Content-Type': 'application/json' }
     }));
-    console.log(response)
+    req.session.message={
+        type:'alert-success',
+        intro:'Created!',
+        message:'Data Updated Successfully.'
+    }
+    res.redirect(`/profile-settings/${req.params.id}`)
 })
 
 // Experience info update----------------
@@ -201,9 +252,87 @@ router.post("/experienceupdate/:id", async(req, res)=>{
          }
          
      }
+     req.session.message={
+        type:'alert-success',
+        intro:'Created!',
+        message:'Data Updated Successfully.'
+    }
+    res.redirect(`/profile-settings/${id}`)
+
    
 })
 
+// chamber insert
+router.post('/chamberinsert/:id',async(req,res)=>{
+    var {institutionName,location,day,start_time,end_time} = req.body;
+    console.log(req.body)
+    const response =  await (fetch(`http://192.168.0.121:9010/api/chamberinsert/${req.params.id}`, 
+    { 
+        method: 'POST', 
+        body: JSON.stringify({institutionName,location,day,start_time,end_time}),
+        headers: { 'Content-Type': 'application/json' }
+    }));
+    req.session.message={
+        type:'alert-success',
+        intro:'Created!',
+        message:'Data inserted Successfully.'
+    }
+    res.redirect(`/profile-settings/${req.params.id}`)
+})
+
+// chamber info update----------------
+router.post("/chamberupdate/:id", async(req, res)=>{
+    const id =  req.params.id;
+
+    var {
+         data_id,
+         institutionName,
+         location,
+         day,
+         start_time,
+         end_time,
+         } = req.body;  
+      console.log(req.body);
+     if(req.body.institutionName.length>0){
+         for(var i=0;i<req.body.institutionName.length; i++){
+            var institutionName = req.body.institutionName[i],
+                location = req.body.location[i],
+                day = req.body.day[i],
+                start_time = req.body.start_time[i],
+                end_time = req.body.end_time[i],
+                data_id =  req.body.data_id[i]
+             response =  await (fetch(`http://192.168.0.121:9010/api/chamberupdate/${id}`, 
+            { 
+                method: 'PUT', 
+                body: JSON.stringify({
+                    data_id,
+                    institutionName,
+                    location,
+                    day,
+                    start_time,
+                    end_time}),
+                    headers: { 'Content-Type': 'application/json' }
+                
+            }));
+
+         }
+         
+     }
+
+     req.session.message={
+        type:'alert-success',
+        intro:'Created!',
+        message:'Data Updated Successfully.'
+    }
+    res.redirect(`/profile-settings/${id}`)
+   
+});
+
+
+// login-page
+router.get("/login",(req,res)=>{
+    res.render("login")
+})
 // login-page
 router.post("/login",async(req,res)=>{
 
@@ -215,14 +344,20 @@ router.post("/login",async(req,res)=>{
         headers: { 'Content-Type': 'application/json' }
     }));
 
-    console.log(response.status)
+    console.log('response-status:',response.status)
     if(response.status === 200){
         req.session.message={
             type:'alert-success',
             intro:'Created!',
             message:'Welcome to Dashboard.'
         }
-        res.redirect("/doctor-dashboard")
+        const data = await  response.json()
+        console.log("data:",data)
+        res.cookie("jwtoken",data[0].Jwtoken,{
+            expires:new Date(Date.now()+259000000),
+            httpOnly:true
+        });
+        res.redirect("/dashboard")
     }
     if(response.status === 401){
         req.session.message={
@@ -240,8 +375,8 @@ router.post("/login",async(req,res)=>{
         }
         res.redirect("/login")
     }
-    const data = await  response.json()
-    console.log(data)
+    
+
 })
 
 router.post("/doctor-register",async(req,res)=>{
@@ -261,7 +396,7 @@ router.post("/doctor-register",async(req,res)=>{
                 intro:'Created!',
                 message:'A Verification Code has been sent to your Phone.'
             }
-            res.redirect("/otp-verify")
+            res.redirect(`/otp-verify/${phone}`)
         }
         if(response.status === 409){
             req.session.message={
@@ -278,22 +413,96 @@ router.post("/doctor-register",async(req,res)=>{
 
 
 // doctor-dashboard
-// login-page
-router.get("/doctor-dashboard",(req,res)=>{
+router.get("/dashboard",auth,(req,res,next)=>{
+   
+    if(req.userData[0].UserType == 1){
 
-    res.render("doctor-dashboard")
+        const id =  req.userData[0].DocNurID;
+        console.log(id);
+        fetch(`http://192.168.0.121:9010/api/getappoinmentlistbydoc/${id}`)
+        .then(res =>res.json())
+        .then(appointmentdata =>{
+            console.log(appointmentdata.length)
+            // current date
+            var date = new Date();
+            console.log(date)
+
+            var timezoneOffset = date.getMinutes() + date.getTimezoneOffset();
+            var timestamp = date.getTime() + timezoneOffset * 1000;
+            var correctDate = new Date(timestamp);
+            
+            correctDate.setUTCHours(0, 0, 0, 0);
+            var current_date = correctDate.toISOString()
+            var d = current_date;
+            d = d.split('T');
+            console.log("d=",d[0]);
+
+            var TodayData =[];
+            var UPcommingData =[];
+            for(var i = 0; i<appointmentdata.length;i++){
+                if(appointmentdata[i].BookingDate == d[0]){
+                 TodayData.push(appointmentdata[i]);
+
+                }
+                else{
+                    UPcommingData.push(appointmentdata[i])
+                }
+            }
+              
+           console.log(TodayData)
+            res.render("doctor/doctor-dashboard",{userData:req.userData,appointmentdata:UPcommingData,TodayData})
+        });
+       
+        
+    }
+    else{
+
+        fetch(`http://192.168.0.121:9010/api/getappoinmentlistbypatientid/${req.userData[0].PatientID}`)
+        .then(res =>res.json())
+        .then(appointmentdata =>{
+            res.render("patient/patient-dashboard",{userData:req.userData,appointmentdata:appointmentdata})
+        });
+       
+    }
+    
 })
 
 
-router.get("/doctor-profile-settings/:id", (req,res)=>{
-    const id =  req.params.id;
-    fetch(`http://192.168.0.121:9010/api/singledoctor/${id}`)
-    .then(res => res.json())
-    .then(singleDocData =>{
-        res.render("doctor-profile-settings",{singleDocData})
-    });
+//  profile settings
 
-});
+router.get("/profile-settings/:id",auth,(req,res)=>{
+    if(req.userData[0].UserType == 1){
+        const id =  req.params.id;
+        fetch(`http://192.168.0.121:9010/api/singledoctor/${id}`)
+        .then(res => res.json())
+        .then(singleDocData =>{
+            console.log(singleDocData)
+            res.render("doctor/doctor-profile-settings",{singleDocData,userData:req.userData})
+        });
+    }
+    else{
+        console.log(req.userData)
+        res.render("patient/patient-profile-settings",{userData:req.userData})
+    }
+  
+})
+
+
+// patient profile setting update
+
+router.post("/patient-profile-update",(req,res)=>{
+
+})
+
+// router.get("/doctor-profile-settings/:id", (req,res)=>{
+//     const id =  req.params.id;
+//     fetch(`http://192.168.0.121:9010/api/singledoctor/${id}`)
+//     .then(res => res.json())
+//     .then(singleDocData =>{
+//         res.render("doctor-profile-settings",{singleDocData})
+//     });
+
+// });
 
 
 router.get("/fileupload/:id",(req,res)=>{
@@ -310,6 +519,29 @@ router.post("/fileupload/:id",(req,res)=>{
     console.log(req.files);
     
 })
+
+router.post("/updatefees/:id",async(req,res)=>{
+    const id =  req.params.id;
+    const {homeFees,onlineFees} =  req.body;
+    const response =  await (fetch(`http://192.168.0.121:9010/api/feesupdate/${id}`, 
+    { 
+        method: 'PUT', 
+        body: JSON.stringify(req.body),
+        headers: { 'Content-Type': 'application/json' }
+    }));
+
+    console.log(response.status)
+    if(response.status === 200){
+        req.session.message={
+            type:'alert-success',
+            intro:'Created!',
+            message:'Data Updated'
+        }
+        res.redirect(`/profile-settings/${id}`)
+    }
+
+});
+
 // education info update----------------
 router.post("/educationupdate/:id", async(req, res)=>{
     const id =  req.params.id;
@@ -345,11 +577,17 @@ router.post("/educationupdate/:id", async(req, res)=>{
          }
          
      }
+
+     req.session.message={
+        type:'alert-success',
+        intro:'Created!',
+        message:'Data Updated Successfully.'
+    }
+    res.redirect(`/profile-settings/${id}`)
    
 })
 
 // single education delete
-
 router.get('/deleteEducation/:id/:docid',(req,res)=>{
     const id =  req.params.id;
     const docid =  req.params.docid;
@@ -361,7 +599,7 @@ router.get('/deleteEducation/:id/:docid',(req,res)=>{
         intro:'Created!',
         message:'Education Deleted.'
     }
-    res.redirect(`/doctor-profile-settings/${docid}`)
+    res.redirect(`/profile-settings/${docid}`)
 })
 // doctor profile update----------------
 router.post("/doctor-profile-settings/:id",  async(req, res)=>{
@@ -416,7 +654,7 @@ router.post("/doctor-profile-settings/:id",  async(req, res)=>{
                intro:'Created!',
                message:'Profile Updated!.'
            }
-           res.redirect(`/doctor-profile-settings/${id}`)
+           res.redirect(`/profile-settings/${id}`)
        }
        if(response.status === 401){
            req.session.message={
@@ -424,7 +662,7 @@ router.post("/doctor-profile-settings/:id",  async(req, res)=>{
                intro:'Created!',
                message:'Invalid Data.'
            }
-           res.redirect(`/doctor-profile-settings/${id}`)
+           res.redirect(`/profile-settings/${id}`)
        }
        else if( response.status === 409){
            req.session.message={
@@ -432,7 +670,7 @@ router.post("/doctor-profile-settings/:id",  async(req, res)=>{
                intro:'Created!',
                message:'Invalid Data.'
            }
-           res.redirect("/doctor-profile-settings")
+           res.redirect("/profile-settings")
        }
        const data = await  response.json()
        console.log(data)
@@ -441,6 +679,338 @@ router.post("/doctor-profile-settings/:id",  async(req, res)=>{
     }
    
 })
+
+
+
+// single doctor-profile view
+
+router.get('/singledoctorprofile/:id',(req,res)=>{
+    const id =  req.params.id;
+    fetch(`http://192.168.0.121:9010/api/singledoctor/${id}`)
+    .then(res => res.json())
+    .then(singleDocData =>{
+        console.log(singleDocData)
+        res.render("doctor-profile",{singleDocData})
+    });
+})
+
+
+router.post('/feedback/:id',async(req,res)=>{
+     const id =  req.params.id;
+    var{rating,reviewTitle,reviewDetails,name,userName} = req.body
+        const response =  await (fetch(`http://192.168.0.121:9010/api/feedbackinsert/${id}`, 
+        { 
+            method: 'POST', 
+            body: JSON.stringify(req.body),
+            headers: { 'Content-Type': 'application/json' }
+        }));
+
+        if(response.status === 200){
+            req.session.message={
+                type:'alert-success',
+                intro:'Created!',
+                message:'You have puted a comment.'
+            }
+            res.redirect(`/singledoctorprofile/${id}`)
+        }
+        const data = await  response.json()
+        console.log(data)
+})
+
+
+// checkout page
+router.get("/checkout/:docNurId", auth, (req,res)=>{
+    console.log("auth data",req.userData)
+    const id =  req.params.docNurId
+    fetch(`http://192.168.0.121:9010/api/singledoctor/${id}`)
+    .then(res => res.json())
+    .then(singleDocData =>{
+        res.render("patient/checkout",{singleDocData, userData:req.userData})
+    });
+});
+
+// booking success
+
+router.get("/booking-success/",auth,(req,res)=>{
+   const queryData=  [req.query];
+   console.log(queryData)
+    res.render('booking-success',{queryData,userData:req.userData})
+})
+
+// viewinvoice
+router.get("/viewinvoice/",auth,(req,res)=>{
+    const queryData=  [req.query];
+    console.log(queryData)
+     res.render('invoice-view',{userData:req.userData,queryData})
+ })
+
+// making appointment
+router.post("/makeappointment",async(req,res)=>{
+    var{firstName,lastName,email,phone,paymentMethod,doctorName,docNurID,bookingDate,bookingTime,serviceType,totalAmount} = req.body
+    const response =  await (fetch(`http://192.168.0.121:9010/api/appointmentinsert`, 
+    { 
+        method: 'POST', 
+        body: JSON.stringify(req.body),
+        headers: { 'Content-Type': 'application/json' }
+    }));
+
+    console.log("response:",response)
+    if(response.status === 200){
+        req.session.message={
+            type:'alert-success',
+            intro:'Created!',
+            message:'Successfully made appointment.'
+        }
+        res.redirect(`/booking-success?name=${doctorName}&date=${bookingDate}&time=${bookingTime}`)
+    }
+    else if(response.status === 205){
+        req.session.message={
+            type:'alert-warning',
+            intro:'Created!',
+            message:'Appointment already done'
+        }
+        res.redirect('back')
+    }
+    const data = await  response.json()
+    console.log("data",data)
+
+});
+
+
+// logout
+
+
+router.get('/logout',(req,res)=>{
+    try {
+        res.clearCookie("jwtoken");
+        console.log("logout success...");
+        res.redirect("/login");
+    } catch (error) {
+        res.status(500).send(error)
+        
+    }
+})
+
+
+
+// find-doctor
+
+router.get('/specialities',auth,(req,res)=>{
+       fetch('http://192.168.0.121:9010/api/getdepartment')
+       .then(res => res.json())
+       .then(departmentData =>{
+         res.render("patient/find-doctor",{userData:req.userData,departmentData})
+   
+   });
+   
+})
+
+
+
+
+//doctor result by department 
+router.get("/doctors", auth, async(req,res)=>{
+    const departmentID =  req.query.specialities;
+     fetch(`http://192.168.0.121:9010/api/getdocnurserlist/${departmentID}`)
+    .then(res => res.json())
+    .then(dataDoclist =>{
+        fetch('http://192.168.0.121:9010/api/getdepartment')
+        .then(res => res.json())
+        .then(departmentData =>{
+            fetch(`http://192.168.0.121:9010/api/getfavouriledoclist/${req.userData[0].PatientID}`)
+            .then(res => res.json())
+            .then(favdoclist =>{
+               ///===================
+            console.log("favdoclist:",favdoclist)
+            res.render("patient/doctorByDepartment",{dataDoclist,departmentData,userData:req.userData,favdoclist})
+            });
+           ///===================
+        });
+    
+    });
+
+    
+
+});
+
+// single doctor profileview when user is logged
+router.get('/singledoctorprofileview/:id',auth,(req,res)=>{
+    const id =  req.params.id;
+    fetch(`http://192.168.0.121:9010/api/singledoctor/${id}`)
+    .then(res => res.json())
+    .then(singleDocData =>{
+        console.log(singleDocData)
+        res.render("patient/singleDoctorProfileView",{singleDocData,userData:req.userData})
+    });
+});
+
+
+// single doctor profileview when user is logged
+router.get('/favouritedoctorlist/:id',auth,(req,res)=>{
+    const PatientID =  req.params.PatientID;
+    res.render("patient/favourites",{userData:req.userData})
+
+});
+
+
+// make favourite
+router.get('/makefavourite/:patientID/:DoctorID',async (req,res)=>{
+    const PatientID =  req.params.patientID;
+    const DoctorID =  req.params.DoctorID;
+        const response =  await (fetch(`http://192.168.0.121:9010/api/makefavourite/${PatientID}/${DoctorID}`, 
+        { 
+            method: 'POST', 
+            headers: { 'Content-Type': 'application/json' }
+        }));
+
+        if(response.status === 200){
+            req.session.message={
+                type:'alert-success',
+                intro:'Created!',
+                message:'You have added to your favourite list'
+            }
+            res.redirect('back');
+        }
+        const data = await  response.json()
+        console.log(data)
+});
+// make unfavourite
+router.get('/makeunfavourite/:patientID/:DoctorID',async (req,res)=>{
+    const PatientID =  req.params.patientID;
+    const DoctorID =  req.params.DoctorID;
+        const response =  await (fetch(`http://192.168.0.121:9010/api/removefavdoc/${PatientID}/${DoctorID}`, 
+        { 
+            method: 'DELETE', 
+            headers: { 'Content-Type': 'application/json' }
+        }));
+
+        if(response.status === 200){
+            req.session.message={
+                type:'alert-success',
+                intro:'Created!',
+                message:'You have removed from your favourite list'
+            }
+            res.redirect('back');
+        }
+        const data = await  response.json()
+        console.log(data)
+});
+
+
+// status update appoinment
+
+router.get('/appointmentstatusupdate/:id/:status',async (req,res)=>{
+    const appID =  req.params.id;
+    const status =  req.params.status;
+        const response =  await (fetch(`http://192.168.0.121:9010/api/appointmentstatusupdate/${appID}/${status}`, 
+        { 
+            method: 'PUT', 
+            headers: { 'Content-Type': 'application/json' }
+        }));
+
+        if(response.status === 200){
+            req.session.message={
+                type:'alert-success',
+                intro:'Created!',
+                message:'Status has been Changed'
+            }
+            res.redirect('back');
+        }
+        const data = await  response.json()
+        console.log(data)
+});
+
+
+// live message
+router.get("/user-send-message",(req,res)=>{
+
+    
+    res.render('message/login')
+});
+router.get("/get-message",(req,res)=>{
+    res.render('message/admin')
+});
+
+
+
+// chat patient
+router.get("/chat-patient",auth,(req,res)=>{
+    fetch(`http://192.168.0.121:9010/api/messagelistbypatientid/${req.userData[0].PatientID}`)
+    .then(res => res.json())
+    .then(doctorlist =>{
+        //console.log(doctorlist)
+        res.render("patient/chat",{userData:req.userData,doctorlist})
+    });
+});
+
+// single doctor and patient chat list
+router.get("/chat-patient/:DocNurID/:PatientID",auth,(req,res)=>{
+
+    fetch(`http://192.168.0.121:9010/api/singledoctorchat/${req.params.DocNurID}/${req.params.PatientID}`)
+    .then(res => res.json())
+    .then(Chatlist =>{
+        for(var i = 0;i<Chatlist.messageList.length;i++){
+            if(Chatlist.messageList[i].Sender == req.params.PatientID){
+                Chatlist.messageList[i].status = 'sent'
+            }
+            else{
+                Chatlist.messageList[i].status = 'received'
+            }
+           
+            console.log(Chatlist.messageList)
+        }
+        
+        fetch(`http://192.168.0.121:9010/api/messagelistbypatientid/${req.userData[0].PatientID}`)
+            .then(res => res.json())
+            .then(doctorlist =>{
+                //console.log(doctorlist)
+                res.render("patient/singlechat",{userData:req.userData,Chatlist,doctorlist})
+            });
+      
+       
+    });
+});
+
+// single doctor and patient chat list
+router.get("/chat-doctor/:DocNurID/:PatientID",auth,(req,res)=>{
+
+    fetch(`http://192.168.0.121:9010/api/singledoctorchat/${req.params.DocNurID}/${req.params.PatientID}`)
+    .then(res => res.json())
+    .then(Chatlist =>{
+        for(var i = 0;i<Chatlist.messageList.length;i++){
+            if(Chatlist.messageList[i].Sender == req.params.DocNurID){
+                Chatlist.messageList[i].status = 'sent'
+            }
+            else{
+                Chatlist.messageList[i].status = 'received'
+            }
+           
+            console.log(Chatlist.messageList)
+        }
+        
+        fetch(`http://192.168.0.121:9010/api/messagelistbydocnurid/${req.userData[0].PatientID}`)
+            .then(res => res.json())
+            .then(doctorlist =>{
+                //console.log(doctorlist)
+                res.render("doctor/singlechat",{userData:req.userData,Chatlist,doctorlist})
+            });
+      
+       
+    });
+});
+
+
+// chat-doctor
+router.get("/chat-doctor",auth,(req,res)=>{
+    fetch(`http://192.168.0.121:9010/api/messagelistbydocnurid/${req.userData[0].PatientID}`)
+    .then(res => res.json())
+    .then(doctorlist =>{
+        //console.log(doctorlist)
+        res.render("doctor/chat",{userData:req.userData,doctorlist})
+    });
+    
+})
+
 
 
 module.exports =  router;

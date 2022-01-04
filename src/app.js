@@ -12,8 +12,12 @@ const flash = require('connect-flash');
 const fs  = require("fs");
 dotenv.config({path:'./config.env'});
 const controlRoute = require("./routes/control");
+const helpers = require("../src/middleware/register_helpers")
 
 const app = express();
+var http =  require("http").createServer(app)
+var io = require("socket.io")(http)
+
 const PORT = process.env.MYSQL_PORT;
 
 // const Docregistration = require("./models/register");
@@ -70,8 +74,16 @@ hbs.registerPartials(partialPath);
 //     res.render("create-item");
 // });
 
-app.listen(PORT, ()=>{
+http.listen(PORT, ()=>{
+
     console.log(`Server is listening from:${PORT}`);
+    io.on("connection",function(socket){
+        console.log("User:" + socket.id)
+        socket.on("messageSent",function(message){
+            socket.broadcast.emit("messageSent",message)
+          console.log(message)
+        })
+    })
 });
 
 

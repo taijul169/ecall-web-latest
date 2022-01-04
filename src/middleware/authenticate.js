@@ -1,27 +1,61 @@
 
-const { query } = require('express');
+const { query, response } = require('express');
 const dotenv =  require('dotenv');
-dotenv.config({path:'../config.env'});
+const fetch  = require("node-fetch");
+
+const root_url = 'http://192.168.0.121:9010'
 
 const auth = async (req, res, next) =>{
     console.log('i am inside authenticate')
     try {
-       
+        // console.log("auth is working");
         const token = req.cookies.jwtoken;
-        const sql = `SELECT * FROM userinfo WHERE jwtoken = '${token}'`;
-        con.query(sql,(err,result)=>{
-            console.log("this is mysql error part:",err)
-            if(result.length>0){  
-              req.userData =  result;
+        // var response =  await (fetch(`http://192.168.0.121:9010/api/userauth/${token}`, 
+        // { 
+        //     method: 'GET',  
+        // }));
+        // if(response.status == 401){
+        //     res.redirect('/login')
+        // }
+        // console.log("response:",response.headers)
+
+
+    fetch(`http://192.168.0.121:9010/api/userauth/${token}`)
+    .then(res => res.json())
+    .then(singleDocData =>{
+         console.log(singleDocData)
+        if(singleDocData.userData.length<1){
+            req.session.message={
+                type:'alert-danger',
+                intro:'Created!',
+                message:'Login Please!!'
             }
-            else{
-                res.redirect('/admin/login')
+            res.redirect("/login")  
+        }
+        else{
+            for(var i=0;i< singleDocData.userData.length;i++){
+                singleDocData.userData[i].Photo = `${root_url}${singleDocData.userData[i].Photo}`
             }
-           next()
-          })   
+            req.userData = singleDocData.userData;
+           
+            return next()
+        }
+       
+       
+        // res.render("doctor-profile",{singleDocData})
+    });
+    
+    
+ 
     } catch (error) {
-        res.status(401).render("/admin/login")
+        console.log(error)
+        res.status(401).render("login")
     }
 }
+
+
+
+
+
 
 module.exports =  auth;

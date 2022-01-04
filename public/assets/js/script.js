@@ -6,7 +6,10 @@ Version      : 1.3
 
 (function($) {
     "use strict";
-	
+	// alert auto hide-------------------------------------
+	$(".alert").delay(4000).slideUp(200, function() {
+			$(this).alert('close');
+	  });
 	// Stick Sidebar
 	
 	if ($(window).width() > 767) {

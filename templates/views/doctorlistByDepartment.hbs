@@ -1,0 +1,340 @@
+{{homeHeader}}
+
+		<div class="breadcrumb-bar">
+			<div class="container-fluid">
+				<div class="row align-items-center">
+					<div class="col-md-8 col-12">
+						<nav aria-label="breadcrumb" class="page-breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="index.html">Home</a></li>
+								<li class="breadcrumb-item active" aria-current="page">Search</li>
+							</ol>
+						</nav>
+						<h2 class="breadcrumb-title">{{dataDoclist.length}} Doctors found for this Department</h2>
+					</div>
+					<div class="col-md-4 col-12 d-md-block d-none">
+						<div class="sort-by">
+							<span class="sort-title">Sort by</span>
+							<span class="sortby-fliter">
+								<select class="form-select">
+									<option>Select</option>
+									<option class="sorting">Rating</option>
+									<option class="sorting">Popular</option>
+									<option class="sorting">Latest</option>
+									<option class="sorting">Free</option>
+								</select>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="content">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-md-12 col-lg-4 col-xl-3 theiaStickySidebar">
+
+						<div class="card search-filter">
+							<div class="card-header">
+								<h4 class="card-title mb-0">Search Filter</h4>
+							</div>
+							<div class="card-body">
+								<div class="filter-widget">
+									<div class="cal-icon">
+										<input type="text" class="form-control datetimepicker"
+											placeholder="Select Date">
+									</div>
+								</div>
+								<div class="filter-widget">
+									<h4>Gender</h4>
+									<div>
+										<label class="custom_check">
+											<input type="checkbox" name="gender_type" checked>
+											<span class="checkmark"></span> Male Doctor
+										</label>
+									</div>
+									<div>
+										<label class="custom_check">
+											<input type="checkbox" name="gender_type">
+											<span class="checkmark"></span> Female Doctor
+										</label>
+									</div>
+								</div>
+								<div class="filter-widget">
+									<h4>Select Specialist</h4>
+									<div>
+										<label class="custom_check">
+											<input type="checkbox" name="select_specialist" checked>
+											<span class="checkmark"></span> Urology
+										</label>
+									</div>
+									<div>
+										<label class="custom_check">
+											<input type="checkbox" name="select_specialist" checked>
+											<span class="checkmark"></span> Neurology
+										</label>
+									</div>
+									<div>
+										<label class="custom_check">
+											<input type="checkbox" name="select_specialist">
+											<span class="checkmark"></span> Dentist
+										</label>
+									</div>
+									<div>
+										<label class="custom_check">
+											<input type="checkbox" name="select_specialist">
+											<span class="checkmark"></span> Orthopedic
+										</label>
+									</div>
+									<div>
+										<label class="custom_check">
+											<input type="checkbox" name="select_specialist">
+											<span class="checkmark"></span> Cardiologist
+										</label>
+									</div>
+									<div>
+										<label class="custom_check">
+											<input type="checkbox" name="select_specialist">
+											<span class="checkmark"></span> Cardiologist
+										</label>
+									</div>
+								</div>
+								<div class="btn-search">
+									<button type="button" class="btn w-100">Search</button>
+								</div>
+							</div>
+						</div>
+
+					</div>
+					<div class="col-md-12 col-lg-8 col-xl-9">
+                        {{#each dataDoclist}}
+						<div class="card">
+							<div class="card-body">
+								<div class="doctor-widget">
+									<div class="doc-info-left">
+										<div class="doctor-img">
+											<a href="doctor-profile.html">
+												<img src="{{this.Photo}}" class="img-fluid"
+													alt="User Image">
+											</a>
+										</div>
+										<div class="doc-info-cont">
+											<h4 class="doc-name"><a href="doctor-profile.html">Dr. {{this.FirstName}} {{this.LastName}}</a></h4>
+											<p class="doc-speciality">MDS - Periodontology and Oral Implantology, BDS
+											</p>
+											{{departmentNameDisplay ../ departmentData this.Department}}
+											<div class="rating">
+												{{ reviewShow this.averageRating}}
+												<span class="d-inline-block average-rating">({{this.NumberOfRating}})</span>
+											</div>
+											<div class="clinic-details">
+												<p class="doc-location"><i class="fas fa-map-marker-alt"></i> {{this.PrimaryAddress}}</p>
+												<ul class="clinic-gallery">
+													<li>
+														<a href="/assets/img/features/feature-01.jpg"
+															data-fancybox="gallery">
+															<img src="/assets/img/features/feature-01.jpg" alt="Feature">
+														</a>
+													</li>
+													<li>
+														<a href="/assets/img/features/feature-02.jpg"
+															data-fancybox="gallery">
+															<img src="/assets/img/features/feature-02.jpg" alt="Feature">
+														</a>
+													</li>
+													<li>
+														<a href="/assets/img/features/feature-03.jpg"
+															data-fancybox="gallery">
+															<img src="/assets/img/features/feature-03.jpg" alt="Feature">
+														</a>
+													</li>
+													<li>
+														<a href="/assets/img/features/feature-04.jpg"
+															data-fancybox="gallery">
+															<img src="/assets/img/features/feature-04.jpg" alt="Feature">
+														</a>
+													</li>
+												</ul>
+											</div>
+											<div class="clinic-services d-none">
+												<span>Dental Fillings</span>
+												<span> Whitneing</span>
+											</div>
+										</div>
+									</div>
+									<div class="doc-info-right">
+										<div class="clini-infos">
+											<ul>
+												<li><i class="far fa-thumbs-up"></i> 98%</li>
+												<li><i class="far fa-comment"></i> {{this.NumberOfRating}} Feedback</li>
+												<li><i class="fas fa-map-marker-alt"></i> {{this.PrimaryAddress}}</li>
+												<li><i class="far fa-money-bill-alt"></i> Home - <strong>৳ {{this.Home}}</strong> <i
+														class="fas fa-info-circle" data-bs-toggle="tooltip"
+														title="Lorem Ipsum"></i> </li>
+												<li><i class="far fa-money-bill-alt"></i> Online - <strong>৳ {{this.Online}}</strong>  <i
+														class="fas fa-info-circle" data-bs-toggle="tooltip"
+														title="Lorem Ipsum"></i> </li>
+											</ul>
+										</div>
+										<div class="clinic-booking">
+											<a class="view-pro-btn" href="/singledoctorprofile/{{this.DocNurID}}">View Profile</a>
+											<a class="apt-btn" href="/checkout/{{this.DocNurID}}">Book Appointment</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+                        {{/each}}
+						<div class="load-more text-center">
+							<a class="btn btn-primary btn-sm" href="javascript:void(0);">Load More</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<footer class="footer">
+
+			<div class="footer-top">
+				<div class="container-fluid">
+					<div class="row">
+						<div class="col-lg-3 col-md-6">
+
+							<div class="footer-widget footer-about">
+								<div class="footer-logo">
+									<img src="/assets/img/footer-logo.png" alt="logo">
+								</div>
+								<div class="footer-about-content">
+									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+										incididunt ut labore et dolore magna aliqua. </p>
+									<div class="social-icon">
+										<ul>
+											<li>
+												<a href="#" target="_blank"><i class="fab fa-facebook-f"></i> </a>
+											</li>
+											<li>
+												<a href="#" target="_blank"><i class="fab fa-twitter"></i> </a>
+											</li>
+											<li>
+												<a href="#" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+											</li>
+											<li>
+												<a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+											</li>
+											<li>
+												<a href="#" target="_blank"><i class="fab fa-dribbble"></i> </a>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+
+						</div>
+						<div class="col-lg-3 col-md-6">
+
+							<div class="footer-widget footer-menu">
+								<h2 class="footer-title">For Patients</h2>
+								<ul>
+									<li><a href="search.html">Search for Doctors</a></li>
+									<li><a href="login.html">Login</a></li>
+									<li><a href="register.html">Register</a></li>
+									<li><a href="booking.html">Booking</a></li>
+									<li><a href="patient-dashboard.html">Patient Dashboard</a></li>
+								</ul>
+							</div>
+
+						</div>
+						<div class="col-lg-3 col-md-6">
+
+							<div class="footer-widget footer-menu">
+								<h2 class="footer-title">For Doctors</h2>
+								<ul>
+									<li><a href="appointments.html">Appointments</a></li>
+									<li><a href="chat.html">Chat</a></li>
+									<li><a href="login.html">Login</a></li>
+									<li><a href="doctor-register.html">Register</a></li>
+									<li><a href="doctor-dashboard.html">Doctor Dashboard</a></li>
+								</ul>
+							</div>
+
+						</div>
+						<div class="col-lg-3 col-md-6">
+
+							<div class="footer-widget footer-contact">
+								<h2 class="footer-title">Contact Us</h2>
+								<div class="footer-contact-info">
+									<div class="footer-address">
+										<span><i class="fas fa-map-marker-alt"></i></span>
+										<p> 3556 Beech Street, San Francisco,<br> California, CA 94108 </p>
+									</div>
+									<p>
+										<i class="fas fa-phone-alt"></i>
+										+1 315 369 5943
+									</p>
+									<p class="mb-0">
+										<i class="fas fa-envelope"></i>
+										<a href="/cdn-cgi/l/email-protection" class="__cf_email__"
+											data-cfemail="32565d515147405772574a535f425e571c515d5f">[email&#160;protected]</a>
+									</p>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<div class="footer-bottom">
+				<div class="container-fluid">
+
+					<div class="copyright">
+						<div class="row">
+							<div class="col-md-6 col-lg-6">
+								<div class="copyright-text">
+									<p class="mb-0">&copy; 2020 Doccure. All rights reserved.</p>
+								</div>
+							</div>
+							<div class="col-md-6 col-lg-6">
+
+								<div class="copyright-menu">
+									<ul class="policy-menu">
+										<li><a href="term-condition.html">Terms and Conditions</a></li>
+										<li><a href="privacy-policy.html">Policy</a></li>
+									</ul>
+								</div>
+
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+		</footer>
+
+	</div>
+
+
+	<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+	<script src="/assets/js/jquery-3.6.0.min.js"></script>
+
+	<script src="/assets/js/bootstrap.bundle.min.js"></script>
+
+	<script src="/assets/plugins/theia-sticky-sidebar/ResizeSensor.js"></script>
+	<script src="/assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js"></script>
+
+	<script src="/assets/plugins/select2/js/select2.min.js"></script>
+
+	<script src="/assets/js/moment.min.js"></script>
+	<script src="/assets/js/bootstrap-datetimepicker.min.js"></script>
+
+	<script src="/assets/plugins/fancybox/jquery.fancybox.min.js"></script>
+
+	<script src="/assets/js/script.js"></script>
+</body>
+
+</html>

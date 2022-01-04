@@ -3702,13 +3702,14 @@ html.menu-opened body {
     border-radius: 4px;
     -webkit-transform: translateZ(0);
     -moz-transform: translateZ(0);
-	transform: translateZ(0);
-	-moz-transition: all 2000ms cubic-bezier(.19,1,.22,1) 0ms;
-	-ms-transition: all 2000ms cubic-bezier(.19,1,.22,1) 0ms;
-	-o-transition: all 2000ms cubic-bezier(.19,1,.22,1) 0ms;
-	-webkit-transition: all 2000ms cubic-bezier(.19,1,.22,1) 0ms;
-	transition: all 2000ms cubic-bezier(.19,1,.22,1) 0ms;
+    transform: translateZ(0);
+    -moz-transition: all 2000ms cubic-bezier(.19,1,.22,1) 0ms;
+    -ms-transition: all 2000ms cubic-bezier(.19,1,.22,1) 0ms;
+    -o-transition: all 2000ms cubic-bezier(.19,1,.22,1) 0ms;
+    -webkit-transition: all 2000ms cubic-bezier(.19,1,.22,1) 0ms;
+    transition: all 2000ms cubic-bezier(.19,1,.22,1) 0ms;
     width: 100%;
+    height: 175px;
 }
 .doc-img:hover img {
     -webkit-transform: scale(1.15);
@@ -6391,7 +6392,8 @@ body .multi-optn {
     width: 150px;
 }
 .doctor-img img {
-	border-radius: 5px;
+    border-radius: 5px;
+    width: 135px;
 }
 .doc-department {
     color: #20c0f3;
@@ -6399,7 +6401,7 @@ body .multi-optn {
     margin-bottom: 8px;
 }
 .doc-department img {
-    width: 19px;
+    width: 30px;
     display: inline-block;
     margin-right: 10px;
 }
@@ -7113,13 +7115,13 @@ body .multi-optn {
     padding-left: 35px;
     margin-bottom: 12px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 15px;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
     font-weight: 600;
-    color: #272b41;
+    color: #4e515c;
     text-transform: capitalize;
 }
 .payment-radio input {
@@ -12352,6 +12354,30 @@ ul.benifits-col li i{
 	.read-more {
 		font-size: 14px;
 	}
+}
+
+
+
+.fav-unfav-box-custom.w-100 {
+    background: #000;
+    position: relative;
+}
+.fav-unfav-box-custom.w-100 a {
+    color: #d34848;
+    position: absolute;
+    right: 0;
+    font-size: 32px;
+}
+
+.alert {
+    position: fixed;
+    padding: 1rem 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+    right: 0;
+    top: 2%;
+    z-index: 11;
 }
 
 @media only screen and (max-width:479px) {

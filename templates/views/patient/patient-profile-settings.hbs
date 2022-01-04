@@ -1,0 +1,328 @@
+{{patientHeader  userData.[0].PatientID userData.[0].Photo userData.[0].FirstName }}
+         <style>
+			 .preloader {
+					position: absolute;
+					background: #ffffffe0;
+					width: 100%;
+					height: 100%;
+					top: 0;
+					left: 0;
+					bottom: 0;
+					right: 0;
+				}
+			.loader{
+				width: 80px;
+				height: 80px;
+				margin: 50px auto 0;
+				perspective: 800px;
+				position: relative;
+			}
+			.loader div{
+				width: 100%;
+				height: 100%;
+				border-radius: 50%;
+				position: absolute;
+			}
+			.loader div:nth-child(1){
+				border-bottom: 4px solid red;
+				left: 0;
+				top: 0;
+				animation: rotate-one 1s linear infinite;
+			}
+			.loader div:nth-child(2){
+				border-right: 4px solid green;
+				right: 0;
+				top: 0;
+				animation: rotate-two 1s linear infinite;
+			}
+			.loader div:nth-child(3){
+				border-top: 4px solid blue;
+				right: 0;
+				bottom: 0;
+				animation: rotate-three 1s linear infinite;
+			}
+			@keyframes rotate-one{
+				0%{ transform: rotateX(35deg) rotateY(-45deg) rotateZ(0deg); }
+				100%{ transform: rotateX(35deg) rotateY(-45deg) rotateZ(360deg); }
+			}
+			@keyframes rotate-two{
+				0%{ transform: rotateX(50deg) rotateY(10deg) rotateZ(0deg); }
+				100%{ transform: rotateX(50deg) rotateY(10deg) rotateZ(360deg); }
+			}
+			@keyframes rotate-three{
+				0%{ transform: rotateX(35deg) rotateY(55deg) rotateZ(0deg); }
+				100%{ transform: rotateX(35deg) rotateY(55deg) rotateZ(360deg); }
+			}
+		 </style>
+        <div class="breadcrumb-bar">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col-md-12 col-12">
+                        <nav aria-label="breadcrumb" class="page-breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Profile Settings</li>
+                            </ol>
+                        </nav>
+                        <h2 class="breadcrumb-title">Profile Settings</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+
+                    <div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
+                        <div class="profile-sidebar">
+                            <div class="widget-profile pro-widget-content">
+                                <div class="profile-info-widget">
+                                    <a href="#" class="booking-doc-img">
+                                        <img src="{{userData.[0].Photo}}" alt="User Image">
+                                    </a>
+                                    <div class="profile-det-info">
+                                        <h3>{{userData.[0].FirstName}}</h3>
+                                        <div class="patient-details">
+                                            <h5><i class="fas fa-birthday-cake"></i> 24 Jul 1983, 38 years</h5>
+                                            <h5 class="mb-0"><i class="fas fa-map-marker-alt"></i> {{userData.[0].PrimaryAddress}}</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dashboard-widget">
+                               {{patientSideNav userData.[0].PatientID }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-7 col-lg-8 col-xl-9 ">
+                        <div class="card position-relative">
+                            <div class="card-body">
+
+                               
+						 	<div class="alert {{message.type}}" id="successmessage" role="alert">
+                                {{message.message}}
+						    </div>
+							{{!-- <div class="alert {{message.type}}" role="alert">
+								
+							</div> --}}
+						
+					
+                         <form id="myForm">
+							<div class="card">
+								<div class="card-body">
+									<h4 class="card-title">Basic Information</h4>
+									<div class="row form-row">
+										<div class="col-md-12">
+											<div class="form-group">
+												<div class="change-avatar">
+													<div class="profile-img">
+														<img src="{{userData.[0].Photo}}" id="output" alt="User Image">
+													</div>
+													{{!-- <div class="upload-img d-none">
+														<div class="change-photo-btn">
+															<span><i class="fa fa-upload"></i> Upload Photo</span>
+															<input name="Photo" type="file" class="upload" accept="image/*">
+														</div>
+														<small class="form-text text-muted">Allowed JPG, GIF or PNG. Max
+															size of 2MB</small>
+													</div> --}}
+													<input type="file" id="userPhoto" onchange="loadFile(event)" name="Photo" class="form-control" accept="image/*"/>
+                                                   {{!-- image preview --}}
+													<script>
+														var loadFile = function(event) {
+															var reader = new FileReader();
+															reader.onload = function(){
+															var output = document.getElementById('output');
+															output.src = reader.result;
+															};
+															reader.readAsDataURL(event.target.files[0]);
+														};
+													</script>
+												</div>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Username <span class="text-danger">*</span></label>
+												<input name="userName" id="userName" type="text" value="{{userData.[0].userName}}" class="form-control" >
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Email <span class="text-danger">*</span></label>
+												<input type="email" class="form-control" value="{{userData.[0].email}}" >
+											</div>
+										</div>
+										
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>First Name <span class="text-danger">*</span></label>
+												<input type="text" id="FirstName" value="{{userData.[0].FirstName}}" name="FirstName" class="form-control">
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Last Name <span class="text-danger">*</span></label>
+												<input type="text" id="LastName" value="{{userData.[0].LastName}}" name="LastName" class="form-control">
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Phone Number</label>
+												<input name="PhoneNumber" id="PhoneNumber" value="{{userData.[0].PhoneNumber}}" type="text" class="form-control">
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Gender</label>
+												<select name="Gender" id="Gender" class="form-select form-control">
+													
+													<option value="{{userData.[0].Gender}}">{{userData.[0].Gender}}</option>
+													<option>Male</option>
+													<option>Female</option>
+												</select>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div  class="form-group mb-0">
+												<label>Date of Birth</label>
+												<input value="{{userData.[0].DateOfBirth}}" id="DateOfBirth" name="DateOfBirth" type="date" class="form-control">
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Blood Group</label>
+												<select name="BloodGroup" id="BloodGroup" class="form-select form-control">
+													<option value="{{userData.[0].BloodGroup}}">{{userData.[0].BloodGroup}}</option>
+													<option value="o+">o+</option>
+													<option value="o-">o-</option>
+													<option value="A+">A+</option>
+													<option value="A-">A-</option>
+													<option value="AB+">AB+</option>
+													<option value="AB-">AB-</option>
+												</select>
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>NID</label>
+												<input name="NID" id="NID" value="{{userData.[0].NID}}" type="text" class="form-control">
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Address</label>
+												<textarea name="Address" id="Address" class="form-control">{{userData.[0].PrimaryAddress}}</textarea>
+												
+											</div>
+										</div>
+										<div class="col-md-6">
+											<div class="form-group">
+												<label>Password</label>
+												<input name="Password" id="Password" value="{{userData.[0].Password}}" type="password" class="form-control">
+											</div>
+										</div>
+									
+										<div class="submit-section submit-btn-bottom w-100 d-flex align-items-right">
+									       <input type="submit" value="Save Changes" class=" btn-primary submit-btn mt-3">
+								        </div>
+
+									</div>
+								</div>
+								
+							</div>
+                       	</form>	
+                            </div>
+						{{!-- pre-loader --}}
+						<div class="preloader"> 
+								<div class="loader">
+									<div></div>
+									<div></div>
+									<div></div>
+								</div>
+							</div>
+                        </div>
+					
+                    </div>
+                </div>
+            </div>
+        </div>
+	
+
+
+	<script>
+		const myForm  =  document.getElementById("myForm")
+		const userPhoto  =  document.getElementById("userPhoto")
+		const userName  =  document.getElementById("userName")
+		const FirstName  =  document.getElementById("FirstName")
+		const LastName  =  document.getElementById("LastName")
+		const PhoneNumber  =  document.getElementById("PhoneNumber")
+		const Gender  =  document.getElementById("Gender")
+		const NID  =  document.getElementById("NID")
+		const DateOfBirth  =  document.getElementById("DateOfBirth")
+		const BloodGroup  =  document.getElementById("BloodGroup")
+		const Address  =  document.getElementById("Address")
+		const Password  =  document.getElementById("Password");
+		const successmessage  =  document.getElementById("successmessage")
+
+		myForm.addEventListener("submit", e =>{
+             window.alert("working")
+			e.preventDefault();
+			const formData =  new FormData();
+			formData.append("Photo",userPhoto.files[0]);
+			formData.append("userName", userName.value);
+			formData.append("FirstName", FirstName.value);
+			formData.append("LastName", LastName.value);
+			formData.append("PhoneNumber", PhoneNumber.value);
+			formData.append("Gender", Gender.value);
+			formData.append("NID", NID.value);
+			formData.append("DateOfBirth", DateOfBirth.value);
+			formData.append("BloodGroup", BloodGroup.value);
+			formData.append("Address", Address.value);
+			formData.append("Password", Password.value);
+			
+			// Display the values
+				for (var value of formData.values()) {
+				   console.log(value);
+				}
+				let href = window.location.href; 
+				// let href = "https://www.facebook.com/david"; // Current window url; 
+				// Creating URL object
+				let url = new URL(href);
+				let str = url.pathname.substring(1)
+				var n = str.lastIndexOf('/');
+                var result = str.substring(n + 1);
+				console.log(result); 
+			fetch(`http://192.168.0.121:9010/api/patientupdateinfo/${result}`,{
+				method:'PUT',
+				body:formData
+			}).catch(console.error)
+             successmessage.innerText = 'Updated Successfully';
+			 successmessage.classList.add("alert-success")
+			 window.location.origin;
+			
+		});
+		 
+	
+	</script>
+
+  {{commonFooter}}
+
+<script>
+	 $(window).on('load', function () {
+		$('.preloader').hide();
+	}) 
+	
+	$( document ).ready(function() {
+		// alert auto hide-------------------------------------
+		$(".alert").delay(4000).slideUp(200, function() {
+			$(this).alert('close');
+		});
+	});
+
+</script>
+
+
