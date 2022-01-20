@@ -74,15 +74,27 @@ hbs.registerPartials(partialPath);
 //     res.render("create-item");
 // });
 
-http.listen(PORT, ()=>{
+http.listen(PORT,'0.0.0.0', ()=>{
 
     console.log(`Server is listening from:${PORT}`);
     io.on("connection",function(socket){
         console.log("User:" + socket.id)
+
+
+
         socket.on("messageSent",function(message){
             socket.broadcast.emit("messageSent",message)
-          console.log(message)
+            console.log(message)
         })
+        socket.on("appointmentSent",function(message){
+            socket.broadcast.emit("appointmentSent",message)
+            console.log(message)
+        })
+        socket.on("appointmentAccept",function(message){
+            socket.broadcast.emit("appointmentAccept",message)
+            console.log(message)
+        })
+        
     })
 });
 

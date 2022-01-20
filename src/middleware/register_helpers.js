@@ -23,6 +23,13 @@ hbs.registerHelper("statusDisplay",(status)=>{
 
 })
 
+hbs.registerHelper("notificationWrapper",()=>{
+    return new handlebars.SafeString(`
+    <div class="toast-container custom-toaster-container" id="messagearea">
+   </div>`)
+  
+})
+
 // makeFavUnFav
 hbs.registerHelper("makeFavUnFav",(allFavList,docId,PatientID)=>{
     console.log("docId",docId)
@@ -254,7 +261,7 @@ hbs.registerHelper("homeHeader", ()=>{
                             </span>
                         </a>
                         <a href="index.html" class="navbar-brand logo">
-                            <img src="assets/img/logo.png" class="" height="80px" alt="Logo">
+                            <img src="/assets/img/logo.png" class="" height="80px" alt="Logo">
                         </a>
                     </div>
                     <div class="main-menu-wrapper">
@@ -268,7 +275,7 @@ hbs.registerHelper("homeHeader", ()=>{
                         </div>
                         <ul class="main-nav">
                             <li class="has-submenu active">
-                                <a href="">Home</a>
+                                <a href="/">Home</a>
                             </li>
                             <li class="has-submenu">
                                 <a href="">How Ecall Works </a>
@@ -394,6 +401,7 @@ hbs.registerHelper("patientHeader", (id,photo,name)=>{
                     </ul>
                 </nav>
             </header>
+           <input type="hidden" id="SenderIDNoti" value="${id}">
     `)
 
 });
@@ -429,9 +437,9 @@ hbs.registerHelper("patientSideNav", (id)=>{
             </a>
         </li>
         <li>
-            <a href="/patient-accounts/${id}">
+            <a href="/appointmentlistinpatientend/${id}">
                 <i class="fas fa-file-invoice-dollar"></i>
-                <span>Accounts</span>
+                <span>Appointments</span>
             </a>
         </li>
         <li>
@@ -487,7 +495,7 @@ hbs.registerHelper("doctorSideNav", (id)=>{
             </a>
         </li>
         <li>
-            <a href="/appointments/${id}">
+            <a href="/appointmentlistindoctorend/${id}">
                 <i class="fas fa-calendar-check"></i>
                 <span>Appointments</span>
             </a>
@@ -499,17 +507,12 @@ hbs.registerHelper("doctorSideNav", (id)=>{
             </a>
         </li>
         <li>
-            <a href="schedule-timings">
+            <a href="/scheduling/${id}">
                 <i class="fas fa-hourglass-start"></i>
                 <span>Schedule Timings</span>
             </a>
         </li>
-        <li>
-            <a href="/available-timings/${id}">
-                <i class="fas fa-clock"></i>
-                <span>Available Timings</span>
-            </a>
-        </li>
+     
         <li>
             <a href="/invoices/${id}">
                 <i class="fas fa-file-invoice"></i>
@@ -529,7 +532,7 @@ hbs.registerHelper("doctorSideNav", (id)=>{
             </a>
         </li>
         <li>
-            <a href="/chat-doctor/${id}">
+            <a href="/chat-doctor">
                 <i class="fas fa-comments"></i>
                 <span>Message</span>
                 <small class="unread-msg">23</small>
@@ -539,12 +542,6 @@ hbs.registerHelper("doctorSideNav", (id)=>{
             <a href="/profile-settings/${id}">
                 <i class="fas fa-user-cog"></i>
                 <span>Profile Settings</span>
-            </a>
-        </li>
-        <li>
-            <a href="social-media">
-                <i class="fas fa-share-alt"></i>
-                <span>Social Media</span>
             </a>
         </li>
         <li>

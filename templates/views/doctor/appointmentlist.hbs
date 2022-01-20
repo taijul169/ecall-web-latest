@@ -1,6 +1,9 @@
-{{patientHeader userData.[0].PatientID userData.[0].Photo userData.[0].FirstName }}
+{{patientHeader userData.[0].DocNurID userData.[0].Photo userData.[0].FirstName}}
 
+   {{!-- toaster --}}
+     {{notificationWrapper}}
 
+     
         <div class="breadcrumb-bar">
             <div class="container-fluid">
                 <div class="row align-items-center">
@@ -8,10 +11,10 @@
                         <nav aria-label="breadcrumb" class="page-breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Favourites</li>
+                                <li class="breadcrumb-item active" aria-current="page">Appointment</li>
                             </ol>
                         </nav>
-                        <h2 class="breadcrumb-title">Favourites</h2>
+                        <h2 class="breadcrumb-title">Appointment History</h2>
                     </div>
                 </div>
             </div>
@@ -22,79 +25,85 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
-                        <div class="profile-sidebar">
-                            <div class="widget-profile pro-widget-content">
-                                <div class="profile-info-widget">
-                                    <a href="#" class="booking-doc-img">
-                                        <img src="{{userData.[0].Photo}}" alt="User Image">
-                                    </a>
-                                    <div class="profile-det-info">
-                                        <h3>{{userData.[0].FirstName}}</h3>
-                                        <div class="patient-details">
-                                            <h5><i class="fas fa-birthday-cake"></i> 24 Jul 1983, 38 years</h5>
-                                            <h5 class="mb-0"><i class="fas fa-map-marker-alt"></i> {{userData.[0].PrimaryAddress}}</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="dashboard-widget">
-                                {{patientSideNav userData.[0].PatientID}}
-                            </div>
-                        </div>
+                      		<div class="profile-sidebar">
+							<div class="widget-profile pro-widget-content">
+								<div class="profile-info-widget">
+									<a href="#" class="booking-doc-img">
+										<img src="{{userData.[0].Photo}}" alt="User Image">
+									</a>
+									<div class="profile-det-info">
+										<h3>Dr.{{userData.[0].FirstName}} {{userData.[0].FirstName}}</h3>
+										<div class="patient-details">
+											<h5 class="mb-0">BDS, MDS - Oral & Maxillofacial Surgery</h5>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="dashboard-widget">
+							   {{doctorSideNav userData.[0].DocNurID}}
+							</div>
+						</div>
                     </div>
                     <div class="col-md-7 col-lg-8 col-xl-9">
                         <div class="row row-grid">
 
-                            {{#each favdoclist}}
+                            {{#each appointmentdata}}
                             {{!-- single-doctor-widget --}}
-                            <div class="col-md-6 col-lg-4 col-xl-3">
-                                <div class="profile-widget">
-                                    <div class="doc-img">
-                                        <a href="/singledoctorprofileview/{{this.DocNurID}}">
-                                            <img src="{{this.Photo}}"   
-                                              onerror="this.onerror=null; this.src='/assets/img/default.jpg'">
-                                            {{!-- <img class="img-fluid" alt="User Image"
-                                                src="{{this.Photo}}"> --}}
-                                        </a>
-                                        <a href="javascript:void(0)" class="fav-btn">
-                                            <i class="far fa-bookmark"></i>
-                                        </a>
+                            <div class="col-md-4 col-lg-4 col-xl-3">
+                                <a href="/singleappointmentview/{{this.appointmentID}}">
+                                  <div class="card position-relative">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{this.FirstName}} {{this.LastName}}</h5>
+                                       <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                <th scope="col">ID</th>
+                                                <th scope="col">Date</th>
+                                                <th scope="col">Time</th>
+                                                <th scope="col">Payment</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                <th scope="row">#{{this.appointmentID}}</th>
+                                                <td>{{this.BookingData}}</td>
+                                                <td>{{this.BookingTime}}</td>
+                                                <td>{{this.PaymentMethod}}</td>
+                                                </tr>
+                                             
+                                              
+                                            </tbody>
+                                         </table>
                                     </div>
-                                    <div class="pro-content">
-                                        <h3 class="title">
-                                            <a href="/singledoctorprofileview/{{this.DocNurID}}">Dr.{{this.FirstName}} {{this.LastName}}</a>
-                                            <i class="fas fa-check-circle verified"></i>
-                                        </h3>
-                                        <p class="speciality">{{this.Department}}</p>
-                                        <div class="rating">
-                                             {{ reviewShow this.averageRating}}
-                                            <span class="d-inline-block average-rating">({{this.NumberOfRating}})</span>
-                                        </div>
-                                        <ul class="available-info">
-                                            <li>
-                                                <i class="fas fa-map-marker-alt"></i> {{this.PrimaryAddress}}
-                                            </li>
-                                           
-                                            <li>
-                                                <i class="far fa-money-bill-alt"></i>TK. {{this.Online}} - Tk.{{this.Home}} <i
-                                                    class="fas fa-info-circle" data-bs-toggle="tooltip"
-                                                    title="Lorem Ipsum"></i>
-                                            </li>
-                                        </ul>
-                                        <div class="row row-sm">
-                                            <div class="col-6">
-                                                <a href="/singledoctorprofileview/{{this.DocNurID}}" class="btn view-btn">View Profile</a>
-                                            </div>
-                                            <div class="col-6">
-                                                <a href="/checkout/{{this.DocNurID}}" class="btn book-btn">Book Now</a>
-                                            </div>
-                                        </div>
+                                    <div class="card-footer d-flex justify-content-evenly  ">
+                                        <a href="/chat-doctor/{{this.DocNurID}}/{{this.PatientID}}" onclick="appAccept('{{this.PatientID}}')" class="btn-sm btn-outline-primary"><i class="fas fa-phone"></i></a>
+                                        <a href="/chat-doctor-video/{{this.DocNurID}}/{{this.PatientID}}" onclick="appAccept('{{this.PatientID}}')" class="btn-sm btn-outline-secondary"><i class="fas fa-video"></i></a>
+                                        <a href="/chat-doctor/{{this.DocNurID}}/{{this.PatientID}}" onclick="appAccept('{{this.PatientID}}')" class="btn-sm btn-outline-success"><i class="fas fa-ellipsis-v"></i></a>
+                                     
                                     </div>
+                                   
+                                    <span class="badge bg-success status">Done</span>
                                 </div>
+                                </a>
+                                  
                             </div>
 
                             {{/each}}
-                            
+                            <nav aria-label="...">
+                            <ul class="pagination">
+                                <li class="page-item disabled">
+                                <span class="page-link">Previous</span>
+                                </li>
+                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item active" aria-current="page">
+                                <span class="page-link">2</span>
+                                </li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item">
+                                <a class="page-link" href="#">Next</a>
+                                </li>
+                            </ul>
+                            </nav>
                         </div>
                     </div>
                 </div>
@@ -237,3 +246,7 @@
 </body>
 
 </html>
+
+	{{!-- socket application --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.0/socket.io.js"></script>
+    <script src="/assets/js/custom-notification.js"></script>

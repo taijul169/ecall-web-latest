@@ -1,4 +1,9 @@
-{{patientHeader userData.[0].PatientID userData.[0].Photo userData.[0].FirstName }}
+{{patientHeader userData.[0].DocNurID userData.[0].Photo userData.[0].FirstName }}
+
+
+     {{!-- toaster --}}
+     {{notificationWrapper}}
+
 
         <div class="content">
 			<div class="container-fluid">
@@ -16,7 +21,7 @@
                                         <img src="{{userData.[0].Photo}}" alt="User Image">
                                     </a>
                                     <div class="profile-det-info">
-                                        <h3>{{userData.[0].FirstName}}</h3>
+                                        <h3>Dr.{{userData.[0].FirstName}} {{userData.[0].LastName}}</h3>
                                         <div class="patient-details">
                                             <h5><i class="fas fa-birthday-cake"></i> 24 Jul 1983, 38 years</h5>
                                             <h5 class="mb-0"><i class="fas fa-map-marker-alt"></i> {{userData.[0].PrimaryAddress}}</h5>
@@ -25,7 +30,7 @@
                                 </div>
                             </div>
                             <div class="dashboard-widget">
-                               {{patientSideNav userData.[0].PatientID}}
+                               {{doctorSideNav userData.[0].DocNurID}}
                             </div>
                         </div>
                     </div>
@@ -54,8 +59,9 @@
                                         <a href="/chat-doctor/{{../userData.[0].DocNurID}}/{{this.PatientID}}" class="media d-flex">
                                             <div class="media-img-wrap flex-shrink-0">
                                                 <div class="avatar avatar-away">
-                                                    <img src="{{this.Photo}}" alt="User Image"
-                                                        class="avatar-img rounded-circle">
+                                                    <img src="{{this.Photo}}" class="avatar-img rounded-circle"   
+                                              onerror="this.onerror=null; this.src='/assets/img/default.jpg'" id="output" alt="User Image">
+                                                    
                                                 </div>
                                             </div>
                                             <div class="media-body flex-grow-1">
@@ -89,7 +95,7 @@
                                             </div>
                                         </div>
                                         <div class="media-body flex-grow-1">
-                                            <div class="user-name">Dr. {{Chatlist.personalInfo.[0].FirstName}}</div>
+                                            <div class="user-name">Mr. {{Chatlist.personalInfo.[0].FirstName}}</div>
                                             <div class="user-status">online</div>
                                         </div>
                                     </div>
@@ -125,9 +131,9 @@
                                                             </ul>
                                                             <div class="chat-msg-attachments">
                                                                 <div class="chat-attachment">
-                                                                    <img src="{{this.MessageFilePath}}" >
+                                                                     <img id="currentPhoto" download="custom-filename.jpg" src="{{this.MessageFilePath}}" onerror="this.onerror=null; this.remove();" alt="2" >
                                                                     <div class="chat-attach-caption"></div>
-                                                                    <a href="" class="chat-attach-download">
+                                                                    <a download="chat.jpg" href="{{this.MessageFilePath}}" class="chat-attach-download">
                                                                     <i class="fas fa-download"></i>
                                                                     </a>
                                                                 </div>
@@ -160,7 +166,7 @@
                                     </div>
                                  </form>  
                                 </div>
-
+                                  
                                 <script>
                                     	const myForm  =  document.getElementById("myForm");
                                         const photo  =  document.getElementById("photo");
@@ -205,14 +211,304 @@
                                 </script>
                             </div>
 
+                         
+
                         </div>
+                           {{!-- prescription wrapper --}}
+
+                            <div class="prescription-wraper mt-2">
+                                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Take Note</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Prescribe</button>
+                                    </li>
+                                   
+                                    </ul>
+                                    <div class="tab-content mb-5" id="myTabContent">
+                                        <div class="tab-pane fade show active " id="home" role="tabpanel" aria-labelledby="home-tab">
+                                            <div class="form-floating">
+                                            <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+                                            <label for="floatingTextarea2">Take Note........</label>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade " id="profile" role="tabpanel" aria-labelledby="profile-tab"> 
+                                            <form action="/makeprescription" method="post" id="myForm_pres" >
+                                                <div class="row">
+                                                    <div class="col-md-7 col-lg-8">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                 
+                                                                    <div class="info-widget">
+                                                                        <h4 class="card-title">Patient Information</h4>
+                                                                        
+                                                                    <div class="payment-widget w-25">
+                                                                        <div class="payment-list my-3 font-bold">Patient Type</div>
+                                                                        <div class="payment-list d-flex justify-content-between">
+                                                                             <input type="hidden" name="PatientID" value="{{Chatlist.personalInfo.[0].PatientID}}">
+                                                                            <label class="payment-radio credit-card-option">
+                                                                                <input type="radio" value="New" name="PatientType" checked>
+                                                                                <span class="checkmark"></span>
+                                                                                New
+                                                                            </label>
+                                                                             <label class="payment-radio paypal-option pl-2">
+                                                                                <input type="radio" value="Old" name="PatientType">
+                                                                                <span class="checkmark"></span>
+                                                                                Old
+                                                                            </label>
+                                                                        </div>
+                                                                      
+                                                                    </div>
+                                                                        <div class="row">
+                                                                            <div class="col-md-6 col-sm-12">
+                                                                                <div class="form-group card-label">
+                                                                                    <label>First Name</label>
+                                                                                    <input name="PatientName" value="{{Chatlist.personalInfo.[0].FirstName}}" id="patientFirstName" class="form-control" type="text">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-6 col-sm-12">
+                                                                                <div class="form-group card-label">
+                                                                                    <label>Last Name</label>
+                                                                                    <input name="lastName" value="{{Chatlist.personalInfo.[0].LastName}}" id="patientLastName" class="form-control" type="text">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-6 col-sm-12">
+                                                                                <div class="form-group card-label">
+                                                                                    <label>Gender</label>
+                                                                                    <input name="PatientGender" value="{{Chatlist.personalInfo.[0].Gender}}"  placeholder="optional" class="form-control" type="text">
+                                                                                </div>
+                                                                            </div>
+                                                                             <div class="col-md-6 col-sm-12">
+                                                                                <div class="form-group card-label">
+                                                                                    <label>Age</label>
+                                                                                    <input name="PatientAge" value="{{Chatlist.personalInfo.[0].Age}}"  placeholder="optional" class="form-control" type="text">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-6 col-sm-12">
+                                                                                <div class="form-group card-label">
+                                                                                    <label>Phone</label>
+                                                                                    <input name="PatientMob" value="{{Chatlist.personalInfo.[0].PhoneNumber}}" class="form-control" type="text">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        
+                                                                    </div>
+                                                                      <div class="info-widget">
+                                                                        <h4 class="card-title">Consultant Information</h4>
+                                                                          <input type="hidden" value="{{userData.[0].DocNurID}}" name="DocNurID">
+                                                                        <div class="row">
+                                                                            <div class="col-md-6 col-sm-12">
+                                                                                <div class="form-group card-label">
+                                                                                    <label>First Name</label>
+                                                                                    <input name="DoctorName" value="{{userData.[0].FirstName}}" id="patientFirstName" class="form-control" type="text">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-6 col-sm-12">
+                                                                                <div class="form-group card-label">
+                                                                                    <label>Last Name</label>
+                                                                                    <input name="lastName" value="{{userData.[0].LastName}}" id="patientLastName" class="form-control" type="text">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-6 col-sm-12">
+                                                                                <div class="form-group card-label">
+                                                                                    <label>Gender</label>
+                                                                                    <input name="DoctorGender" value="{{userData.[0].Gender}}"  placeholder="optional" class="form-control" type="text">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-6 col-sm-12">
+                                                                                <div class="form-group card-label">
+                                                                                    <label>Phone</label>
+                                                                                    <input name="DoctorMob" value="{{userData.[0].PhoneNumber}}" class="form-control" type="text">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        
+                                                                    </div>
+
+                                                            
+                                                            </div>
+                                                        </div>
+                                                </div>
+                                                    <div class="col-md-5 col-lg-4 theiaStickySidebar">
+
+                                                        <div class="card booking-card">
+                                                            <div class="card-header">
+                                                                <h4 class="card-title">Prescribe</h4>
+                                                            </div>
+                                                            <div class="card-body">
+
+                                                               <div class="form-group">
+                                                                   <label for="">Patient Problems/Symtoms Descriptions</label>
+                                                                     <div class="form-floating">
+                                                                        <textarea class="form-control" name="PatientSymtomps" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+                                                                        <label for="floatingTextarea2">Symtoms........</label>
+                                                                        </div>
+                                                               </div>
+
+                                                                <div class="booking-summary">
+                                                                    <div class="booking-item-wrap">
+                                                                         {{!-- medicine-wrap --}}
+                                                                        <div class="medicine-list-wraper py-2 ">
+                                                                            <label for="">Medicine Suggestion</label>
+                                                                            <ol id="medicinelistdiv">
+                                                                                <li>{{!-- single medicine --}}
+                                                                                    <div class="single-medicine border p-2 position-relative my-2">
+                                                                                    <label for="" class="p-2">Medicine</label>
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-12">
+                                                                                            <div class="form-group">
+                                                                                                <select name="MedicineName[]" id="" class="form-control" >
+                                                                                                <option value="">select medicine</option>
+                                                                                                <option value="Abacavir (ABC) ">Abacavir (ABC) </option>
+                                                                                                <option value="Acetazolamide">Acetazolamide</option>
+                                                                                                <option value="Acetylsalicylic acid ">Acetylsalicylic acid </option>
+                                                                                                <option value="Aciclovir">Aciclovir</option>
+                                                                                                <option value="Albendazole ">Albendazole </option>
+                                                                                               
+                                                                                            </select>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="col-md-8">
+                                                                                            <div class="form-group">
+                                                                                                <select name="MedicineTime[]" id="" class="form-control" >
+                                                                                                    <option value="">select time</option>
+                                                                                                    <option value="">1+1+1</option>
+                                                                                                    <option value="">1+0+1</option>
+                                                                                                    <option value="">0+0+1</option>
+                                                                                                    <option value="">1+0+0</option>
+                                                                                                    <option value="">1+1+0</option>
+                                                                                                
+                                                                                                </select>
+                                                                                            </div>
+                                                                                        
+                                                                                        </div>
+                                                                                        <div class="col-md-4">
+                                                                                            <div class="form-group">
+                                                                                                <input type="number" placeholder="Days" name="MedicineDays[]" class="form-control" >
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                    <div class="close-btn">X</div>
+                                                                                    
+                                                                        
+                                                                                  </div>
+                                                                                </li>
+                                                                            </ol>
+
+                                                                            
+                                                                            <div class="btn-wrap w-100 text-right m-2">
+                                                                                <input onclick="appendMedicine()" class="btn btn-sm btn-secondary add-medicine" type="button" value="Add Medicine">
+                                                                                 
+                                                                            </div>
+                                                                            
+                                                                        </div>
+                                                                       
+                                                                         {{!-- test-wrap --}}
+                                                                        <div class="medicine-list-wraper py-2">
+                                                                            <label for="">Test Suggestion</label>
+                                                                            <div class=" my-4">
+                                                                              <ol class="testNamelist">
+                                                                                  
+                                                                              </ol>
+                                                                            </div>
+                                                                             
+                                                                            <div class="single-medicine border p-2">
+                                                                              <div class="row">
+                                                                                  <div class="col-md-12">
+                                                                                    <div class="form-group">
+                                                                                      <select name="TestName[]" id="testlist" class="form-control" >
+                                                                                        <option value="">select medicine</option>
+                                                                                        <option value="ECHOCARDIOGRAM">ECHOCARDIOGRAM</option>
+                                                                                        <option value="USG">USG</option>
+                                                                                        <option value="MRI">MRI</option>
+                                                                                        <option value="UROFLOWMETRY">UROFLOWMETRY</option>
+                                                                                        <option value="angiocardiography">angiocardiography</option>
+                                                                                        <option value="lumbar puncture">lumbar puncture</option>
+                                                                                        <option value="auscultation">auscultation</option>
+                                                                                        <option value="mediastinoscopy">mediastinoscopy</option>
+                                                                                       
+                                                                                    </select>
+                                                                                    </div>
+                                                                                  </div>
+                                                                                 
+                                                                              </div> 
+                                                                            </div>
+                                                                         
+                                                                       
+                                                                        </div>
+                                                                        <div class="submit-section mt-4">
+                                                                            <button type="submit" class="btn btn-primary submit-btn">Confirm</button>
+                                                                        </div>
+                                                                    
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </form>	
+                                         </div>
+                                        
+                                    </div>
+                            </div>
 					</div>
 				</div>
              
 			</div>
 		</div>
        
+        <script>
+                const appendMedicine = ()=>{
+                    
+                    const medicinelistdiv =  document.getElementById('medicinelistdiv');
+                const singleMedi = document.createElement('li');
+                singleMedi.innerHTML=`{{!-- single medicine --}}
+                    <div class="single-medicine border p-2 position-relative my-2">
+                    <label for="" class="p-2">Medicine</label>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <select name="MedicineName[]" id="" class="form-control" >
+                                <option value="">select medicine</option>
+                                <option value="">Napa Extra -10 mg</option>
+                                <option value="">Napa Extra -10 mg</option>
+                                <option value="">Napa Extra -10 mg</option>
+                                <option value="">Napa Extra -10 mg</option>
+                                <option value="">Napa Extra -10 mg</option>
+                                <option value="">Napa Extra -10 mg</option>
+                                <option value="">Napa Extra -10 mg</option>
+                            </select>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <select name="MedicineTime[]" id="" class="form-control" >
+                                    <option value="">select time</option>
+                                    <option value="">1+1+1</option>
+                                    <option value="">1+0+1</option>
+                                    <option value="">0+0+1</option>
+                                    <option value="">1+0+0</option>
+                                    <option value="">1+1+0</option>
+                                
+                                </select>
+                            </div>
+                        
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <input type="text" placeholder="Days" name="MedicineDays[]" class="form-control" >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="close-btn">X</div>
+                    </div>`;
+                    medicinelistdiv.appendChild(singleMedi)
+                }
 
+        </script>
         <footer class="footer">
 
             <div class="footer-top">
@@ -402,7 +698,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.0/socket.io.js" ></script>
 
    <script>
-         var  socket =  io('http://localhost:8000')
+         var  socket =  io('192.168.0.121:8000')
          //get current time twelve hours
          function formatAMPM(date) {
             var hours = date.getHours();
@@ -483,3 +779,15 @@
 </body>
 
 </html>
+    
+    <script>
+
+             var testWrapper = $('.testNamelist')
+              $('#testlist').on('change', function() {
+                  var element_test = `<li><input type="text" name="TestName[]" class="no-border" value="${this.value}"></li>`
+                  testWrapper.append(element_test)
+                 
+            });
+    </script>
+	{{!-- socket application --}}
+    <script src="/assets/js/custom-notification.js"></script>

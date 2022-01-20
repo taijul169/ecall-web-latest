@@ -1,17 +1,31 @@
 {{patientHeader userData.[0].PatientID userData.[0].Photo userData.[0].FirstName }}
 
+
+
+        <div class="breadcrumb-bar">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col-md-12 col-12">
+                        <nav aria-label="breadcrumb" class="page-breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Appointment</li>
+                            </ol>
+                        </nav>
+                        <h2 class="breadcrumb-title">Appointment History</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
         <div class="content">
-			<div class="container-fluid">
-                {{#if message}}
-					<div class="alert {{message.type}}" role="alert">
-						{{message.message}}
-					</div>
-				{{/if}}
-				<div class="row">
-					<div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
                         <div class="profile-sidebar">
                             <div class="widget-profile pro-widget-content">
-                                   <div class="profile-info-widget">
+                                <div class="profile-info-widget">
                                     <a href="#" class="booking-doc-img">
                                         <img src="{{userData.[0].Photo}}" alt="User Image">
                                     </a>
@@ -25,66 +39,54 @@
                                 </div>
                             </div>
                             <div class="dashboard-widget">
-                               {{patientSideNav userData.[0].PatientID}}
+                                {{patientSideNav userData.[0].PatientID}}
                             </div>
                         </div>
                     </div>
-					<div class="col-md-7 col-lg-8 col-xl-9">
-                        <div class="chat-window">
+                    <div class="col-md-7 col-lg-8 col-xl-9">
+                        <div class="row row-grid">
 
-                            <div class="chat-cont-left">
-                                <div class="chat-header">
-                                    <span>Chats</span>
-                                    <a href="javascript:void(0)" class="chat-compose">
-                                        <i class="fa fa-video-camera" aria-hidden="true"></i>
-                                    </a>
-                                </div>
-                                <form class="chat-search">
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <i class="fas fa-search"></i>
-                                        </div>
-                                        <input type="text" class="form-control rounded-pill" placeholder="Search">
-                                    </div>
-                                </form>
-                                <div class="chat-users-list">
-                                    <div class="chat-scroll">
-                                        {{#each doctorlist}}
-                                        {{!-- single-doctor --}}
-                                        <a href="/chat-patient/{{this.DocNurID}}/{{../userData.[0].PatientID}}" class="media d-flex">
-                                            <div class="media-img-wrap flex-shrink-0">
-                                                <div class="avatar avatar-away">
-                                                    <img src="{{this.Photo}}" class="avatar-img rounded-circle"   
-                                              onerror="this.onerror=null; this.src='/assets/img/default.jpg'" id="output" alt="User Image">
-                                                </div>
-                                            </div>
-                                            <div class="media-body flex-grow-1">
-                                                <div>
-                                                    <div class="user-name">Dr.{{this.FirstName}} {{this.LastName}}</div>
-                                                    
-                                                </div>
-                                                <div>
-                                                    <div class="last-chat-time block">2 min</div>
-                                                    <div class="badge badge-success rounded-pill">15</div>
-                                                </div>
-                                            </div>
-                                        </a>
-                                        {{/each}}
-                                        
+                            {{#each appointmentdata}}
+                            {{!-- single-doctor-widget --}}
+                            <div class="col-md-4 col-lg-4 col-xl-3">
+                                <a href="/singleappointmentview/{{this.appointmentID}}">
+                                  <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{this.DoctorName}}</h5>
+                                       <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                <th scope="col">ID</th>
+                                                <th scope="col">Date</th>
+                                                <th scope="col">Time</th>
+                                                <th scope="col">Payment</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                <th scope="row">#{{this.appointmentID}}</th>
+                                                <td>{{this.BookingData}}</td>
+                                                <td>{{this.BookingTime}}</td>
+                                                <td>{{this.PaymentMethod}}</td>
+                                                </tr>
+                                             
+                                              
+                                            </tbody>
+                                            </table>
                                     </div>
                                 </div>
+                                </a>
+                                  
                             </div>
 
-
-                           
-
+                            {{/each}}
+                            
                         </div>
-					</div>
-				</div>
-             
-			</div>
-		</div>
-       
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         <footer class="footer">
 
@@ -95,7 +97,7 @@
 
                             <div class="footer-widget footer-about">
                                 <div class="footer-logo">
-                                    <img src="/assets/img/footer-logo.png" alt="logo">
+                                    <img src="assets/img/footer-logo.png" alt="logo">
                                 </div>
                                 <div class="footer-about-content">
                                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
@@ -167,7 +169,7 @@
                                     <p class="mb-0">
                                         <i class="fas fa-envelope"></i>
                                         <a href="/cdn-cgi/l/email-protection" class="__cf_email__"
-                                            data-cfemail="b1d5ded2d2c4c3d4f1d4c9d0dcc1ddd49fd2dedc">[email&#160;protected]</a>
+                                            data-cfemail="5a3e3539392f283f1a3f223b372a363f74393537">[email&#160;protected]</a>
                                     </p>
                                 </div>
                             </div>
@@ -209,75 +211,17 @@
     </div>
 
 
-    <div class="modal fade call-modal" id="voice_call">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-
-                    <div class="call-box incoming-box">
-                        <div class="call-wrapper">
-                            <div class="call-inner">
-                                <div class="call-user">
-                                    <img alt="User Image" src="/assets/img/doctors/doctor-thumb-02.jpg"
-                                        class="call-avatar">
-                                    <h4>Darren Elder</h4>
-                                    <span>Connecting...</span>
-                                </div>
-                                <div class="call-items">
-                                    <a href="javascript:void(0);" class="btn call-item call-end" data-bs-dismiss="modal"
-                                        aria-label="Close"><i class="fas fa-phone"></i></a>
-                                    <a href="voice-call.html" class="btn call-item call-start"><i class="fas fa-phone"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="modal fade call-modal" id="video_call">
-        <div class="modal-dialog modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-body">
-
-                    <div class="call-box incoming-box">
-                        <div class="call-wrapper">
-                            <div class="call-inner">
-                                <div class="call-user">
-                                    <img class="call-avatar" src="/assets/img/doctors/doctor-thumb-02.jpg"
-                                        alt="User Image">
-                                    <h4>Darren Elder</h4>
-                                    <span>Calling ...</span>
-                                </div>
-                                <div class="call-items">
-                                    <a href="javascript:void(0);" class="btn call-item call-end" data-bs-dismiss="modal"
-                                        aria-label="Close"> <i class="fas fa-video"></i></a>
-                                    <a href="video-call.html" class="btn call-item call-start"> <i class="fas fa-video"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </div>
-
-
     <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
-    <script src="/assets/js/jquery-3.6.0.min.js"></script>
+    <script src="assets/js/jquery-3.6.0.min.js"></script>
 
-    <script src="/assets/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
 
-    <script src="/assets/js/script.js"></script>
-    {{!-- chat application --}}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.0/socket.io.js" ></script>
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-notify/0.2.0/js/bootstrap-notify.js"></script>
+    <script src="assets/plugins/theia-sticky-sidebar/ResizeSensor.js"></script>
+    <script src="assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 
- 
+    <script src="assets/js/script.js"></script>
+
 </body>
 
 </html>

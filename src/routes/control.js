@@ -447,26 +447,67 @@ router.get("/dashboard",auth,(req,res,next)=>{
                 else{
                     UPcommingData.push(appointmentdata[i])
                 }
-            }
-              
-           console.log(TodayData)
+            }  
             res.render("doctor/doctor-dashboard",{userData:req.userData,appointmentdata:UPcommingData,TodayData})
-        });
-       
-        
+        });  
     }
     else{
 
         fetch(`http://192.168.0.121:9010/api/getappoinmentlistbypatientid/${req.userData[0].PatientID}`)
         .then(res =>res.json())
         .then(appointmentdata =>{
-            res.render("patient/patient-dashboard",{userData:req.userData,appointmentdata:appointmentdata})
+            fetch(`http://192.168.0.121:9010/api/getprescriptionlistbypatientid/${req.userData[0].PatientID}`)
+            .then(res =>res.json())
+            .then(prescriptiondata =>{
+                res.render("patient/patient-dashboard",{userData:req.userData,appointmentdata:appointmentdata,prescriptiondata})
+            });
+
+           
         });
        
     }
     
 })
 
+// get appointment list by doctor Id
+router.get("/appointmentlistindoctorend/:patientID",auth,(req,res)=>{
+    fetch(`http://192.168.0.121:9010/api/getappoinmentlistbydoc/${req.params.patientID}`)
+        .then(res =>res.json())
+        .then(appointmentdata =>{
+            res.render("doctor/appointmentlist",{userData:req.userData,appointmentdata:appointmentdata})
+        });
+  
+})
+
+
+// get appointment list by patientID
+router.get("/appointmentlistinpatientend/:patientID",auth,(req,res)=>{
+    fetch(`http://192.168.0.121:9010/api/getappoinmentlistbypatientid/${req.params.patientID}`)
+        .then(res =>res.json())
+        .then(appointmentdata =>{
+            res.render("patient/appointmentlist",{userData:req.userData,appointmentdata:appointmentdata})
+        });
+  
+})
+
+
+// singleappointmentview by appointment id(doctor /patient same)
+
+router.get("/singleappointmentview/:invoiceid",auth,(req,res)=>{
+    fetch(`http://192.168.0.121:9010/api/singleinvoice/${req.params.invoiceid}`)
+        .then(res =>res.json())
+        .then(singleinvoicedata =>{
+            console.log("usertype:",req.userData[0].UserType)
+            if(req.userData[0].UserType == '1'){
+              res.render("doctor/invoice-view",{userData:req.userData,singleinvoicedata})
+            }
+            else{
+                res.render("patient/invoice-view",{userData:req.userData,singleinvoicedata})
+            }
+            
+        });
+  
+})
 
 //  profile settings
 
@@ -493,6 +534,16 @@ router.get("/profile-settings/:id",auth,(req,res)=>{
 router.post("/patient-profile-update",(req,res)=>{
 
 })
+
+
+router.get("/change-password/:id", auth,(req,res)=>{
+    res.render("doctor/change-password",{userData:req.userData})
+});
+
+
+router.get("/reviews/:id", auth,(req,res)=>{
+    res.render("doctor/reviews",{userData:req.userData})
+});
 
 // router.get("/doctor-profile-settings/:id", (req,res)=>{
 //     const id =  req.params.id;
@@ -845,10 +896,16 @@ router.get('/singledoctorprofileview/:id',auth,(req,res)=>{
 });
 
 
-// single doctor profileview when user is logged
-router.get('/favouritedoctorlist/:id',auth,(req,res)=>{
+// get favourite doctorlist by patient id
+router.get('/favouritedoctorlist/:PatientID',auth,(req,res)=>{
     const PatientID =  req.params.PatientID;
-    res.render("patient/favourites",{userData:req.userData})
+    fetch(`http://192.168.0.121:9010/api/getfavouriledoclist/${PatientID}`)
+    .then(res => res.json())
+    .then(favdoclist =>{
+        console.log(favdoclist)
+        res.render("patient/favourites",{favdoclist,userData:req.userData})
+    });
+    
 
 });
 
@@ -972,9 +1029,9 @@ router.get("/chat-patient/:DocNurID/:PatientID",auth,(req,res)=>{
 });
 
 // single doctor and patient chat list
-router.get("/chat-doctor/:DocNurID/:PatientID",auth,(req,res)=>{
+router.get("/chat-doctor/:DocNurID/:PatientID", auth,(req,res)=>{
 
-    fetch(`http://192.168.0.121:9010/api/singledoctorchat/${req.params.DocNurID}/${req.params.PatientID}`)
+    fetch(`http://192.168.0.121:9010/api/singlepatientchat/${req.params.DocNurID}/${req.params.PatientID}`)
     .then(res => res.json())
     .then(Chatlist =>{
         for(var i = 0;i<Chatlist.messageList.length;i++){
@@ -985,10 +1042,9 @@ router.get("/chat-doctor/:DocNurID/:PatientID",auth,(req,res)=>{
                 Chatlist.messageList[i].status = 'received'
             }
            
-            console.log(Chatlist.messageList)
         }
         
-        fetch(`http://192.168.0.121:9010/api/messagelistbydocnurid/${req.userData[0].PatientID}`)
+        fetch(`http://192.168.0.121:9010/api/messagelistbydocnurid/${req.params.DocNurID}`)
             .then(res => res.json())
             .then(doctorlist =>{
                 //console.log(doctorlist)
@@ -1002,14 +1058,104 @@ router.get("/chat-doctor/:DocNurID/:PatientID",auth,(req,res)=>{
 
 // chat-doctor
 router.get("/chat-doctor",auth,(req,res)=>{
-    fetch(`http://192.168.0.121:9010/api/messagelistbydocnurid/${req.userData[0].PatientID}`)
+    fetch(`http://192.168.0.121:9010/api/messagelistbydocnurid/${req.userData[0].DocNurID}`)
     .then(res => res.json())
     .then(doctorlist =>{
-        //console.log(doctorlist)
+        console.log(doctorlist)
         res.render("doctor/chat",{userData:req.userData,doctorlist})
     });
     
-})
+});
+
+// chat-doctor
+router.get("/scheduling/:docnurid",auth,(req,res)=>{
+    const DocNurID =  req.params.docnurid;
+    res.render("doctor/scheduling",{userData:req.userData})
+});
+
+
+// make prescription
+router.post("/makeprescription",async(req,res)=>{
+    var{DocNurID,
+        PatientID,
+        PatientType,
+        PatientName,
+        PatientGender,
+        PatientAge,
+        PatientMob,
+        PatientSymtomps,
+        DoctorName,
+        DoctorMob,
+        DocGender} = req.body
+        console.log("body data",req.body)
+    const response =  await (fetch(`http://192.168.0.121:9010/api/makeprescription`, 
+    { 
+        method: 'POST', 
+        body: JSON.stringify(req.body),
+        headers: { 'Content-Type': 'application/json' }
+    }));
+
+    console.log("response:",response)
+    if(response.status === 200){
+        req.session.message={
+            type:'alert-success',
+            intro:'Created!',
+            message:'Successfully made Prescription.'
+        }
+        res.redirect('back')
+    }
+    else if(response.status === 205){
+        req.session.message={
+            type:'alert-warning',
+            intro:'Created!',
+            message:'Appointment already done'
+        }
+        res.redirect('back')
+    }
+    const data = await  response.json()
+    console.log("data",data)
+
+});
+
+
+// single prescription view
+router.get("/singleprescriptionview/:id",auth,(req,res)=>{
+
+    fetch(`http://192.168.0.121:9010/api/singleprescription/${req.params.id}`)
+    .then(res => res.json())
+    .then(singlePresData =>{
+        console.log(singlePresData)
+        res.render("patient/singleprescription",{userData:req.userData,singlePresData})
+    });
+    
+});
+
+// hospital list
+router.get("/hospitallist",(req,res)=>{
+    fetch(`http://192.168.0.121:9010/api/gethospitallist`)
+    .then(res => res.json())
+    .then(hospitalList =>{
+        console.log(hospitalList)
+        res.render("lab/hospital-list",{hospitalList})
+    });
+    
+});
+// hospital list
+router.get("/singlehospital/:id",(req,res)=>{
+    const hospital_id =  req.params.id;
+    fetch(`http://192.168.0.121:9010/api/getbranchlistbyhospitalid/${hospital_id}`)
+    .then(res => res.json())
+    .then(branchlist =>{
+        fetch(`http://192.168.0.121:9010/api/getallservicelistbyhospitalid/${hospital_id}`)
+            .then(res => res.json())
+            .then(servicelist =>{
+                res.render("lab/single-hospital",{branchlist,servicelist})
+            });
+    });
+    
+    
+});
+
 
 
 

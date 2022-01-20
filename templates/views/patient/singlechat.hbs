@@ -54,8 +54,8 @@
                                         <a href="/chat-patient/{{this.DocNurID}}/{{../userData.[0].PatientID}}" class="media d-flex">
                                             <div class="media-img-wrap flex-shrink-0">
                                                 <div class="avatar avatar-away">
-                                                    <img src="{{this.Photo}}" alt="User Image"
-                                                        class="avatar-img rounded-circle">
+                                                    <img src="{{this.Photo}}" class="avatar-img rounded-circle"   
+                                              onerror="this.onerror=null; this.src='/assets/img/default.jpg'" id="output" alt="User Image">
                                                 </div>
                                             </div>
                                             <div class="media-body flex-grow-1">
@@ -84,8 +84,9 @@
                                     <div class="media d-flex">
                                         <div class="media-img-wrap flex-shrink-0">
                                             <div class="avatar avatar-online">
-                                                <img src="{{Chatlist.personalInfo.[0].Photo}}" alt="User Image"
-                                                    class="avatar-img rounded-circle">
+                                               
+                                                    <img src="{{Chatlist.personalInfo.[0].Photo}}" class="avatar-img rounded-circle"   
+                                              onerror="this.onerror=null; this.src='/assets/img/default.jpg'" id="output" alt="User Image">
                                             </div>
                                         </div>
                                         <div class="media-body flex-grow-1">
@@ -125,9 +126,11 @@
                                                             </ul>
                                                              <div class="chat-msg-attachments">
                                                                 <div class="chat-attachment">
-                                                                    <img src="{{this.MessageFilePath}}" >
+                                                                     
+                                                                     <img id="currentPhoto" src="{{this.MessageFilePath}}" onerror="this.onerror=null; this.remove();" alt="2" >
+                                                                    
                                                                     <div class="chat-attach-caption"></div>
-                                                                    <a href="" class="chat-attach-download">
+                                                                    <a download="chat.jpg" href="{{this.MessageFilePath}}" class="chat-attach-download">
                                                                     <i class="fas fa-download"></i>
                                                                     </a>
                                                                 </div>
@@ -180,9 +183,7 @@
                                      
 
                                         myForm.addEventListener("submit", e =>{
-                                            window.alert("working")
                                             e.preventDefault();
-
                                              sendMessage(messageText.value);
                                             
                                             const formData =  new FormData();
@@ -409,7 +410,7 @@
    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-notify/0.2.0/js/bootstrap-notify.js"></script>
 
    <script>
-         var  socket =  io('http://localhost:8000')
+         var  socket =  io('192.168.0.121:8000')
          //get current time twelve hours
          function formatAMPM(date) {
             var hours = date.getHours();

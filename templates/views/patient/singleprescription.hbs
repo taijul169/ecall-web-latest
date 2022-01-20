@@ -1,6 +1,5 @@
 {{patientHeader userData.[0].PatientID userData.[0].Photo userData.[0].FirstName }}
 
-
 		<div class="breadcrumb-bar">
 			<div class="container-fluid">
 				<div class="row align-items-center">
@@ -8,20 +7,20 @@
 						<nav aria-label="breadcrumb" class="page-breadcrumb">
 							<ol class="breadcrumb">
 								<li class="breadcrumb-item"><a href="index.html">Home</a></li>
-								<li class="breadcrumb-item active" aria-current="page">Booking</li>
+								<li class="breadcrumb-item active" aria-current="page">Invoice View</li>
 							</ol>
 						</nav>
-						<h2 class="breadcrumb-title">Booking</h2>
+						<h2 class="breadcrumb-title">Invoice View</h2>
 					</div>
 				</div>
 			</div>
 		</div>
 
 
-		<div class="content success-page-cont">
+		<div class="content">
 			<div class="container-fluid">
 				<div class="row">
-					 <div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
+					<div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
                         <div class="profile-sidebar">
                             <div class="widget-profile pro-widget-content">
                                 <div class="profile-info-widget">
@@ -42,21 +41,153 @@
                             </div>
                         </div>
                     </div>
-					<div class="col-lg-6 ">
-
-						<div class="card success-card">
-							<div class="card-body">
-								<div class="success-cont">
-									<i class="fas fa-check"></i>
-									<h3>Appointment booked Successfully!</h3>
-									<p>Appointment booked with <strong>Dr. {{queryData.[0].name}}</strong><br> on <strong>{{queryData.[0].date}} {{queryData.[0].time}}</strong></p>
-									<a href="/appointmentlistinpatientend/{{userData.[0].PatientID}}" class="btn btn-primary view-inv-btn">Go To Appointment History</a>
+					<div class="col-md-7 col-lg-8 col-xl-9">
+                       {{!-- invoice content --}}
+						<div class="invoice-content">
+							<div class="invoice-item">
+								<div class="row">
+									<div class="col-md-6">
+										<div class="invoice-logo">
+											<img src="/assets/img/logo.png" alt="logo">
+										</div>
+									</div>
+									<div class="col-md-6">
+										<p class="invoice-details">
+											<strong>Order:</strong> #{{singlePresData.perInfoData.[0].PrescriptionID}} <br>
+											<strong>Issued:</strong> {{singlePresData.perInfoData.[0].CreatedDate}}
+										</p>
+									</div>
 								</div>
 							</div>
-						</div>
 
+							<div class="invoice-item">
+								<div class="row">
+									<div class="col-md-6">
+										<div class="invoice-info">
+											<strong class="customer-text">Doctor Information</strong>
+											<p class="invoice-details invoice-details-two">
+												<div class="table-responsive">
+													<table class="invoice-table table table-bordered">
+														<thead>
+															<tr>
+																<th>Doctor ID</th>
+																<th>Dr</th>
+																<th class="text-center">Gender</th>
+																<th class="text-center">Mobile</th>
+																
+															</tr>
+														</thead>
+														<tbody>
+															<tr>
+																<td>{{singlePresData.perInfoData.[0].DocNurID}}</td>
+																<td>{{singlePresData.perInfoData.[0].DoctorName}}</td>
+																<td class="text-center">{{singlePresData.perInfoData.[0].DocGender}}</td>
+																<td class="text-center">{{singlePresData.perInfoData.[0].DoctorMob}}</td>
+																
+															</tr>
+														
+														</tbody>
+													</table>
+										        </div>
+											</p>
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="invoice-info invoice-info2">
+											<strong class="customer-text">Patient Information</strong>
+											<p class="invoice-details">
+												<div class="table-responsive">
+													<table class="invoice-table table table-bordered">
+														<thead>
+															<tr>
+																<th>Patient ID</th>
+																<th>Name</th>
+																<th class="text-center">Gender</th>
+																<th class="text-center">Mobile</th>
+																
+															</tr>
+														</thead>
+														<tbody>
+															<tr>
+																<td>{{singlePresData.perInfoData.[0].PatientID}}</td>
+																<td>{{singlePresData.perInfoData.[0].PatientName}}</td>
+																<td class="text-center">{{singlePresData.perInfoData.[0].PatientGender}}</td>
+																<td class="text-center">{{singlePresData.perInfoData.[0].PatientMob}}</td>
+																
+															</tr>
+														
+														</tbody>
+													</table>
+										        </div>
+												
+											</p>
+										</div>
+									</div>
+								</div>
+							</div>
+
+
+						
+
+							<div class="invoice-item invoice-table-wrap">
+								<div class="row">
+									<div class="col-md-12">
+										<div class="table-responsive">
+											<table class="invoice-table table table-bordered">
+												<thead>
+													<tr>
+														<th>#Serial</th>
+														<th class="text-center">Medicine Name</th>
+														<th class="text-center">Time</th>
+														<th class="text-end">Number of Days</th>
+													</tr>
+												</thead>
+												<tbody>
+													{{#each singlePresData.medicineData}}
+													<tr>
+														<td>{{@index}}</td>
+														<td class="text-center">{{this.MedicineName}}</td>
+														<td class="text-center">{{this.Timetable}}</td>
+														<td class="text-end"> {{this.NumOfDays}}</td>
+													</tr>
+												 {{/each}}
+												</tbody>
+											</table>
+										</div>
+									</div>
+									<div class="col-md-6 col-xl-4 ms-auto mt-5">
+										<h4>Investigation</h4>
+										<div class="table-responsive">
+											<table class="invoice-table-two table">
+												<tbody>
+													{{#each singlePresData.testData}}
+													<tr>
+														
+														<td>{{@index}}</td>
+														<th><span>{{this.TesName}}</span></th>
+														
+													</tr>
+													{{/each}}
+													
+												</tbody>
+											</table>
+										</div>
+									</div>
+								</div>
+							</div>
+
+
+							<div class="other-info">
+								<h4>Symtopms</h4>
+								<p class="text-muted mb-0">{{singlePresData.perInfoData.[0].PatientSymtomps}}</p>
+							</div>
+                           <div class="donwload-button w-100  py-5">
+							   <button class="btn  btn-primary  mr-auto">Download</button>
+						   </div>
+						</div>
 					</div>
 				</div>
+				
 			</div>
 		</div>
 
@@ -70,7 +201,7 @@
 
 							<div class="footer-widget footer-about">
 								<div class="footer-logo">
-									<img src="/assets/img/footer-logo.png" alt="logo">
+									<img src="assets/img/footer-logo.png" alt="logo">
 								</div>
 								<div class="footer-about-content">
 									<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
@@ -142,7 +273,7 @@
 									<p class="mb-0">
 										<i class="fas fa-envelope"></i>
 										<a href="/cdn-cgi/l/email-protection" class="__cf_email__"
-											data-cfemail="2f4b404c4c5a5d4a6f4a574e425f434a014c4042">[email&#160;protected]</a>
+											data-cfemail="e5818a8686909780a5809d8488958980cb868a88">[email&#160;protected]</a>
 									</p>
 								</div>
 							</div>
@@ -165,6 +296,7 @@
 							</div>
 							<div class="col-md-6 col-lg-6">
 
+
 								<div class="copyright-menu">
 									<ul class="policy-menu">
 										<li><a href="term-condition.html">Terms and Conditions</a></li>
@@ -185,11 +317,11 @@
 
 
 	<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
-	<script src="/assets/js/jquery-3.6.0.min.js"></script>
+	<script src="assets/js/jquery-3.6.0.min.js"></script>
 
-	<script src="/assets/js/bootstrap.bundle.min.js"></script>
+	<script src="assets/js/bootstrap.bundle.min.js"></script>
 
-	<script src="/assets/js/script.js"></script>
+	<script src="assets/js/script.js"></script>
 </body>
 
 </html>

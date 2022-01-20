@@ -80,7 +80,9 @@
                             <div class="widget-profile pro-widget-content">
                                 <div class="profile-info-widget">
                                     <a href="#" class="booking-doc-img">
-                                        <img src="{{userData.[0].Photo}}" alt="User Image">
+										<img src="{{userData.[0].Photo}}"   
+                                              onerror="this.onerror=null; this.src='/assets/img/default.jpg'" alt="User Image">
+                                        
                                     </a>
                                     <div class="profile-det-info">
                                         <h3>{{userData.[0].FirstName}}</h3>
@@ -119,7 +121,9 @@
 											<div class="form-group">
 												<div class="change-avatar">
 													<div class="profile-img">
-														<img src="{{userData.[0].Photo}}" id="output" alt="User Image">
+														<img src="{{userData.[0].Photo}}"   
+                                                       onerror="this.onerror=null; this.src='/assets/img/default.jpg'" id="output" alt="User Image">
+														
 													</div>
 													{{!-- <div class="upload-img d-none">
 														<div class="change-photo-btn">

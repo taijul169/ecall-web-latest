@@ -48,26 +48,27 @@
                         </div>
                     </div>
 					<div class="col-md-7 col-lg-8 col-xl-9">
-                        <form action="/makeappointment" method="post">
+                        <form action="/makeappointment" method="post" id="myForm" >
 							<div class="row">
 								<div class="col-md-7 col-lg-8">
 									<div class="card">
 										<div class="card-body">
 												{{!-- patient ID --}}
-												<input type="hidden" name="patientID" value="">
+												<input type="hidden" name="patientID" value="{{userData.[0].PatientID}}">
+												<input type="hidden" id="SenderID" value="{{userData.[0].PatientID}}">
 												<div class="info-widget">
 													<h4 class="card-title">Personal Information</h4>
 													<div class="row">
 														<div class="col-md-6 col-sm-12">
 															<div class="form-group card-label">
 																<label>First Name</label>
-																<input name="firstName" value="{{userData.[0].FirstName}}" class="form-control" type="text">
+																<input name="firstName" value="{{userData.[0].FirstName}}" id="patientFirstName" class="form-control" type="text">
 															</div>
 														</div>
 														<div class="col-md-6 col-sm-12">
 															<div class="form-group card-label">
 																<label>Last Name</label>
-																<input name="lastName" value="{{userData.[0].LastName}}" class="form-control" type="text">
+																<input name="lastName" value="{{userData.[0].LastName}}" id="patientLastName" class="form-control" type="text">
 															</div>
 														</div>
 														<div class="col-md-6 col-sm-12">
@@ -274,6 +275,34 @@
 			</div>
 		</div>
 
+		{{!-- send notification to doctor for appointment --}}
+        <script>
+				const myForm  =  document.getElementById("myForm");
+				const patientFirstName =  document.getElementById("patientFirstName");
+				const patientLastName =  document.getElementById("patientLastName");
+				const SenderID  =  document.getElementById("SenderID");
+				let href = window.location.href; 
+						// let href = "https://www.facebook.com/david"; // Current window url; 
+						// Creating URL object
+						let url = new URL(href);
+						let str = url.pathname.substring(1)
+						var n = str.lastIndexOf('/');
+						
+						var DocID = str.substring(n + 1);
+						//var both = str.substring(n-9).split("/")
+						console.log("Doctor ID:",DocID)
+
+				myForm.addEventListener("submit", () =>{
+					
+					    const message = {
+							heading:"New Appointment",
+							patient:`${patientFirstName.value} ${patientLastName.value}`,
+							DocNurID:DocID,
+							PatientID:SenderID.value
+						}
+						sendMessage(message);
+				});
+		</script>
 
 		<footer class="footer">
 
@@ -396,9 +425,6 @@
 		</footer>
 
 	</div>
-
-
-	<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 	<script src="/assets/js/jquery-3.6.0.min.js"></script>
 
 	<script src="/assets/js/bootstrap.bundle.min.js"></script>
@@ -407,9 +433,13 @@
 	<script src="/assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js"></script>
 
 	<script src="/assets/js/script.js"></script>
+	{{!-- socket application --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.0/socket.io.js" ></script>
 
 
 	<script language="javascript">
+
+		//date picker
         var today = new Date();
         var dd = String(today.getDate()).padStart(2, '0');
         var mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -417,6 +447,22 @@
 
         today = yyyy + '-' + mm + '-' + dd;
         $('#date_picker').attr('min',today);
+
+
+
+
+
+		//sending notification to doctor
+
+		 var  socket =  io('192.168.0.121:8000')
+        function sendMessage(appointmentmessage){
+           //sending message to the opposite user
+            socket.emit("appointmentSent",{
+                "Message":appointmentmessage,
+                
+            })
+        }
+
     </script>
 </body>
 

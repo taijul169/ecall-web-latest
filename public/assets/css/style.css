@@ -12379,7 +12379,36 @@ ul.benifits-col li i{
     top: 2%;
     z-index: 11;
 }
+/* toaster message css */
 
+.toast-container.custom-toaster-container {
+	position: fixed;
+	right: 0;
+	top: 0;
+	z-index: 11;
+}
+
+
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 7px;
+    width: 20px;
+    line-height: 15px;
+    border-radius: 50%;
+    height: 20px;
+    text-align: center;
+    font-weight: 700;
+    background: #ff003a;
+    border: 0;
+    font-size: 12px;
+    color: #ffff;
+}
+span.badge.bg-success.status {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
 @media only screen and (max-width:479px) {
 	.section-search {
 		min-height: 410px;

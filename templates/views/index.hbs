@@ -67,8 +67,8 @@
 									<div class="doctor-book-card-content tile-card-content-1">
 										<div>
 											<h3 class="card-title mb-0">Find a Lab</h3>
-											<a href="javascript:void(0);" class="btn book-btn1 px-3 py-2 mt-3"
-												tabindex="0">Coming Soon</a>
+											<a href="/hospitallist" class="btn book-btn1 px-3 py-2 mt-3"
+												tabindex="0">Find Now</a>
 										</div>
 									</div>
 								</div>
@@ -138,7 +138,9 @@
 							<div class="profile-widget">
 								<div class="doc-img">
 									<a href="doctor-profile.html">
-										<img class="img-fluid" alt="User Image" src="{{this.Photo}}">
+										<img src="{{this.Photo}}"   
+                                                       onerror="this.onerror=null; this.src='/assets/img/default.jpg'"  alt="User Image">
+										
 									</a>
 									<a href="javascript:void(0)" class="fav-btn">
 										<i class="far fa-bookmark"></i>

@@ -1,0 +1,287 @@
+{{homeHeader}}
+<style>
+	.fa {
+		font-size: 18px;
+	}
+
+	.checked {
+		color: orange;
+	}
+</style>
+<div class="breadcrumb-bar">
+	<div class="container-fluid">
+		<div class="row align-items-center">
+			<div class="col-md-12 col-12">
+				<nav aria-label="breadcrumb" class="page-breadcrumb">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a href="index.html">Home</a></li>
+						<li class="breadcrumb-item active" aria-current="page">Single Hospital</li>
+					</ol>
+				</nav>
+				<h2 class="breadcrumb-title">Single Hospital</h2>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="content" style="transform: none; min-height: 105px;">
+	<div class="container col-lg-12 col-md-10" style="margin-bottom: 50px">
+		<div class="row mt-5 align-items-center">
+			<div class="col-md-2"></div>
+			<form action="#" method="post" onsubmit="return false;" class="col-md-8">
+				<input type="hidden" name="_token" value="aUXwaeytvYxmMMgyG3LoRuFyx5a3OyCJDv4n4bFO">
+				<div class="form-group">
+					<label for="br_id"><strong>Choose Branch Name</strong></label>
+					<select name="br_id" id="br_id" class="form-control chosen">
+						<option value="">Choose Branch Name</option>
+						{{#each branchlist}}
+						   <option value="{{this.Name}}">{{this.Name}}</option>
+						{{/each}}
+						
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="br_id"><strong>Choose Service Category</strong></label>
+					<select name="category_id" id="category_id" class="form-control chosen">
+						<option value="0">Choose A Service Category</option>
+						<option value="1">PATHOLOGY</option>
+					</select>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="container">
+		<div class="row py-4 mb-2 table-responsive">
+			<div id="DataTables_Table_0_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4 no-footer">
+				<div class="row">
+					<div class="col-sm-12 col-md-6">
+						<div class="dataTables_length" id="DataTables_Table_0_length"><label>Show <select
+									name="DataTables_Table_0_length" aria-controls="DataTables_Table_0"
+									class="form-control form-control-sm">
+									<option value="10">10</option>
+									<option value="25">25</option>
+									<option value="50">50</option>
+									<option value="100">100</option>
+								</select> entries</label></div>
+					</div>
+					<div class="col-sm-12 col-md-6">
+						<div class="form-inline">
+							<div class="form-group  mb-2">
+								<label for="inputPassword2" class="sr-only">Search</label>
+								<input type="text" class="form-control" id="inputPassword2" placeholder="Search">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<table class="table table-bordered data_view_table dataTable no-footer" data-page-length="100"
+							id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
+							<thead>
+								<tr role="row">
+									<th style="width: 15.625px;" class="sorting_asc" tabindex="0"
+										aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending"
+										aria-label="SL: activate to sort column descending">SL</th>
+									<th style="width: 755.359px;" class="sorting" tabindex="0"
+										aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+										aria-label="Service Name: activate to sort column ascending">Service Name</th>
+									<th style="width: 171.016px;" class="sorting" tabindex="0"
+										aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+										aria-label="Price: activate to sort column ascending">Price</th>
+									<th style="width: 171.016px;" class="sorting" tabindex="0"
+										aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+										aria-label="Price: activate to sort column ascending">Selected Item</th>
+								</tr>
+							</thead>
+							<tbody>
+								{{#each servicelist}}
+								<tr role="row" class="odd">
+									<td class="sorting_1">{{@index}}</td>
+									<td>{{this.Name}}</td>
+									<td class="text-right"><strong class="text-primary">{{this.Price}}</strong> BDT</td>
+									<td class="text-center"><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td>
+
+								</tr>
+								{{/each }}
+								
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="row my-5">
+					<div class="col-sm-12 col-md-5">
+						<div class="dataTables_info" id="DataTables_Table_0_info" role="status" aria-live="polite">
+							Showing 1 to 100 of 1,655 entries</div>
+					</div>
+					<div class="col-sm-12 col-md-7">
+						<div class="dataTables_paginate paging_simple_numbers" id="DataTables_Table_0_paginate">
+							<ul class="pagination">
+								<li class="paginate_button page-item previous disabled"
+									id="DataTables_Table_0_previous"><a href="#" aria-controls="DataTables_Table_0"
+										data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li>
+								<li class="paginate_button page-item active"><a href="#"
+										aria-controls="DataTables_Table_0" data-dt-idx="1" tabindex="0"
+										class="page-link">1</a></li>
+								<li class="paginate_button page-item "><a href="#" aria-controls="DataTables_Table_0"
+										data-dt-idx="2" tabindex="0" class="page-link">2</a></li>
+								<li class="paginate_button page-item "><a href="#" aria-controls="DataTables_Table_0"
+										data-dt-idx="3" tabindex="0" class="page-link">3</a></li>
+								<li class="paginate_button page-item "><a href="#" aria-controls="DataTables_Table_0"
+										data-dt-idx="4" tabindex="0" class="page-link">4</a></li>
+								<li class="paginate_button page-item "><a href="#" aria-controls="DataTables_Table_0"
+										data-dt-idx="5" tabindex="0" class="page-link">5</a></li>
+								<li class="paginate_button page-item disabled" id="DataTables_Table_0_ellipsis"><a
+										href="#" aria-controls="DataTables_Table_0" data-dt-idx="6" tabindex="0"
+										class="page-link">…</a></li>
+								<li class="paginate_button page-item "><a href="#" aria-controls="DataTables_Table_0"
+										data-dt-idx="7" tabindex="0" class="page-link">17</a></li>
+								<li class="paginate_button page-item next" id="DataTables_Table_0_next"><a href="#"
+										aria-controls="DataTables_Table_0" data-dt-idx="8" tabindex="0"
+										class="page-link">Next</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<footer class="footer">
+
+	<div class="footer-top">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-lg-3 col-md-6">
+
+					<div class="footer-widget footer-about">
+						<div class="footer-logo">
+							<img src="/assets/img/footer-logo.png" alt="logo">
+						</div>
+						<div class="footer-about-content">
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+								incididunt ut labore et dolore magna aliqua. </p>
+							<div class="social-icon">
+								<ul>
+									<li>
+										<a href="#" target="_blank"><i class="fab fa-facebook-f"></i> </a>
+									</li>
+									<li>
+										<a href="#" target="_blank"><i class="fab fa-twitter"></i> </a>
+									</li>
+									<li>
+										<a href="#" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+									</li>
+									<li>
+										<a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+									</li>
+									<li>
+										<a href="#" target="_blank"><i class="fab fa-dribbble"></i> </a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<div class="col-lg-3 col-md-6">
+
+					<div class="footer-widget footer-menu">
+						<h2 class="footer-title">For Patients</h2>
+						<ul>
+							<li><a href="search.html">Search for Doctors</a></li>
+							<li><a href="login.html">Login</a></li>
+							<li><a href="register.html">Register</a></li>
+							<li><a href="booking.html">Booking</a></li>
+							<li><a href="patient-dashboard.html">Patient Dashboard</a></li>
+						</ul>
+					</div>
+
+				</div>
+				<div class="col-lg-3 col-md-6">
+
+					<div class="footer-widget footer-menu">
+						<h2 class="footer-title">For Doctors</h2>
+						<ul>
+							<li><a href="appointments.html">Appointments</a></li>
+							<li><a href="chat.html">Chat</a></li>
+							<li><a href="login.html">Login</a></li>
+							<li><a href="doctor-register.html">Register</a></li>
+							<li><a href="doctor-dashboard.html">Doctor Dashboard</a></li>
+						</ul>
+					</div>
+
+				</div>
+				<div class="col-lg-3 col-md-6">
+
+					<div class="footer-widget footer-contact">
+						<h2 class="footer-title">Contact Us</h2>
+						<div class="footer-contact-info">
+							<div class="footer-address">
+								<span><i class="fas fa-map-marker-alt"></i></span>
+								<p> 3556 Beech Street, San Francisco,<br> California, CA 94108 </p>
+							</div>
+							<p>
+								<i class="fas fa-phone-alt"></i>
+								+1 315 369 5943
+							</p>
+							<p class="mb-0">
+								<i class="fas fa-envelope"></i>
+								<a href="/cdn-cgi/l/email-protection" class="__cf_email__"
+									data-cfemail="6c08030f0f191e092c09140d011c0009420f0301">[email&#160;protected]</a>
+							</p>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="footer-bottom">
+		<div class="container-fluid">
+
+			<div class="copyright">
+				<div class="row">
+					<div class="col-md-6 col-lg-6">
+						<div class="copyright-text">
+							<p class="mb-0">&copy; 2020 Doccure. All rights reserved.</p>
+						</div>
+					</div>
+					<div class="col-md-6 col-lg-6">
+
+						<div class="copyright-menu">
+							<ul class="policy-menu">
+								<li><a href="term-condition.html">Terms and Conditions</a></li>
+								<li><a href="privacy-policy.html">Policy</a></li>
+							</ul>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+</footer>
+
+</div>
+
+
+
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+<script src="/assets/js/jquery-3.6.0.min.js"></script>
+
+<script src="/assets/js/bootstrap.bundle.min.js"></script>
+
+<script src="/assets/plugins/fancybox/jquery.fancybox.min.js"></script>
+
+<script src="/assets/js/script.js"></script>
+</body>
+
+</html>

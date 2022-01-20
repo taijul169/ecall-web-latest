@@ -1,6 +1,9 @@
 {{patientHeader userData.[0].DocNurID userData.[0].Photo userData.[0].FirstName}}
 
+     {{!-- toaster --}}
+     {{notificationWrapper}}
 
+ {{!-- toaster end--}}
 		<div class="breadcrumb-bar">
 			<div class="container-fluid">
 				<div class="row align-items-center">
@@ -12,7 +15,7 @@
 					<div class="col-md-12 col-12">
 						<nav aria-label="breadcrumb" class="page-breadcrumb">
 							<ol class="breadcrumb">
-								<li class="breadcrumb-item"><a href="index.html">Home</a></li>
+								<li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
 								<li class="breadcrumb-item active" aria-current="page">Dashboard</li>
 							</ol>
 						</nav>
@@ -22,7 +25,7 @@
 			</div>
 		</div>
 
-
+        {{!-- <input type="hidden" id="SenderIDNoti" value="{{userData.[0].DocNurID}}"> --}}
 		<div class="content">
 			<div class="container-fluid">
 				<div class="row">
@@ -35,7 +38,7 @@
 										<img src="{{userData.[0].Photo}}" alt="User Image">
 									</a>
 									<div class="profile-det-info">
-										<h3>Dr.{{userData.[0].FirstName}} {{userData.[0].FirstName}}</h3>
+										<h3>Dr.{{userData.[0].FirstName}} {{userData.[0].LastName}}</h3>
 										<div class="patient-details">
 											<h5 class="mb-0">BDS, MDS - Oral & Maxillofacial Surgery</h5>
 										</div>
@@ -120,6 +123,7 @@
 																		</ul>
 																		</div>
 																	</td>
+																	<td><a href="/singleappointmentview/{{this.appointmentID}}" class="btn btn-primary">View</a></td>
 																</tr>
                                                               {{/each}}
 
@@ -206,3 +210,8 @@
 
 
 {{commonFooter}}
+
+
+	{{!-- socket application --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.0/socket.io.js"></script>
+    <script src="/assets/js/custom-notification.js"></script>
