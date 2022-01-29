@@ -1,0 +1,463 @@
+{{patientHeader userData.[0].PatientID userData.[0].Photo userData.[0].FirstName }}
+
+
+<div class="breadcrumb-bar">
+	<div class="container-fluid">
+		<div class="row align-items-center">
+			<div class="col-md-12 col-12">
+				<nav aria-label="breadcrumb" class="page-breadcrumb">
+					<ol class="breadcrumb">
+						<li class="breadcrumb-item"><a href="index.html">Home</a></li>
+						<li class="breadcrumb-item active" aria-current="page">Checkout</li>
+					</ol>
+				</nav>
+				<h2 class="breadcrumb-title">Checkout</h2>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+<div class="content">
+	<div class="container-fluid">
+		{{#if message}}
+		<div class="alert {{message.type}}" role="alert">
+			{{message.message}}
+		</div>
+		{{/if}}
+		<div class="row">
+			<div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
+				<div class="profile-sidebar">
+					<div class="widget-profile pro-widget-content">
+						<div class="profile-info-widget">
+							<a href="#" class="booking-doc-img">
+								<img src="{{userData.[0].Photo}}" alt="User Image">
+							</a>
+							<div class="profile-det-info">
+								<h3>{{userData.[0].FirstName}}</h3>
+								<div class="patient-details">
+									<h5><i class="fas fa-birthday-cake"></i> 24 Jul 1983, 38 years</h5>
+									<h5 class="mb-0"><i class="fas fa-map-marker-alt"></i>
+										{{userData.[0].PrimaryAddress}}</h5>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="dashboard-widget">
+						{{patientSideNav userData.[0].PatientID}}
+					</div>
+				</div>
+			</div>
+			<div class="col-md-7 col-lg-8 col-xl-9">
+				<form action="/checkout-test" method="post">
+					<div class="row">
+						<div class="col-md-6 col-lg-7">
+							<div class="card">
+								<div class="card-header">
+									<h3 class="card-title">Billing details</h3>
+								</div>
+								<div class="card-body">
+									<input type="hidden" name="UserID" value="{{userData.[0].PatientID}}">
+
+
+									<div class="info-widget">
+										<h4 class="card-title">Personal Information</h4>
+										<div class="row">
+											<div class="col-md-6 col-sm-12">
+												<div class="form-group card-label">
+													<label>First Name</label>
+													<input class="form-control" value="{{userData.[0].FirstName}}"
+														name="FirstName" type="text">
+												</div>
+											</div>
+											<div class="col-md-6 col-sm-12">
+												<div class="form-group card-label">
+													<label>Last Name</label>
+													<input class="form-control" value="{{userData.[0].LastName}}"
+														name="LastName" type="text">
+												</div>
+											</div>
+											<div class="col-md-6 col-sm-12">
+												<div class="form-group card-label">
+													<label>Email</label>
+													<input class="form-control" placeholder="Optional" name="Email" type="email">
+												</div>
+											</div>
+											<div class="col-md-6 col-sm-12">
+												<div class="form-group card-label">
+													<label>Phone</label>
+													<input class="form-control" value="{{userData.[0].PhoneNumber}}"
+														name="Phone" type="text">
+												</div>
+											</div>
+										</div>
+									</div>
+
+
+									<div class="info-widget">
+										<h4 class="card-title">Shipping Details</h4>
+
+										<div class="form-group card-label">
+											<label class="ps-0 ms-0 mb-2">Order notes (Optional)</label>
+											<textarea rows="5" class="form-control" name="ShippingDetails"></textarea>
+										</div>
+									</div>
+
+									<div class="payment-widget">
+										<h4 class="card-title">Payment Method</h4>
+
+										<style>
+											.col img {
+												height: 85px;
+												width: 100%;
+												border: 1px solid #f4f4f4;
+												cursor: pointer;
+												padding: 6px;
+												transition: transform 1s;
+												object-fit: cover;
+											}
+
+											.col label {
+												overflow: hidden;
+												position: relative;
+											}
+
+											.imgbgchk:checked+label>.tick_container {
+												opacity: 1;
+											}
+
+											/*         aNIMATION */
+											.imgbgchk:checked+label>img {
+												transform: scale(1.25);
+												opacity: 0.3;
+											}
+
+											.tick_container {
+												transition: .5s ease;
+												opacity: 0;
+												position: absolute;
+												top: 50%;
+												left: 50%;
+												transform: translate(-50%, -50%);
+												-ms-transform: translate(-50%, -50%);
+												cursor: pointer;
+												text-align: center;
+											}
+
+											.tick {
+												background-color: #09e5ab;
+												color: white;
+												font-size: 12px;
+												padding: 6px 8px;
+												height: 30px;
+												font-weight: 700;
+												width: 31px;
+												border-radius: 100%;
+											}
+										</style>
+										<div class="row">
+											<div class='col text-center'>
+												<input type="radio"  name="PaymentMethod" id="img1"
+													class="d-none imgbgchk" value="Bkash">
+												<label for="img1">
+													<img src="/assets/img/payment/bkash.svg" alt="Image 1">
+													<div class="tick_container">
+														<div class="tick"><i class="fa fa-check"></i></div>
+													</div>
+												</label>
+											</div>
+											<div class='col text-center'>
+												<input type="radio" name="PaymentMethod" id="img2"
+													class="d-none imgbgchk" value="Cod">
+												<label for="img2">
+													<img src="/assets/img/payment/cod.jpg" alt="Image 2">
+													<div class="tick_container">
+														<div class="tick"><i class="fa fa-check"></i></div>
+													</div>
+												</label>
+											</div>
+											<div class='col text-center'>
+												<input type="radio" name="PaymentMethod" id="img3"
+													class="d-none imgbgchk" value="Mastercard">
+												<label for="img3">
+													<img src="/assets/img/payment/mastercard.png" alt="Image 3">
+													<div class="tick_container">
+														<div class="tick"><i class="fa fa-check"></i></div>
+													</div>
+												</label>
+											</div>
+											<div class='col text-center'>
+												<input type="radio" name="PaymentMethod" id="img4"
+													class="d-none imgbgchk" value="Nagad">
+												<label for="img4">
+													<img src="/assets/img/payment/nagad.png" alt="Image 4">
+													<div class="tick_container">
+														<div class="tick"><i class="fa fa-check"></i></div>
+													</div>
+												</label>
+											</div>
+											<div class='col text-center'>
+												<input type="radio" name="PaymentMethod" id="img5"
+													class="d-none imgbgchk" value="Visa">
+												<label for="img5">
+													<img src="/assets/img/payment/visa.png" alt="Image 4">
+													<div class="tick_container">
+														<div class="tick"><i class="fa fa-check"></i></div>
+													</div>
+												</label>
+											</div>
+										</div>
+										<div class="terms-accept">
+											<div class="custom-checkbox">
+												<input type="checkbox" id="terms_accept1">
+												<label for="terms_accept1">I have read and accept <a href="#">Terms
+														&amp; Conditions</a></label>
+											</div>
+										</div>
+
+
+										<div class="submit-section mt-4">
+											<button type="submit" class="btn btn-primary submit-btn">Confirm and
+												Pay</button>
+										</div>
+
+									</div>
+
+
+								</div>
+							</div>
+						</div>
+						<div class="col-md-6 col-lg-5 theiaStickySidebar">
+
+							<div class="card booking-card">
+								<div class="card-header">
+									<h3 class="card-title">Your Order</h3>
+								</div>
+								<div class="card-body">
+									<div class="table-responsive">
+										<table class="table table-center mb-0">
+											<tr>
+												<th>Test</th>
+												<th>Lab</th>
+												<th class="text-end">Total</th>
+											</tr>
+											<tbody class="card-item-wrapper">
+
+											</tbody>
+										</table>
+									</div>
+									<div class="booking-summary pt-5">
+										<div class="booking-item-wrap">
+											<ul class="booking-date">
+												<li>Subtotal <span id="cartTotal"></span></li>
+											</ul>
+											<ul class="booking-fee">
+												<li>Tax <span>Tk. 0.00</span></li>
+											</ul>
+											<div class="booking-total">
+												<ul class="booking-total-list">
+													<li>
+														<span>Total</span>
+														<span>TK.<b class="total-cost"></b></span>
+														<input type="hidden" name="TotalAmount" class="total-cost_input">
+													</li>
+													<li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<footer class="footer">
+
+	<div class="footer-top">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-lg-3 col-md-6">
+
+					<div class="footer-widget footer-about">
+						<div class="footer-logo">
+							<img src="/assets/img/footer-logo.png" alt="logo">
+						</div>
+						<div class="footer-about-content">
+							<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+								incididunt ut labore et dolore magna aliqua. </p>
+							<div class="social-icon">
+								<ul>
+									<li>
+										<a href="#" target="_blank"><i class="fab fa-facebook-f"></i> </a>
+									</li>
+									<li>
+										<a href="#" target="_blank"><i class="fab fa-twitter"></i> </a>
+									</li>
+									<li>
+										<a href="#" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+									</li>
+									<li>
+										<a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+									</li>
+									<li>
+										<a href="#" target="_blank"><i class="fab fa-dribbble"></i> </a>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<div class="col-lg-3 col-md-6">
+
+					<div class="footer-widget footer-menu">
+						<h2 class="footer-title">For Patients</h2>
+						<ul>
+							<li><a href="search.html">Search for Doctors</a></li>
+							<li><a href="login.html">Login</a></li>
+							<li><a href="register.html">Register</a></li>
+							<li><a href="booking.html">Booking</a></li>
+							<li><a href="patient-dashboard.html">Patient Dashboard</a></li>
+						</ul>
+					</div>
+
+				</div>
+				<div class="col-lg-3 col-md-6">
+
+					<div class="footer-widget footer-menu">
+						<h2 class="footer-title">For Doctors</h2>
+						<ul>
+							<li><a href="appointments.html">Appointments</a></li>
+							<li><a href="chat.html">Chat</a></li>
+							<li><a href="login.html">Login</a></li>
+							<li><a href="doctor-register.html">Register</a></li>
+							<li><a href="doctor-dashboard.html">Doctor Dashboard</a></li>
+						</ul>
+					</div>
+
+				</div>
+				<div class="col-lg-3 col-md-6">
+
+					<div class="footer-widget footer-contact">
+						<h2 class="footer-title">Contact Us</h2>
+						<div class="footer-contact-info">
+							<div class="footer-address">
+								<span><i class="fas fa-map-marker-alt"></i></span>
+								<p> 3556 Beech Street, San Francisco,<br> California, CA 94108 </p>
+							</div>
+							<p>
+								<i class="fas fa-phone-alt"></i>
+								+1 315 369 5943
+							</p>
+							<p class="mb-0">
+								<i class="fas fa-envelope"></i>
+								<a href="/cdn-cgi/l/email-protection" class="__cf_email__"
+									data-cfemail="cfaba0acacbabdaa8faab7aea2bfa3aae1aca0a2">[email&#160;protected]</a>
+							</p>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</div>
+
+
+	<div class="footer-bottom">
+		<div class="container-fluid">
+
+			<div class="copyright">
+				<div class="row">
+					<div class="col-md-6 col-lg-6">
+						<div class="copyright-text">
+							<p class="mb-0">&copy; 2020 Doccure. All rights reserved.</p>
+						</div>
+					</div>
+					<div class="col-md-6 col-lg-6">
+
+						<div class="copyright-menu">
+							<ul class="policy-menu">
+								<li><a href="term-condition.html">Terms and Conditions</a></li>
+								<li><a href="privacy-policy.html">Policy</a></li>
+							</ul>
+						</div>
+
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+</footer>
+
+</div>
+<script src="/assets/js/jquery-3.6.0.min.js"></script>
+
+<script src="/assets/js/bootstrap.bundle.min.js"></script>
+
+<script src="/assets/plugins/theia-sticky-sidebar/ResizeSensor.js"></script>
+<script src="/assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js"></script>
+
+<script src="/assets/js/script.js"></script>
+<script>
+
+	//   display cart item from localStorage
+	function getCart() {
+		return localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart')) : []
+	}
+	// display product in checkoutpage
+	function DisplayProductInCheckoutpage() {
+		const parent = document.querySelector('.card-item-wrapper')
+		const cartvalue = getCart()
+
+		for (var i = 0; i < cartvalue.length; i++) {
+			const singleItem = document.createElement('tr')
+			singleItem.innerHTML = `
+				<td>${cartvalue[i].testname}</td>
+				<td>${cartvalue[i].hospitalname}</td>
+				<td class="text-end">Tk.${cartvalue[i].price}</td>
+				<input type="hidden" name="TestName[]" value="${cartvalue[i].testname}"/>
+				<input type="hidden" name="LabName[]" value="${cartvalue[i].hospitalname}"/>
+				<input type="hidden" name="TestPrice[]" value="${cartvalue[i].price}"/>
+				<input type="hidden" name="ServiceID[]" value="${cartvalue[i].id}"/>
+			`;
+			parent.append(singleItem)
+		}
+	}
+	// total amount count
+	function cartTotalAmount() {
+		let cartTotal = document.getElementById("cartTotal");
+		let totalcost = document.querySelector(".total-cost");
+		let totalcost_input = document.querySelector(".total-cost_input");
+		let sum = 0;
+		const cartvalue = getCart()
+		for (var x = 0; x < cartvalue.length; x++) {
+			sum = sum + parseInt(cartvalue[x].price)
+		}
+		cartTotal.innerText = sum
+		totalcost_input.value = sum
+		totalcost.innerText = sum
+		return sum;
+
+	}
+
+	document.addEventListener("DOMContentLoaded", () => {
+
+		DisplayProductInCheckoutpage();
+		cartTotalAmount();
+	});
+
+</script>
+
+
+</body>
+
+</html>

@@ -32,6 +32,7 @@ const { Console } = require('console');
 const async = require('hbs/lib/async');
 const auth = require("../middleware/authenticate");
 const { isObject } = require('util');
+const { stringify } = require('nodemon/lib/utils');
 
 
 // Home route
@@ -357,6 +358,11 @@ router.post("/login",async(req,res)=>{
             expires:new Date(Date.now()+259000000),
             httpOnly:true
         });
+           
+        const token = req.cookies.checkout;
+        if(token == 'no'){
+            res.redirect("/checkout-test")
+        }
         res.redirect("/dashboard")
     }
     if(response.status === 401){
@@ -1014,7 +1020,7 @@ router.get("/chat-patient/:DocNurID/:PatientID",auth,(req,res)=>{
                 Chatlist.messageList[i].status = 'received'
             }
            
-            console.log(Chatlist.messageList)
+            
         }
         
         fetch(`http://192.168.0.121:9010/api/messagelistbypatientid/${req.userData[0].PatientID}`)
@@ -1061,7 +1067,7 @@ router.get("/chat-doctor",auth,(req,res)=>{
     fetch(`http://192.168.0.121:9010/api/messagelistbydocnurid/${req.userData[0].DocNurID}`)
     .then(res => res.json())
     .then(doctorlist =>{
-        console.log(doctorlist)
+       
         res.render("doctor/chat",{userData:req.userData,doctorlist})
     });
     
@@ -1149,12 +1155,62 @@ router.get("/singlehospital/:id",(req,res)=>{
         fetch(`http://192.168.0.121:9010/api/getallservicelistbyhospitalid/${hospital_id}`)
             .then(res => res.json())
             .then(servicelist =>{
-                res.render("lab/single-hospital",{branchlist,servicelist})
+                console.log(servicelist)
+                const data = JSON.stringify(servicelist)
+                res.render("lab/single-hospital",{branchlist,servicelist,data})
             });
     });
     
     
 });
+
+// get location
+
+router.get("/getlocation",(req,res)=>{
+
+   fetch(`http://192.168.0.121:9010/api/gettestlist`)
+   .then(res => res.json())
+   .then(servicelist =>{
+       res.render("getlocation",{servicelist})
+   });
+    
+});
+
+router.post("/lablisttestid",(req,res)=>{
+    const testid =  req.body.testName
+    fetch(`http://192.168.0.121:9010/api/lablistbytestid/${testid}`)
+   .then(res => res.json())
+   .then(lablist =>{
+       if(lablist.length<1){
+
+           console.log("no data found!!")
+           res.render("lab/search",{lablist,msg:"No Data Found!!!"})
+       }else{
+          const data = JSON.stringify(lablist)
+        res.render("lab/search",{lablist,data})
+       }
+       
+   });
+});
+router.get("/lablisttestid",(req,res)=>{
+    res.redirect('back')
+});
+// test-checkout
+router.get("/checkout-test", auth,(req,res)=>{
+    // console.log("auth is working");  
+   res.render('patient/checkout-test',{userData:req.userData})
+});
+
+
+// test-checkout
+router.post("/checkout-test", auth,(req,res)=>{
+    // console.log("auth is working");  
+    console.log(req.body)
+    res.render('patient/checkout-test',{userData:req.userData})
+});
+
+
+
 
 
 

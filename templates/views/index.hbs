@@ -12,7 +12,7 @@
 					<div class="search-box">
 						<form action="/searchresult">
 							<div class="form-group search-location">
-								<input type="text" class="form-control" placeholder="Search Location">
+								<input type="text" id="locationInput" class="form-control" placeholder="Search Location">
 								<span class="form-text">Based on your Location</span>
 							</div>
 							<div class="form-group search-info">
@@ -28,7 +28,7 @@
 				</div>
 			</div>
 		</section>
-
+       
 		<section class="section home-tile-section">
 			<div class="container-fluid">
 				<div class="row">
@@ -54,8 +54,8 @@
 									<img src="assets/img/img-pharmacy1.jpg" alt="" class="img-fluid">
 									<div class="doctor-book-card-content tile-card-content-1">
 										<div>
-											<h3 class="card-title mb-0">Find a Pharmacy</h3>
-											<a href="pharmacy-search.html" class="btn book-btn1 px-3 py-2 mt-3"
+											<h3 class="card-title mb-0">Diagonstic at your doorstep</h3>
+											<a href="/getlocation" class="btn book-btn1 px-3 py-2 mt-3"
 												tabindex="0">Find Now</a>
 										</div>
 									</div>
@@ -367,3 +367,14 @@
 
 
 	{{homeFooter}}
+
+<script>
+	
+	function activatePlace(){
+     var input =   document.getElementById('locationInput');
+	 var autocomplete = new google.maps.places.Autocomplete(input)
+	}
+</script>
+<script async
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCgGDDy_dxPSNdtHxCNx675KBFpecKHwRY&libraries=places&callback=activatePlace">
+</script>

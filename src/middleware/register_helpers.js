@@ -226,93 +226,188 @@ hbs.registerHelper("homeFooter", ()=>{
 
 });
 // Home header
-hbs.registerHelper("homeHeader", ()=>{
-   
-    return new handlebars.SafeString(`<!DOCTYPE html>
-    <html lang="en">
-    
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-        <title>Ecall</title>
-        <link type="image/x-icon" href="/assets/img/favicon.png" rel="icon">
-        <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
-        <!-- <link rel="stylesheet" href="/assets/plugins/fontawesome/css/fontawesome.min.css"> -->
-        <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
-        <link rel="stylesheet" href="/assets/css/style.css">
-        <!--[if lt IE 9]>
-                <script src="/assets/js/html5shiv.min.js"></script>
-                <script src="assets/js/respond.min.js"></script>
-        <![endif]-->
-    </head>
-    
-    <body>
-    
-        <div class="main-wrapper">
-    
-            <header class="header">
-                <nav class="navbar navbar-expand-lg header-nav">
-                    <div class="navbar-header">
-                        <a id="mobile_btn" href="javascript:void(0);">
-                            <span class="bar-icon">
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </span>
-                        </a>
-                        <a href="index.html" class="navbar-brand logo">
-                            <img src="/assets/img/logo.png" class="" height="80px" alt="Logo">
-                        </a>
-                    </div>
-                    <div class="main-menu-wrapper">
-                        <div class="menu-header">
-                            <a href="index.html" class="menu-logo">
-                                <img src="assets/img/logo.png" height="80px" class="" alt="Logo">
+hbs.registerHelper("homeHeader", (cart)=>{
+    if(cart == 1){
+        return new handlebars.SafeString(`<!DOCTYPE html>
+        <html lang="en">
+        
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+            <title>Ecall</title>
+            <link type="image/x-icon" href="/assets/img/favicon.png" rel="icon">
+            <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+            <!-- <link rel="stylesheet" href="/assets/plugins/fontawesome/css/fontawesome.min.css"> -->
+            <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
+            <link rel="stylesheet" href="/assets/css/style.css">
+            <!--[if lt IE 9]>
+                    <script src="/assets/js/html5shiv.min.js"></script>
+                    <script src="assets/js/respond.min.js"></script>
+            <![endif]-->
+        </head>
+        
+        <body>
+        
+            <div class="main-wrapper">
+        
+                <header class="header">
+                    <nav class="navbar navbar-expand-lg header-nav">
+                        <div class="navbar-header">
+                            <a id="mobile_btn" href="javascript:void(0);">
+                                <span class="bar-icon">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </span>
                             </a>
-                            <a id="menu_close" class="menu-close"  href="javascript:void(0);">
-                                <i class="fas fa-times"></i>
+                            <a href="index.html" class="navbar-brand logo">
+                                <img src="/assets/img/logo.png" class="" height="80px" alt="Logo">
                             </a>
                         </div>
-                        <ul class="main-nav">
-                            <li class="has-submenu active">
-                                <a href="/">Home</a>
+                        <div class="main-menu-wrapper">
+                            <div class="menu-header">
+                                <a href="index.html" class="menu-logo">
+                                    <img src="assets/img/logo.png" height="80px" class="" alt="Logo">
+                                </a>
+                                <a id="menu_close" class="menu-close"  href="javascript:void(0);">
+                                    <i class="fas fa-times"></i>
+                                </a>
+                            </div>
+                            <ul class="main-nav">
+                                <li class="has-submenu active">
+                                    <a href="/">Home</a>
+                                </li>
+                                <li class="has-submenu">
+                                    <a href="">How Ecall Works </a>
+                                    
+                                </li>
+                                <li class="has-submenu">
+                                    <a href="">For Doctors </a>
+                                    
+                                </li>
+                                <li class="has-submenu">
+                                    <a href="">About us </a>
+                                    
+                                </li>
+                                <li class="has-submenu">
+                                    <a href="">FAQs </a>
+                                    
+                                </li>
+                            </ul>
+                            </ul>
+                        </div>
+                        <ul class="nav header-navbar-rht">
+                            <li class="nav-item contact-item">
+                                <div class="header-contact-img">
+                                    <i class="far fa-hospital"></i>
+                                </div>
+                                <div class="header-contact-detail">
+                                    <p class="contact-header">Contact</p>
+                                    <p class="contact-info-header"> +1 315 369 5943</p>
+                                </div>
                             </li>
-                            <li class="has-submenu">
-                                <a href="">How Ecall Works </a>
-                                
+                            <li class="nav-item">
+                                <a class="nav-link header-login" href="/login">login / Signup </a>
                             </li>
-                            <li class="has-submenu">
-                                <a href="">For Doctors </a>
-                                
+                            <li class="nav-item">
+                                <button type="button" class="btn btn-primary" data-bs-toggle="offcanvas"data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+                                   <i class="fa fa-cart-arrow-down" aria-hidden="true"></i>  <span class="badge bg-secondary total-item">4</span>
+                               </button>
+                            </li
+                        </ul>
+                    </nav>
+                </header>
+        `)
+    }
+    else{
+        return new handlebars.SafeString(`<!DOCTYPE html>
+        <html lang="en">
+        
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+            <title>Ecall</title>
+            <link type="image/x-icon" href="/assets/img/favicon.png" rel="icon">
+            <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+            <!-- <link rel="stylesheet" href="/assets/plugins/fontawesome/css/fontawesome.min.css"> -->
+            <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" />
+            <link rel="stylesheet" href="/assets/css/style.css">
+            <!--[if lt IE 9]>
+                    <script src="/assets/js/html5shiv.min.js"></script>
+                    <script src="assets/js/respond.min.js"></script>
+            <![endif]-->
+        </head>
+        
+        <body>
+        
+            <div class="main-wrapper">
+        
+                <header class="header">
+                    <nav class="navbar navbar-expand-lg header-nav">
+                        <div class="navbar-header">
+                            <a id="mobile_btn" href="javascript:void(0);">
+                                <span class="bar-icon">
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </span>
+                            </a>
+                            <a href="index.html" class="navbar-brand logo">
+                                <img src="/assets/img/logo.png" class="" height="80px" alt="Logo">
+                            </a>
+                        </div>
+                        <div class="main-menu-wrapper">
+                            <div class="menu-header">
+                                <a href="index.html" class="menu-logo">
+                                    <img src="assets/img/logo.png" height="80px" class="" alt="Logo">
+                                </a>
+                                <a id="menu_close" class="menu-close"  href="javascript:void(0);">
+                                    <i class="fas fa-times"></i>
+                                </a>
+                            </div>
+                            <ul class="main-nav">
+                                <li class="has-submenu active">
+                                    <a href="/">Home</a>
+                                </li>
+                                <li class="has-submenu">
+                                    <a href="">How Ecall Works </a>
+                                    
+                                </li>
+                                <li class="has-submenu">
+                                    <a href="">For Doctors </a>
+                                    
+                                </li>
+                                <li class="has-submenu">
+                                    <a href="">About us </a>
+                                    
+                                </li>
+                                <li class="has-submenu">
+                                    <a href="">FAQs </a>
+                                    
+                                </li>
+                            </ul>
+                            </ul>
+                        </div>
+                        <ul class="nav header-navbar-rht">
+                            <li class="nav-item contact-item">
+                                <div class="header-contact-img">
+                                    <i class="far fa-hospital"></i>
+                                </div>
+                                <div class="header-contact-detail">
+                                    <p class="contact-header">Contact</p>
+                                    <p class="contact-info-header"> +1 315 369 5943</p>
+                                </div>
                             </li>
-                            <li class="has-submenu">
-                                <a href="">About us </a>
-                                
-                            </li>
-                            <li class="has-submenu">
-                                <a href="">FAQs </a>
-                                
+                            <li class="nav-item">
+                                <a class="nav-link header-login" href="/login">login / Signup </a>
                             </li>
                         </ul>
-                        </ul>
-                    </div>
-                    <ul class="nav header-navbar-rht">
-                        <li class="nav-item contact-item">
-                            <div class="header-contact-img">
-                                <i class="far fa-hospital"></i>
-                            </div>
-                            <div class="header-contact-detail">
-                                <p class="contact-header">Contact</p>
-                                <p class="contact-info-header"> +1 315 369 5943</p>
-                            </div>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link header-login" href="/login">login / Signup </a>
-                        </li>
-                    </ul>
-                </nav>
-            </header>
-    `)
+                    </nav>
+                </header>
+        `)
+    }
+   
+  
 
 });
 // patient header

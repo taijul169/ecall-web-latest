@@ -1,0 +1,76 @@
+{{homeHeader}}
+	      
+		<section class="section home-tile-section">
+		 <form action="/lablisttestid" method="POST">	
+			<div class="container-fluid">
+			  <div class="row">
+				  <div class="col-md-8 offset-md-2">
+                    	<div id="wrapper">
+					<button id="location-button">Get User Location</button>
+					<div id="map" style="width: 100%; height:500px;background:#f4f4f4"></div>
+					<div id="output"></div>
+				</div>
+				 <div class="testnamelistarea card ">
+					 <div class="card-header">Select Test Name</div>
+					 <div class="card-body">
+						 
+					     <div class="form-group">
+						  <select required name="testName" id="testName" class="form-control">
+							  <option value="">Choose Test Name</option>
+							  {{#each servicelist}}
+							  <option value="{{this.InvestigationNameID}}">{{this.InvestigationName}}</option>
+							  {{/each}}
+						  </select>
+					   </div>
+					 </div>
+					 <div class="card-footer">
+						 <button type="submit" class="btn btn-primary">View Price</button>
+					 </div>
+				 </div>
+				  </div>
+             
+			
+			  </div>	
+			    
+			</div>
+         </form>			
+		</section>
+
+	{{homeFooter}}
+        
+	  <script>   
+         document.getElementById('location-button').addEventListener("click",()=>{
+			   initMap()
+		 })
+  </script>
+  <script  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCgGDDy_dxPSNdtHxCNx675KBFpecKHwRY&callback=initMap"></script>
+  
+  <script>
+	    function initMap(){
+			  
+			   if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position){
+                  console.log(position);
+                  $.get( "https://maps.googleapis.com/maps/api/geocode/json?key=AIzaSyCgGDDy_dxPSNdtHxCNx675KBFpecKHwRY&latlng="+ position.coords.latitude + "," + position.coords.longitude +"&sensor=false", function(data) {
+
+                    console.log("data",data);
+
+					 var map = new google.maps.Map(document.getElementById('map'),{
+						zoom: 15,
+						center: {lat: position.coords.latitude, lng: position.coords.longitude},
+					})
+
+					// The marker, positioned at Uluru
+					const marker = new google.maps.Marker({
+						position: {lat: position.coords.latitude, lng: position.coords.longitude},
+						map: map,
+					});
+                  })
+
+               
+                });
+                
+            }
+			 
+		}
+  </script>
