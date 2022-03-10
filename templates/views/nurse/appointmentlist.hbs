@@ -1,0 +1,252 @@
+{{patientHeader userData.[0].DocNurID userData.[0].Photo userData.[0].FirstName}}
+
+   {{!-- toaster --}}
+     {{notificationWrapper}}
+
+     
+        <div class="breadcrumb-bar">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col-md-12 col-12">
+                        <nav aria-label="breadcrumb" class="page-breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Appointment</li>
+                            </ol>
+                        </nav>
+                        <h2 class="breadcrumb-title">Appointment History</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
+                      		<div class="profile-sidebar">
+							<div class="widget-profile pro-widget-content">
+								<div class="profile-info-widget">
+									<a href="#" class="booking-doc-img">
+										<img src="{{userData.[0].Photo}}" alt="User Image">
+									</a>
+									<div class="profile-det-info">
+										<h3>Dr.{{userData.[0].FirstName}} {{userData.[0].FirstName}}</h3>
+										<div class="patient-details">
+											<h5 class="mb-0">BDS, MDS - Oral & Maxillofacial Surgery</h5>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="dashboard-widget">
+							   {{doctorSideNav userData.[0].DocNurID}}
+							</div>
+						</div>
+                    </div>
+                    <div class="col-md-7 col-lg-8 col-xl-9">
+                        <div class="row row-grid">
+
+                            {{#each appointmentdata}}
+                            {{!-- single-doctor-widget --}}
+                            <div class="col-md-4 col-lg-4 col-xl-3">
+                                <a href="/singleappointmentview/{{this.appointmentID}}">
+                                  <div class="card position-relative">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{this.FirstName}} {{this.LastName}}</h5>
+                                       <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                <th scope="col">ID</th>
+                                                <th scope="col">Date</th>
+                                                <th scope="col">Time</th>
+                                                <th scope="col">Payment</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                <th scope="row">#{{this.appointmentID}}</th>
+                                                <td>{{this.BookingData}}</td>
+                                                <td>{{this.BookingTime}}</td>
+                                                <td>{{this.PaymentMethod}}</td>
+                                                </tr>
+                                             
+                                              
+                                            </tbody>
+                                         </table>
+                                    </div>
+                                    <div class="card-footer d-flex justify-content-evenly  ">
+                                        <a href="/chat-doctor/{{this.DocNurID}}/{{this.PatientID}}" onclick="appAccept('{{this.PatientID}}')" class="btn-sm btn-outline-primary"><i class="fas fa-phone"></i></a>
+                                        <a href="/chat-doctor-video/{{this.DocNurID}}/{{this.PatientID}}" onclick="appAccept('{{this.PatientID}}')" class="btn-sm btn-outline-secondary"><i class="fas fa-video"></i></a>
+                                        <a href="/chat-doctor/{{this.DocNurID}}/{{this.PatientID}}" onclick="appAccept('{{this.PatientID}}')" class="btn-sm btn-outline-success"><i class="fas fa-ellipsis-v"></i></a>
+                                     
+                                    </div>
+                                   
+                                    <span class="badge bg-success status">Done</span>
+                                </div>
+                                </a>
+                                  
+                            </div>
+
+                            {{/each}}
+                            <nav aria-label="...">
+                            <ul class="pagination">
+                                <li class="page-item disabled">
+                                <span class="page-link">Previous</span>
+                                </li>
+                                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                                <li class="page-item active" aria-current="page">
+                                <span class="page-link">2</span>
+                                </li>
+                                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                                <li class="page-item">
+                                <a class="page-link" href="#">Next</a>
+                                </li>
+                            </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <footer class="footer">
+
+            <div class="footer-top">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6">
+
+                            <div class="footer-widget footer-about">
+                                <div class="footer-logo">
+                                    <img src="assets/img/footer-logo.png" alt="logo">
+                                </div>
+                                <div class="footer-about-content">
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                        incididunt ut labore et dolore magna aliqua. </p>
+                                    <div class="social-icon">
+                                        <ul>
+                                            <li>
+                                                <a href="#" target="_blank"><i class="fab fa-facebook-f"></i> </a>
+                                            </li>
+                                            <li>
+                                                <a href="#" target="_blank"><i class="fab fa-twitter"></i> </a>
+                                            </li>
+                                            <li>
+                                                <a href="#" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                                            </li>
+                                            <li>
+                                                <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+                                            </li>
+                                            <li>
+                                                <a href="#" target="_blank"><i class="fab fa-dribbble"></i> </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+
+                            <div class="footer-widget footer-menu">
+                                <h2 class="footer-title">For Patients</h2>
+                                <ul>
+                                    <li><a href="search.html">Search for Doctors</a></li>
+                                    <li><a href="login.html">Login</a></li>
+                                    <li><a href="register.html">Register</a></li>
+                                    <li><a href="booking.html">Booking</a></li>
+                                    <li><a href="patient-dashboard.html">Patient Dashboard</a></li>
+                                </ul>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+
+                            <div class="footer-widget footer-menu">
+                                <h2 class="footer-title">For Doctors</h2>
+                                <ul>
+                                    <li><a href="appointments.html">Appointments</a></li>
+                                    <li><a href="chat.html">Chat</a></li>
+                                    <li><a href="login.html">Login</a></li>
+                                    <li><a href="doctor-register.html">Register</a></li>
+                                    <li><a href="doctor-dashboard.html">Doctor Dashboard</a></li>
+                                </ul>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+
+                            <div class="footer-widget footer-contact">
+                                <h2 class="footer-title">Contact Us</h2>
+                                <div class="footer-contact-info">
+                                    <div class="footer-address">
+                                        <span><i class="fas fa-map-marker-alt"></i></span>
+                                        <p> 3556 Beech Street, San Francisco,<br> California, CA 94108 </p>
+                                    </div>
+                                    <p>
+                                        <i class="fas fa-phone-alt"></i>
+                                        +1 315 369 5943
+                                    </p>
+                                    <p class="mb-0">
+                                        <i class="fas fa-envelope"></i>
+                                        <a href="/cdn-cgi/l/email-protection" class="__cf_email__"
+                                            data-cfemail="5a3e3539392f283f1a3f223b372a363f74393537">[email&#160;protected]</a>
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="footer-bottom">
+                <div class="container-fluid">
+
+                    <div class="copyright">
+                        <div class="row">
+                            <div class="col-md-6 col-lg-6">
+                                <div class="copyright-text">
+                                    <p class="mb-0">&copy; 2020 Doccure. All rights reserved.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6">
+
+                                <div class="copyright-menu">
+                                    <ul class="policy-menu">
+                                        <li><a href="term-condition.html">Terms and Conditions</a></li>
+                                        <li><a href="privacy-policy.html">Policy</a></li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </footer>
+
+    </div>
+
+
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script src="assets/js/jquery-3.6.0.min.js"></script>
+
+    <script src="assets/js/bootstrap.bundle.min.js"></script>
+
+    <script src="assets/plugins/theia-sticky-sidebar/ResizeSensor.js"></script>
+    <script src="assets/plugins/theia-sticky-sidebar/theia-sticky-sidebar.js"></script>
+
+    <script src="assets/js/script.js"></script>
+</body>
+
+</html>
+
+	{{!-- socket application --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.0/socket.io.js"></script>
+    <script src="/assets/js/custom-notification.js"></script>

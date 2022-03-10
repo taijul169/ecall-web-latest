@@ -1,0 +1,793 @@
+{{patientHeader userData.[0].DocNurID userData.[0].Photo userData.[0].FirstName }}
+
+
+     {{!-- toaster --}}
+     {{notificationWrapper}}
+
+
+        <div class="content">
+			<div class="container-fluid">
+                {{#if message}}
+					<div class="alert {{message.type}}" role="alert">
+						{{message.message}}
+					</div>
+				{{/if}}
+				<div class="row">
+					<div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
+                        <div class="profile-sidebar">
+                            <div class="widget-profile pro-widget-content">
+                                   <div class="profile-info-widget">
+                                    <a href="#" class="booking-doc-img">
+                                        <img src="{{userData.[0].Photo}}" alt="User Image">
+                                    </a>
+                                    <div class="profile-det-info">
+                                        <h3>Dr.{{userData.[0].FirstName}} {{userData.[0].LastName}}</h3>
+                                        <div class="patient-details">
+                                            <h5><i class="fas fa-birthday-cake"></i> 24 Jul 1983, 38 years</h5>
+                                            <h5 class="mb-0"><i class="fas fa-map-marker-alt"></i> {{userData.[0].PrimaryAddress}}</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="dashboard-widget">
+                               {{doctorSideNav userData.[0].DocNurID}}
+                            </div>
+                        </div>
+                    </div>
+					<div class="col-md-7 col-lg-8 col-xl-9">
+                        <div class="chat-window">
+
+                            <div class="chat-cont-left">
+                                <div class="chat-header">
+                                    <span>Chats</span>
+                                    <a href="javascript:void(0)" class="chat-compose">
+                                        <i class="fa fa-video-camera" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                                <form class="chat-search">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <i class="fas fa-search"></i>
+                                        </div>
+                                        <input type="text" class="form-control rounded-pill" placeholder="Search">
+                                    </div>
+                                </form>
+                                <div class="chat-users-list">
+                                    <div class="chat-scroll">
+                                    {{#each doctorlist}}
+                                        {{!-- single-doctor --}}
+                                        <a href="/chat-doctor/{{../userData.[0].DocNurID}}/{{this.PatientID}}" class="media d-flex">
+                                            <div class="media-img-wrap flex-shrink-0">
+                                                <div class="avatar avatar-away">
+                                                    <img src="{{this.Photo}}" class="avatar-img rounded-circle"   
+                                              onerror="this.onerror=null; this.src='/assets/img/default.jpg'" id="output" alt="User Image">
+                                                    
+                                                </div>
+                                            </div>
+                                            <div class="media-body flex-grow-1">
+                                                <div>
+                                                    <div class="user-name">Mr.{{this.FirstName}} {{this.LastName}}</div>
+                                                    
+                                                </div>
+                                                <div>
+                                                    <div class="last-chat-time block">2 min</div>
+                                                    <div class="badge badge-success rounded-pill">15</div>
+                                                </div>
+                                            </div>
+                                        </a>
+                                        {{/each}}
+                                        
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="chat-cont-right">
+                                <div class="chat-header">
+                                    <a id="back_user_list" href="javascript:void(0)" class="back-user-list">
+                                        <i class="material-icons">chevron_left</i>
+                                    </a>
+                                    <div class="media d-flex">
+                                        <div class="media-img-wrap flex-shrink-0">
+                                            <div class="avatar avatar-online">
+                                                <img src="{{Chatlist.personalInfo.[0].Photo}}" alt="User Image"
+                                                    class="avatar-img rounded-circle">
+                                            </div>
+                                        </div>
+                                        <div class="media-body flex-grow-1">
+                                            <div class="user-name">Mr. {{Chatlist.personalInfo.[0].FirstName}}</div>
+                                            <div class="user-status">online</div>
+                                        </div>
+                                    </div>
+                                    <div class="chat-options">
+                                        <a href="javascript:void(0)" data-bs-toggle="modal"
+                                            data-bs-target="#voice_call">
+                                           <i class="fas fa-phone"></i>
+                                        </a>
+                                        <a href="javascript:void(0)" data-bs-toggle="modal"
+                                            data-bs-target="#video_call">
+                                            <i class="fas fa-video"></i>
+                                        </a>
+                                        <a href="javascript:void(0)">
+                                           <i class="fas fa-ellipsis-v"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="chat-body">
+                                    <div class="chat-scroll" id="chat-scroll">
+                                        <ul class="list-unstyled" id="list-unstyled">
+                                      {{#each Chatlist.messageList}}
+                                            <li class="media d-flex {{this.status}}">
+                                                <div class="media-body flex-grow-1">
+                                                    <div class="msg-box">
+                                                        <div>
+                                                            <p>{{this.MessageText}}</p>
+                                                            <ul class="chat-msg-info">
+                                                                <li>
+                                                                    <div class="chat-time">
+                                                                       <span>{{this.CreateTime}}</span>
+                                                                    </div>
+                                                                </li>
+                                                            </ul>
+                                                            <div class="chat-msg-attachments">
+                                                                <div class="chat-attachment">
+                                                                     <img id="currentPhoto" download="custom-filename.jpg" src="{{this.MessageFilePath}}" onerror="this.onerror=null; this.remove();" alt="2" >
+                                                                    <div class="chat-attach-caption"></div>
+                                                                    <a download="chat.jpg" href="{{this.MessageFilePath}}" class="chat-attach-download">
+                                                                    <i class="fas fa-download"></i>
+                                                                    </a>
+                                                                </div>
+                                                            
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                            
+
+                                         {{/each}}
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="chat-footer">
+                                 <form id="myForm">
+                                    <div class="input-group">
+                                        
+                                        <input type="hidden" id="SenderID" value="{{userData.[0].DocNurID}}">
+                                        <div class="btn-file btn">
+                                            <i class="fa fa-paperclip"></i>
+                                            <input type="file" id="photo">
+                                        </div>
+                                        <input type="text" class="input-msg-send form-control rounded-pill"
+                                            placeholder="Type something" id="messageText">
+                                        <button type="submit" class="btn msg-send-btn"><i
+                                                class="fab fa-telegram-plane"></i></button>
+                                           
+                                    </div>
+                                 </form>  
+                                </div>
+                                  
+                                <script>
+                                    	const myForm  =  document.getElementById("myForm");
+                                        const photo  =  document.getElementById("photo");
+                                        const messageText  =  document.getElementById("messageText");
+                                        const SenderID  =  document.getElementById("SenderID");
+                                        var typedMessage =  document.querySelector('.input-msg-send');
+                                        let href = window.location.href; 
+                                                // let href = "https://www.facebook.com/david"; // Current window url; 
+                                                // Creating URL object
+                                                let url = new URL(href);
+                                                let str = url.pathname.substring(1)
+                                                var n = str.lastIndexOf('/');
+                                                
+                                                var result = str.substring(n + 1);
+                                                var both = str.substring(n-9).split("/")
+                                                console.log("both id:",both)
+
+                                        myForm.addEventListener("submit", e =>{
+                                            e.preventDefault();
+
+                                             sendMessage(messageText.value);
+                                            
+                                            const formData =  new FormData();
+                                            formData.append("Photo",photo.files[0]);
+                                            formData.append("MessageText", messageText.value);
+                                            formData.append("SenderID", SenderID.value);
+                                            
+                                            // Display the values
+                                                for (var value of formData.values()) {
+                                                  console.log(value);
+                                                }
+                                                
+                                            fetch(`http://192.168.0.121:9010/api/messageinsert/${both[0]}/${both[1]}`,{
+                                                method:'POST',
+                                                body:formData
+                                            }).catch(console.error)
+                                            typedMessage.value = '';
+                                            photo.files[0] = ''
+                                           
+                                            
+                                        });
+                                </script>
+                            </div>
+
+                         
+
+                        </div>
+                           {{!-- prescription wrapper --}}
+
+                            <div class="prescription-wraper mt-2">
+                                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Take Note</button>
+                                    </li>
+                                    <li class="nav-item" role="presentation">
+                                        <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Prescribe</button>
+                                    </li>
+                                   
+                                    </ul>
+                                    <div class="tab-content mb-5" id="myTabContent">
+                                        <div class="tab-pane fade show active " id="home" role="tabpanel" aria-labelledby="home-tab">
+                                            <div class="form-floating">
+                                            <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+                                            <label for="floatingTextarea2">Take Note........</label>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade " id="profile" role="tabpanel" aria-labelledby="profile-tab"> 
+                                            <form action="/makeprescription" method="post" id="myForm_pres" >
+                                                <div class="row">
+                                                    <div class="col-md-7 col-lg-8">
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                 
+                                                                    <div class="info-widget">
+                                                                        <h4 class="card-title">Patient Information</h4>
+                                                                        
+                                                                    <div class="payment-widget w-25">
+                                                                        <div class="payment-list my-3 font-bold">Patient Type</div>
+                                                                        <div class="payment-list d-flex justify-content-between">
+                                                                             <input type="hidden" name="PatientID" value="{{Chatlist.personalInfo.[0].PatientID}}">
+                                                                            <label class="payment-radio credit-card-option">
+                                                                                <input type="radio" value="New" name="PatientType" checked>
+                                                                                <span class="checkmark"></span>
+                                                                                New
+                                                                            </label>
+                                                                             <label class="payment-radio paypal-option pl-2">
+                                                                                <input type="radio" value="Old" name="PatientType">
+                                                                                <span class="checkmark"></span>
+                                                                                Old
+                                                                            </label>
+                                                                        </div>
+                                                                      
+                                                                    </div>
+                                                                        <div class="row">
+                                                                            <div class="col-md-6 col-sm-12">
+                                                                                <div class="form-group card-label">
+                                                                                    <label>First Name</label>
+                                                                                    <input name="PatientName" value="{{Chatlist.personalInfo.[0].FirstName}}" id="patientFirstName" class="form-control" type="text">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-6 col-sm-12">
+                                                                                <div class="form-group card-label">
+                                                                                    <label>Last Name</label>
+                                                                                    <input name="lastName" value="{{Chatlist.personalInfo.[0].LastName}}" id="patientLastName" class="form-control" type="text">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-6 col-sm-12">
+                                                                                <div class="form-group card-label">
+                                                                                    <label>Gender</label>
+                                                                                    <input name="PatientGender" value="{{Chatlist.personalInfo.[0].Gender}}"  placeholder="optional" class="form-control" type="text">
+                                                                                </div>
+                                                                            </div>
+                                                                             <div class="col-md-6 col-sm-12">
+                                                                                <div class="form-group card-label">
+                                                                                    <label>Age</label>
+                                                                                    <input name="PatientAge" value="{{Chatlist.personalInfo.[0].Age}}"  placeholder="optional" class="form-control" type="text">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-6 col-sm-12">
+                                                                                <div class="form-group card-label">
+                                                                                    <label>Phone</label>
+                                                                                    <input name="PatientMob" value="{{Chatlist.personalInfo.[0].PhoneNumber}}" class="form-control" type="text">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        
+                                                                    </div>
+                                                                      <div class="info-widget">
+                                                                        <h4 class="card-title">Consultant Information</h4>
+                                                                          <input type="hidden" value="{{userData.[0].DocNurID}}" name="DocNurID">
+                                                                        <div class="row">
+                                                                            <div class="col-md-6 col-sm-12">
+                                                                                <div class="form-group card-label">
+                                                                                    <label>First Name</label>
+                                                                                    <input name="DoctorName" value="{{userData.[0].FirstName}}" id="patientFirstName" class="form-control" type="text">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-6 col-sm-12">
+                                                                                <div class="form-group card-label">
+                                                                                    <label>Last Name</label>
+                                                                                    <input name="lastName" value="{{userData.[0].LastName}}" id="patientLastName" class="form-control" type="text">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-6 col-sm-12">
+                                                                                <div class="form-group card-label">
+                                                                                    <label>Gender</label>
+                                                                                    <input name="DoctorGender" value="{{userData.[0].Gender}}"  placeholder="optional" class="form-control" type="text">
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-6 col-sm-12">
+                                                                                <div class="form-group card-label">
+                                                                                    <label>Phone</label>
+                                                                                    <input name="DoctorMob" value="{{userData.[0].PhoneNumber}}" class="form-control" type="text">
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        
+                                                                    </div>
+
+                                                            
+                                                            </div>
+                                                        </div>
+                                                </div>
+                                                    <div class="col-md-5 col-lg-4 theiaStickySidebar">
+
+                                                        <div class="card booking-card">
+                                                            <div class="card-header">
+                                                                <h4 class="card-title">Prescribe</h4>
+                                                            </div>
+                                                            <div class="card-body">
+
+                                                               <div class="form-group">
+                                                                   <label for="">Patient Problems/Symtoms Descriptions</label>
+                                                                     <div class="form-floating">
+                                                                        <textarea class="form-control" name="PatientSymtomps" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 100px"></textarea>
+                                                                        <label for="floatingTextarea2">Symtoms........</label>
+                                                                        </div>
+                                                               </div>
+
+                                                                <div class="booking-summary">
+                                                                    <div class="booking-item-wrap">
+                                                                         {{!-- medicine-wrap --}}
+                                                                        <div class="medicine-list-wraper py-2 ">
+                                                                            <label for="">Medicine Suggestion</label>
+                                                                            <ol id="medicinelistdiv">
+                                                                                <li>{{!-- single medicine --}}
+                                                                                    <div class="single-medicine border p-2 position-relative my-2">
+                                                                                    <label for="" class="p-2">Medicine</label>
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-12">
+                                                                                            <div class="form-group">
+                                                                                                <select name="MedicineName[]"  class="form-control" >
+                                                                                                    <option value="">select medicine</option>
+                                                                                                    <option value="Abacavir (ABC) ">Abacavir (ABC) </option>
+                                                                                                    <option value="Acetazolamide">Acetazolamide</option>
+                                                                                                    <option value="Acetylsalicylic acid ">Acetylsalicylic acid </option>
+                                                                                                    <option value="Aciclovir">Aciclovir</option>
+                                                                                                    <option value="Albendazole">Albendazole </option>
+                                                                                                
+                                                                                            </select>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="col-md-8">
+                                                                                            <div class="form-group">
+                                                                                                <select name="MedicineTime[]"  class="form-control">
+                                                                                                    <option value="">select time</option>
+                                                                                                    <option value="">1+1+1</option>
+                                                                                                    <option value="">1+0+1</option>
+                                                                                                    <option value="">0+0+1</option>
+                                                                                                    <option value="">1+0+0</option>
+                                                                                                    <option value="">1+1+0</option>
+                                                                                                
+                                                                                                </select>
+                                                                                            </div>
+                                                                                        
+                                                                                        </div>
+                                                                                        <div class="col-md-4">
+                                                                                            <div class="form-group">
+                                                                                                <input type="number" placeholder="Days" name="MedicineDays[]" class="form-control" >
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                    <div class="close-btn">X</div>
+                                                                                    
+                                                                        
+                                                                                  </div>
+                                                                                </li>
+                                                                            </ol>
+
+                                                                            
+                                                                            <div class="btn-wrap w-100 text-right m-2">
+                                                                                <input onclick="appendMedicine()" class="btn btn-sm btn-secondary add-medicine" type="button" value="Add Medicine">
+                                                                                 
+                                                                            </div>
+                                                                            
+                                                                        </div>
+                                                                       
+                                                                         {{!-- test-wrap --}}
+                                                                        <div class="medicine-list-wraper py-2">
+                                                                            <label for="">Test Suggestion</label>
+                                                                            <div class=" my-4">
+                                                                              <ol class="testNamelist">
+                                                                                  
+                                                                              </ol>
+                                                                            </div>
+                                                                             
+                                                                            <div class="single-medicine border p-2">
+                                                                              <div class="row">
+                                                                                  <div class="col-md-12">
+                                                                                    <div class="form-group">
+                                                                                      <select name="TestName[]" id="testlist" class="form-control" >
+                                                                                        <option value="">select medicine</option>
+                                                                                        <option value="ECHOCARDIOGRAM">ECHOCARDIOGRAM</option>
+                                                                                        <option value="USG">USG</option>
+                                                                                        <option value="MRI">MRI</option>
+                                                                                        <option value="UROFLOWMETRY">UROFLOWMETRY</option>
+                                                                                        <option value="angiocardiography">angiocardiography</option>
+                                                                                        <option value="lumbar puncture">lumbar puncture</option>
+                                                                                        <option value="auscultation">auscultation</option>
+                                                                                        <option value="mediastinoscopy">mediastinoscopy</option>
+                                                                                       
+                                                                                    </select>
+                                                                                    </div>
+                                                                                  </div>
+                                                                                 
+                                                                              </div> 
+                                                                            </div>
+                                                                         
+                                                                       
+                                                                        </div>
+                                                                        <div class="submit-section mt-4">
+                                                                            <button type="submit" class="btn btn-primary submit-btn">Confirm</button>
+                                                                        </div>
+                                                                    
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </form>	
+                                         </div>
+                                        
+                                    </div>
+                            </div>
+					</div>
+				</div>
+             
+			</div>
+		</div>
+       
+        <script>
+                const appendMedicine = ()=>{
+                    
+                    const medicinelistdiv =  document.getElementById('medicinelistdiv');
+                const singleMedi = document.createElement('li');
+                singleMedi.innerHTML=`{{!-- single medicine --}}
+                    <div class="single-medicine border p-2 position-relative my-2">
+                    <label for="" class="p-2">Medicine</label>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <select name="MedicineName[]" id="" class="form-control" >
+                                <option value="">select medicine</option>
+                                <option value="Napa Extra -10 mg">Napa Extra -10 mg</option>
+                                <option value="Napa Extra -10 mg">Napa Extra -10 mg</option>
+                                <option value="Napa Extra -10 mg">Napa Extra -10 mg</option>
+                                <option value="Napa Extra -10 mg">Napa Extra -10 mg</option>
+                                <option value="Napa Extra -10 mg">Napa Extra -10 mg</option>
+                                <option value="Napa Extra -10 mg">Napa Extra -10 mg</option>
+                                <option value="Napa Extra -10 mg">Napa Extra -10 mg</option>
+                            </select>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group">
+                                <select name="MedicineTime[]"  class="form-control" >
+                                    <option value="">select time</option>
+                                    <option value="1+1+1">1+1+1</option>
+                                    <option value="1+0+1">1+0+1</option>
+                                    <option value="0+0+1">0+0+1</option>
+                                    <option value="1+0+0">1+0+0</option>
+                                    <option value="1+1+0">1+1+0</option>
+                                
+                                </select>
+                            </div>
+                        
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <input type="text" placeholder="Days" name="MedicineDays[]" class="form-control" >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="close-btn">X</div>
+                    </div>`;
+                    medicinelistdiv.appendChild(singleMedi)
+                }
+
+        </script>
+        <footer class="footer">
+
+            <div class="footer-top">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6">
+
+                            <div class="footer-widget footer-about">
+                                <div class="footer-logo">
+                                    <img src="/assets/img/footer-logo.png" alt="logo">
+                                </div>
+                                <div class="footer-about-content">
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+                                        incididunt ut labore et dolore magna aliqua. </p>
+                                    <div class="social-icon">
+                                        <ul>
+                                            <li>
+                                                <a href="#" target="_blank"><i class="fab fa-facebook-f"></i> </a>
+                                            </li>
+                                            <li>
+                                                <a href="#" target="_blank"><i class="fab fa-twitter"></i> </a>
+                                            </li>
+                                            <li>
+                                                <a href="#" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                                            </li>
+                                            <li>
+                                                <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+                                            </li>
+                                            <li>
+                                                <a href="#" target="_blank"><i class="fab fa-dribbble"></i> </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+
+                            <div class="footer-widget footer-menu">
+                                <h2 class="footer-title">For Patients</h2>
+                                <ul>
+                                    <li><a href="search.html">Search for Doctors</a></li>
+                                    <li><a href="login.html">Login</a></li>
+                                    <li><a href="register.html">Register</a></li>
+                                    <li><a href="booking.html">Booking</a></li>
+                                    <li><a href="patient-dashboard.html">Patient Dashboard</a></li>
+                                </ul>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+
+                            <div class="footer-widget footer-menu">
+                                <h2 class="footer-title">For Doctors</h2>
+                                <ul>
+                                    <li><a href="appointments.html">Appointments</a></li>
+                                    <li><a href="chat.html">Chat</a></li>
+                                    <li><a href="login.html">Login</a></li>
+                                    <li><a href="doctor-register.html">Register</a></li>
+                                    <li><a href="doctor-dashboard.html">Doctor Dashboard</a></li>
+                                </ul>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+
+                            <div class="footer-widget footer-contact">
+                                <h2 class="footer-title">Contact Us</h2>
+                                <div class="footer-contact-info">
+                                    <div class="footer-address">
+                                        <span><i class="fas fa-map-marker-alt"></i></span>
+                                        <p> 3556 Beech Street, San Francisco,<br> California, CA 94108 </p>
+                                    </div>
+                                    <p>
+                                        <i class="fas fa-phone-alt"></i>
+                                        +1 315 369 5943
+                                    </p>
+                                    <p class="mb-0">
+                                        <i class="fas fa-envelope"></i>
+                                        <a href="/cdn-cgi/l/email-protection" class="__cf_email__"
+                                            data-cfemail="b1d5ded2d2c4c3d4f1d4c9d0dcc1ddd49fd2dedc">[email&#160;protected]</a>
+                                    </p>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="footer-bottom">
+                <div class="container-fluid">
+
+                    <div class="copyright">
+                        <div class="row">
+                            <div class="col-md-6 col-lg-6">
+                                <div class="copyright-text">
+                                    <p class="mb-0">&copy; 2020 Doccure. All rights reserved.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-6">
+
+                                <div class="copyright-menu">
+                                    <ul class="policy-menu">
+                                        <li><a href="term-condition.html">Terms and Conditions</a></li>
+                                        <li><a href="privacy-policy.html">Policy</a></li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </footer>
+
+    </div>
+
+
+    <div class="modal fade call-modal" id="voice_call">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+
+                    <div class="call-box incoming-box">
+                        <div class="call-wrapper">
+                            <div class="call-inner">
+                                <div class="call-user">
+                                    <img alt="User Image" src="/assets/img/doctors/doctor-thumb-02.jpg"
+                                        class="call-avatar">
+                                    <h4>Darren Elder</h4>
+                                    <span>Connecting...</span>
+                                </div>
+                                <div class="call-items">
+                                    <a href="javascript:void(0);" class="btn call-item call-end" data-bs-dismiss="modal"
+                                        aria-label="Close"><i class="fas fa-phone"></i></a>
+                                    <a href="voice-call.html" class="btn call-item call-start"><i class="fas fa-phone"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade call-modal" id="video_call">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+
+                    <div class="call-box incoming-box">
+                        <div class="call-wrapper">
+                            <div class="call-inner">
+                                <div class="call-user">
+                                    <img class="call-avatar" src="/assets/img/doctors/doctor-thumb-02.jpg"
+                                        alt="User Image">
+                                    <h4>Darren Elder</h4>
+                                    <span>Calling ...</span>
+                                </div>
+                                <div class="call-items">
+                                    <a href="javascript:void(0);" class="btn call-item call-end" data-bs-dismiss="modal"
+                                        aria-label="Close"> <i class="fas fa-video"></i></a>
+                                    <a href="video-call.html" class="btn call-item call-start"> <i class="fas fa-video"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/assets/js/jquery-3.6.0.min.js"></script>
+
+    <script src="/assets/js/bootstrap.bundle.min.js"></script>
+
+    <script src="/assets/js/script.js"></script>
+    {{!-- chat application --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.0/socket.io.js" ></script>
+
+   <script>
+         var  socket =  io('192.168.0.121:8000')
+         //get current time twelve hours
+         function formatAMPM(date) {
+            var hours = date.getHours();
+            var minutes = date.getMinutes();
+            var ampm = hours >= 12 ? 'pm' : 'am';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // the hour '0' should be '12'
+            minutes = minutes < 10 ? '0'+minutes : minutes;
+            var strTime = hours + ':' + minutes + ' ' + ampm;
+            return strTime;
+            }
+         
+         var chatWrapScrol =  document.getElementById("chat-scroll");
+         var messagArea =  document.getElementById("list-unstyled");
+         var result =  '';
+     
+
+
+     
+       
+        function sendMessage(sentMessage){
+            
+          
+          //append message
+          appendMessage(sentMessage,'sent');
+
+          
+           //sending message to the opposite user
+            socket.emit("messageSent",{
+                "Message":sentMessage,
+                "ReceiverID":both[1]
+            })
+        }
+
+        //append message
+        function appendMessage(msg, type){
+
+            let singlelist =  document.createElement('li');
+            let className = type;
+            singlelist.classList.add('media','d-flex',className);
+            let markup = `<div class="media-body flex-grow-1">
+                    <div class="msg-box">
+                        <div>
+                            <p>${msg}</p>
+                            <div class="chat-msg-actions dropdown">
+                                <a href="#" data-bs-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                    <i class="fe fe-elipsis-v"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item" href="#">Delete</a>
+                                </div>
+                            </div>
+                            <ul class="chat-msg-info">
+                                <li>
+                                    <div class="chat-time">
+                                        <span>${formatAMPM(new Date)}</span>
+                                    </div>
+                                </li>
+                                <li><a href="#">Edit</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>`
+                singlelist.innerHTML = markup;
+                messagArea.appendChild(singlelist)
+        }
+
+        socket.on("messageSent", function(message){
+            if(message.ReceiverID == SenderID.value){
+                appendMessage(message.Message,'received')
+                console.log(message)
+            }
+          
+        })
+
+  </script> 
+</body>
+
+</html>
+    
+    <script>
+
+             var testWrapper = $('.testNamelist')
+              $('#testlist').on('change', function() {
+                  var element_test = `<li><input type="text" name="TestName[]" class="no-border" value="${this.value}"></li>`
+                  testWrapper.append(element_test)
+                 
+            });
+    </script>
+	{{!-- socket application --}}
+    <script src="/assets/js/custom-notification.js"></script>

@@ -656,6 +656,86 @@ hbs.registerHelper("doctorSideNav", (id)=>{
 
 });
 
+// doctor-sidebar
+hbs.registerHelper("nurseSideNav", (id)=>{
+   
+    return new handlebars.SafeString(`
+    <nav class="dashboard-menu">
+    <ul>
+        <li>
+            <a href="/dashboard">
+                <i class="fas fa-columns"></i>
+                <span>Dashboard</span>
+            </a>
+        </li>
+        <li>
+            <a href="/appointmentlistindoctorend/${id}">
+                <i class="fas fa-calendar-check"></i>
+                <span>Appointments</span>
+            </a>
+        </li>
+        <li>
+            <a href="/my-patients/${id}">
+                <i class="fas fa-user-injured"></i>
+                <span>My Patients</span>
+            </a>
+        </li>
+        <li>
+            <a href="/scheduling/${id}">
+                <i class="fas fa-hourglass-start"></i>
+                <span>Schedule Timings</span>
+            </a>
+        </li>
+     
+        <li>
+            <a href="/invoices/${id}">
+                <i class="fas fa-file-invoice"></i>
+                <span>Invoices</span>
+            </a>
+        </li>
+        <li>
+            <a href="/accounts/${id}">
+                <i class="fas fa-file-invoice-dollar"></i>
+                <span>Accounts</span>
+            </a>
+        </li>
+        <li>
+            <a href="/reviews/${id}">
+                <i class="fas fa-star"></i>
+                <span>Reviews</span>
+            </a>
+        </li>
+        <li>
+            <a href="/chat-doctor">
+                <i class="fas fa-comments"></i>
+                <span>Message</span>
+                <small class="unread-msg">23</small>
+            </a>
+        </li>
+        <li class="active">
+            <a href="/profile-settings/${id}">
+                <i class="fas fa-user-cog"></i>
+                <span>Profile Settings</span>
+            </a>
+        </li>
+        <li>
+            <a href="/change-password/${id}">
+                <i class="fas fa-lock"></i>
+                <span>Change Password</span>
+            </a>
+        </li>
+        <li>
+            <a href="/logout">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </a>
+        </li>
+    </ul>
+</nav>`)
+
+});
+
+
 // patient-sidebar
 hbs.registerHelper("commonFooter", ()=>{
    

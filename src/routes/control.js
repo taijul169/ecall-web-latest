@@ -186,6 +186,9 @@ router.get("/doctor-profile",(req,res)=>{
 //     res.render("doctor-profile-settings")  
 //  });
 
+
+
+
 // doctor register
 router.get("/doctor-register",(req,res)=>{
 
@@ -197,10 +200,49 @@ router.get("/doctor-register",(req,res)=>{
     
 });
 
+//=================================== NURSE MODULE START================================================== 
 
+// nurse register
+router.get("/nurse-register",(req,res)=>{
+    res.render("nurse/nurse-register")
+});
+
+
+router.post("/nurse-register",async(req,res)=>{
+      
+    var {phone,username,department,usertype, password} = req.body;
+    const response =  await (fetch('http://192.168.0.121:9010/api/signup', 
+    { 
+        method: 'POST', 
+        body: JSON.stringify(req.body),
+        headers: { 'Content-Type': 'application/json' }
+    }));
+
+    console.log(response.status)
+    if(response.status === 200){
+        req.session.message={
+            type:'alert-success',
+            intro:'Created!',
+            message:'A Verification Code has been sent to your Phone.'
+        }
+        res.redirect(`/otp-verify/${phone}`)
+    }
+    if(response.status === 409){
+        req.session.message={
+            type:'alert-danger',
+            intro:'Created!',
+            message:'Invalid Registration.'
+        }
+        res.redirect("/nurse-register")
+    }
+    const data = await  response.json()
+    console.log(data)
+
+});
+
+//=================================== NURSE MODULE END================================================== 
 
 // expericen insert
-
 router.post('/experienceinsert/:id',async(req,res)=>{
     var {institutionName,designation,start_date,end_date} = req.body;
     console.log(req.body)
@@ -419,7 +461,7 @@ router.post("/doctor-register",async(req,res)=>{
 
 
 // doctor-dashboard
-router.get("/dashboard",auth,(req,res,next)=>{
+router.get("/dashboard",auth,(req,res, next)=>{
    
     if(req.userData[0].UserType == 1){
 
@@ -455,6 +497,42 @@ router.get("/dashboard",auth,(req,res,next)=>{
                 }
             }  
             res.render("doctor/doctor-dashboard",{userData:req.userData,appointmentdata:UPcommingData,TodayData})
+        });  
+    }
+    else if(req.userData[0].UserType == 2){
+
+        const id =  req.userData[0].DocNurID;
+        console.log(id);
+        fetch(`http://192.168.0.121:9010/api/getappoinmentlistbydoc/${id}`)
+        .then(res =>res.json())
+        .then(appointmentdata =>{
+            console.log(appointmentdata.length)
+            // current date
+            var date = new Date();
+            console.log(date)
+
+            var timezoneOffset = date.getMinutes() + date.getTimezoneOffset();
+            var timestamp = date.getTime() + timezoneOffset * 1000;
+            var correctDate = new Date(timestamp);
+            
+            correctDate.setUTCHours(0, 0, 0, 0);
+            var current_date = correctDate.toISOString()
+            var d = current_date;
+            d = d.split('T');
+            console.log("d=",d[0]);
+
+            var TodayData =[];
+            var UPcommingData =[];
+            for(var i = 0; i<appointmentdata.length;i++){
+                if(appointmentdata[i].BookingDate == d[0]){
+                 TodayData.push(appointmentdata[i]);
+
+                }
+                else{
+                    UPcommingData.push(appointmentdata[i])
+                }
+            }  
+            res.render("nurse/nurse-dashboard",{userData:req.userData,appointmentdata:UPcommingData,TodayData})
         });  
     }
     else{
@@ -516,15 +594,23 @@ router.get("/singleappointmentview/:invoiceid",auth,(req,res)=>{
 })
 
 //  profile settings
-
 router.get("/profile-settings/:id",auth,(req,res)=>{
     if(req.userData[0].UserType == 1){
         const id =  req.params.id;
         fetch(`http://192.168.0.121:9010/api/singledoctor/${id}`)
         .then(res => res.json())
         .then(singleDocData =>{
-            console.log(singleDocData)
+            //console.log(singleDocData)
             res.render("doctor/doctor-profile-settings",{singleDocData,userData:req.userData})
+        });
+    }
+    else if(req.userData[0].UserType == 2){
+        const id =  req.params.id;
+        fetch(`http://192.168.0.121:9010/api/singledoctor/${id}`)
+        .then(res => res.json())
+        .then(singleDocData =>{
+            //console.log(singleDocData)
+            res.render("nurse/nurse-profile-settings",{singleDocData,userData:req.userData})
         });
     }
     else{
@@ -667,18 +753,14 @@ router.post("/doctor-profile-settings/:id",  async(req, res)=>{
         if(req.files){
              Photo =  req.files.photo.name;
         }
-        
-        // Photo =  fs.createReadStream(Photo.data)
-        console.log("Body photo:",Photo)
-        console.log("Body data:",req.body)
        var {
            RegistrationNo,
            FirstName,	
            LastName,	
            userName,	
-           PhoneNumber	,
+           PhoneNumber,
            Gender,
-           DateOfBirth	,
+           DateOfBirth,
            BloodGroup,	
            NID,
            Address,	
@@ -1208,6 +1290,22 @@ router.post("/checkout-test", auth,(req,res)=>{
     console.log(req.body)
     res.render('patient/checkout-test',{userData:req.userData})
 });
+
+// video calling receiver
+router.get("/videocalling-reciever", auth,(req,res)=>{
+    // console.log("auth is working");  
+   res.render('patient/video-receiver',{userData:req.userData})
+});
+
+// video calling sender
+router.get("/videocalling-sender", auth,(req,res)=>{
+    // console.log("auth is working");  
+   res.render('doctor/video-sender',{userData:req.userData})
+});
+
+
+
+
 
 
 

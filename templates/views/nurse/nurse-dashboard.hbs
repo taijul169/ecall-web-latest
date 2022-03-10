@@ -1,0 +1,217 @@
+{{patientHeader userData.[0].DocNurID userData.[0].Photo userData.[0].FirstName}}
+
+     {{!-- toaster --}}
+     {{notificationWrapper}}
+
+ {{!-- toaster end--}}
+		<div class="breadcrumb-bar">
+			<div class="container-fluid">
+				<div class="row align-items-center">
+						{{#if message}}
+							<div class="alert {{message.type}}" role="alert">
+								{{message.message}}
+							</div>
+						{{/if}}
+					<div class="col-md-12 col-12">
+						<nav aria-label="breadcrumb" class="page-breadcrumb">
+							<ol class="breadcrumb">
+								<li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
+								<li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+							</ol>
+						</nav>
+						<h2 class="breadcrumb-title">Dashboard</h2>
+					</div>
+				</div>
+			</div>
+		</div>
+
+        {{!-- <input type="hidden" id="SenderIDNoti" value="{{userData.[0].DocNurID}}"> --}}
+		<div class="content">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-md-5 col-lg-4 col-xl-3 theiaStickySidebar">
+
+						<div class="profile-sidebar">
+							<div class="widget-profile pro-widget-content">
+								<div class="profile-info-widget">
+									<a href="#" class="booking-doc-img">
+										<img src="{{userData.[0].Photo}}" alt="User Image">
+									</a>
+									<div class="profile-det-info">
+										<h3>Mrs.{{userData.[0].FirstName}} {{userData.[0].LastName}}</h3>
+										<div class="patient-details">
+											<h5 class="mb-0">BDS, MDS - Oral & Maxillofacial Surgery</h5>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="dashboard-widget">
+							   {{nurseSideNav userData.[0].DocNurID}}
+							</div>
+						</div>
+
+					</div>
+					<div class="col-md-7 col-lg-8 col-xl-9">
+						<div class="row">
+							<div class="col-md-12">
+								<h4 class="mb-4">Patient Appoinment</h4>
+								<div class="appointment-tab">
+
+									<ul class="nav nav-tabs nav-tabs-solid nav-tabs-rounded">
+										<li class="nav-item">
+											<a class="nav-link active" href="#upcoming-appointments"
+												data-bs-toggle="tab">Upcoming</a>
+										</li>
+										<li class="nav-item">
+											<a class="nav-link" href="#today-appointments"
+												data-bs-toggle="tab">Today</a>
+										</li>
+									</ul>
+
+									<div class="tab-content">
+
+										<div class="tab-pane show active" id="upcoming-appointments">
+											<div class="card card-table mb-0">
+												<div class="card-body">
+													<div class="table-responsive">
+														<table class="table table-hover table-center mb-0">
+															<thead>
+																<tr>
+																	<th>Patient Name</th>
+																	<th>Appt Date</th>
+																	<th>Service Method</th>
+																	<th>Patient Type</th>
+																	<th class="text-center">Total Due</th>
+																	<th class="text-center">Status</th>
+																	<th class="text-center">Action</th>
+																</tr>
+															</thead>
+															<tbody>
+																{{#each appointmentdata}}
+																{{!-- single-appointment --}}
+																<tr>
+																	<td>
+																		<h2 class="table-avatar">
+																			<a href="/patient-profile/{{this.PatientID}}"
+																				class="avatar avatar-sm me-2"><img
+																					class="avatar-img rounded-circle"
+																					src="assets/img/patients/patient.jpg"
+																					alt="User Image"></a>
+																			<a href="/patient-profile/{{this.PatientID}}"><span>#{{this.appointmentID}}</span></a>
+																		</h2>
+																	</td>
+																	<td>{{this.BookingDate}} <span
+																			class="d-block text-info">{{this.BookingTime}}</span>
+																	</td>
+																	<td>{{this.ServiceType}}</td>
+																	<td>New Patient</td>
+																	<td class="text-center">{{this.TotalAmount}}TK</td>
+																	<td class="text-end text-center">
+																		<div class="table-action">
+																			{{statusDisplay this.CurrentStatus}}
+																			{{!-- <span class="btn btn-sm bg-success-light">{{this.CurrentStatus}}</span> --}}
+																		</div>
+																	</td>
+																	<td>
+																		<div class="dropdown text-center">
+																		<button class="btn btn-primary dropdown-toggle"  type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">	
+																		</button>
+																		<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+																			<li><a class="dropdown-item" href="/appointmentstatusupdate/{{this.appointmentID}}/Accepted">Accept</a></li>
+																			<li><a class="dropdown-item" href="/appointmentstatusupdate/{{this.appointmentID}}/Rejected">Reject</a></li>
+																			<li><a class="dropdown-item" href="/appointmentstatusupdate/{{this.appointmentID}}/Waiting">Waiting</a></li>
+																		</ul>
+																		</div>
+																	</td>
+																	<td><a href="/singleappointmentview/{{this.appointmentID}}" class="btn btn-primary">View</a></td>
+																</tr>
+                                                              {{/each}}
+
+															
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+										</div>
+
+
+										<div class="tab-pane" id="today-appointments">
+											<div class="card card-table mb-0">
+												<div class="card-body">
+													<div class="table-responsive">
+														<table class="table table-hover table-center mb-0">
+																<thead>
+																<tr>
+																	<th>Patient Name</th>
+																	<th>Appt Date</th>
+																	<th>Service Method</th>
+																	<th>Patient Type</th>
+																	<th class="text-center">Total Due</th>
+																	<th class="text-center">Status</th>
+																	<th class="text-center">Action</th>
+																</tr>
+															</thead>
+															<tbody>
+																{{#each TodayData}}
+																{{!-- single-appointment --}}
+																<tr>
+																	<td>
+																		<h2 class="table-avatar">
+																			<a href="/patient-profile/{{this.PatientID}}"
+																				class="avatar avatar-sm me-2"><img
+																					class="avatar-img rounded-circle"
+																					src="assets/img/patients/patient.jpg"
+																					alt="User Image"></a>
+																			<a href="/patient-profile/{{this.PatientID}}"><span>#{{this.appointmentID}}</span></a>
+																		</h2>
+																	</td>
+																	<td>{{this.BookingDate}} <span
+																			class="d-block text-info">{{this.BookingTime}}</span>
+																	</td>
+																	<td>{{this.ServiceType}}</td>
+																	<td>New Patient</td>
+																	<td class="text-center">{{this.TotalAmount}}TK</td>
+																	<td class="text-end text-center">
+																		<div class="table-action">
+																			<span class="btn btn-sm bg-success-light">{{this.CurrentStatus}}</span>
+																		</div>
+																	</td>
+																	<td>
+																		<div class="dropdown text-center">
+																		<button class="btn btn-primary dropdown-toggle"  type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">	
+																		</button>
+																		<ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+																			<li><a class="dropdown-item" href="/appointmentstatusupdate/{{this.appointmentID}}/Accepted">Accept</a></li>
+																			<li><a class="dropdown-item" href="/appointmentstatusupdate/{{this.appointmentID}}/Rejected">Reject</a></li>
+																			<li><a class="dropdown-item" href="/appointmentstatusupdate/{{this.appointmentID}}/Waiting">Waiting</a></li>
+																		</ul>
+																		</div>
+																	</td>
+																</tr>
+                                                              {{/each}}
+
+															
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+										</div>
+
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+{{commonFooter}}
+
+
+	{{!-- socket application --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.4.0/socket.io.js"></script>
+    <script src="/assets/js/custom-notification.js"></script>
